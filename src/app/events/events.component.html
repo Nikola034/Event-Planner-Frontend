@@ -1,0 +1,28 @@
+<!-- <div class="container">
+    <div class="grid">
+        <div *ngFor="let event of events" class="col-12 sm:col-6 md:col-4 lg:col-3 mb-4">
+            <app-event-card [event]="event"></app-event-card>
+        </div>
+    </div>
+</div> -->
+<p-panel>
+    <ng-template pTemplate="header">
+        <div class="grid">
+            <span class="text-xl font-semibold">
+                Top Events
+            </span>
+            <p-iconField iconPosition="left">
+                <p-inputIcon styleClass="pi pi-search" />
+                <input type="text" pInputText placeholder="Search" />
+            </p-iconField>
+            <div>
+                <span>Sort by</span>
+            </div>
+        </div>
+
+    </ng-template>
+    <div *ngFor="let event of events">
+        <app-event-card [event]="event"></app-event-card>
+        <p-divider />
+    </div>
+</p-panel>
