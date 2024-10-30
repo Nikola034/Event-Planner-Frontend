@@ -7,9 +7,9 @@
         </div>
     </ng-template>
     <ng-template pTemplate="content">
-        <div class="grid">
+        <div class="grid col-12">
             
-            <div class="col-12 md:col-3">
+            <div class="col-12 xl:col-3">
                 <div class="flex flex-column gap-3">
                     <p class="text-xl font-semibold">{{ event.title }}</p>
                     
@@ -20,13 +20,13 @@
                     
                     <div>
                         <i class="pi pi-map-marker mr-1"></i>
-                        <span>{{ event.address }}</span>
+                        <span>{{ event.address.street }} {{ event.address.number }}, {{ event.address.city }}</span>
                     </div>
                 </div>
             </div>
             
             
-            <div class="col-12 md:col-9">
+            <div class="col-12 xl:col-9">
                 <div class="p-2">
                     <p class="m-0 line-height-3">{{ event.description }}</p>
                 </div>

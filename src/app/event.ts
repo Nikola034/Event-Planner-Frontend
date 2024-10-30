@@ -1,3 +1,4 @@
+import { Address } from "./address";
 import { EventType } from "./event-type";
 
 export interface Event {
@@ -6,7 +7,7 @@ export interface Event {
     description: string;
     maxParticipants: number;
     public: boolean;
-    address: string;
+    address: Address;
     date: Date;
     type: EventType
 }
