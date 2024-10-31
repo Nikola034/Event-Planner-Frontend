@@ -1,0 +1,82 @@
+<p-panel>
+    <ng-template pTemplate="header">
+        <div class="grid align-items-center m-0 col-12">
+            <div class="xl:col-3 flex col-12">
+                <span class="text-xl font-semibold text-center">
+                    Top Events
+                </span>
+            </div>
+            <div class="xl:col-4 flex col-12">
+                <p-iconField iconPosition="left">
+                    <p-inputIcon styleClass="pi pi-search" />
+                    <input type="text" pInputText placeholder="Search"/>
+                </p-iconField>
+            </div>
+            <div class="xl:col-3 flex col-12">
+                <div class="card flex justify-content-center">
+                    <p-floatLabel>
+                        <p-dropdown [options]="sortOptions" inputId="float-label" (onChange)="onChange($event)" />
+                        <label for="float-label">Sort by</label>
+                    </p-floatLabel>
+                </div>
+            </div>
+            <div class="xl:col-2 flex col-12">
+                <p-sidebar [(visible)]="filterSidebarVisible" position="right" styleClass="xl:w-25rem w-20rem">
+                    <app-events-filter></app-events-filter>
+                </p-sidebar>
+                <p-button
+                    type="button"
+                    styleClass="p-button-secondary"
+                    (onClick)="filterSidebarVisible = true"
+                    label="Filters"
+                    iconPos="right"
+                    icon="pi pi-arrow-left"
+                />
+            </div>
+        </div>
+    </ng-template>
+    <p-divider styleClass="m-0"/>
+    <div *ngFor="let event of displayedEvents">
+        <app-event-card [event]="event"></app-event-card>
+        <p-divider styleClass="m-0"/>
+    </div>
+
+    <div class="card flex justify-content-center">
+        <p-paginator
+            [first]="first"
+            [rows]="rows"
+            [totalRecords]="totalRecords"
+            [rowsPerPageOptions]="[3, 10, 20, 30]"
+            (onPageChange)="onPageChange($any($event))"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} events"
+        ></p-paginator>
+    </div>
+</p-panel>
+
+<!-- <p-table [value]="events" [tableStyle]="{'min-width': '60rem'}">
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="title" style="width:20%">
+                title 
+            </th>
+            <th pSortableColumn="name" style="width:20%">
+                Name <p-sortIcon field="name" />
+            </th>
+            <th pSortableColumn="category" style="width:20%">
+                Category <p-sortIcon field="category" />
+            </th>
+            <th pSortableColumn="quantity" style="width:20%">
+                Quantity <p-sortIcon field="quantity" />
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-event>
+        <tr>
+            <td>{{ event.title }}</td>
+            <td>{{ event.title }}</td>
+            <td>{{ event.title }}</td>
+            <td>{{ event.title}}</td>
+        </tr>
+    </ng-template>
+</p-table> -->
