@@ -1,3 +1,7 @@
 import { Routes } from '@angular/router';
-
-export const routes: Routes = [];
+import { EventsComponent } from './components/event/events/events.component';
+export const routes: Routes = [
+    {
+        path:'',component:EventsComponent
+    },
+];

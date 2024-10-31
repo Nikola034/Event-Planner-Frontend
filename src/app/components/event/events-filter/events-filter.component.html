@@ -1,0 +1,22 @@
+<div>
+    <span class="block text-color mb-5 text-xl font-semibold">Event filters</span>
+    <div class="mb-2">
+        <span class="block p-text-secondary ">Time period</span>
+        <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" />
+    </div>
+    <div class="mb-2">
+        <span class="block p-text-secondary">Type</span>
+        <input type="text" pInputText [(ngModel)]="type" />
+    </div>
+    <div class="mb-2">
+        <span class="block p-text-secondary">City</span>
+        <input type="text" pInputText [(ngModel)]="city" />
+    </div>
+    <div class="mb-2">
+        <p-toggleButton [(ngModel)]="isPublic" onLabel="Public" offLabel="Private" [onIcon]="'pi pi-lock-open'"
+            offIcon="pi pi-lock" styleClass="w-9rem" />
+    </div>
+    <div class="flex justify-content-start mt-3">
+        <p-button label="Apply filters" styleClass="p-button-secondary text-color" (onClick)="filter()"></p-button>
+    </div>
+</div>
