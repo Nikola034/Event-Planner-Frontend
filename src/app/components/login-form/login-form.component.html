@@ -1,0 +1,36 @@
+<div class="login-form">
+  <div class="header flex justify-content-center align-items-center">
+    <span>
+      <i class="pi pi-user" style="font-size: 5rem"></i>
+    </span>
+  </div>
+  <div class="flex w-full content justify-content-center">
+    <form [formGroup]="loginForm" class="flex pt-4 flex-column w-full px-4">
+      <div class="field flex justify-content-center">
+        <input
+          formControlName="email"
+          type="text"
+          placeholder="E-Mail*"
+          class="text-base p-2 w-full"
+        />
+      </div>
+      <div class="field flex justify-content-center pb-5">
+        <input
+          formControlName="password"
+          type="text"
+          placeholder="Password*"
+          class="text-base p-2 w-full"
+        />
+      </div>
+      <div class="field flex justify-content-center w-full">
+        <p-button class="min-w-full" label="SIGN IN" type="submit"></p-button>
+      </div>
+      <div
+        class="field flex justify-content-center align-items-center pt-1 flex-column w-full"
+      >
+        <span>Don't have an account?</span>
+        <a href="#" class="pt-1">Register</a>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,94 @@
+<div class="register-form">
+  <div class="header flex justify-content-center align-items-center">
+    <span>
+      <i class="pi pi-user-plus" style="font-size: 5rem"></i>
+    </span>
+  </div>
+  <div class="flex w-full content justify-content-center">
+    <form [formGroup]="registerForm" class="flex pt-4 flex-column w-full px-4">
+      <div class="field flex justify-content-center">
+        <input
+          formControlName="company"
+          type="text"
+          placeholder="Company*"
+          class="text-base p-2 w-full"
+        />
+      </div>
+      <div class="field flex justify-content-center">
+        <input
+          formControlName="address"
+          type="text"
+          placeholder="Address*"
+          class="text-base p-2 w-full"
+        />
+      </div>
+      <div class="field flex justify-content-center">
+        <textarea
+          formControlName="description"
+          name="Text1"
+          cols="40"
+          rows="5"
+          placeholder="Description*"
+          class="text-base p-2 w-full"
+        ></textarea>
+      </div>
+      <div class="field flex justify-content-center">
+        <input
+          formControlName="phone"
+          type="text"
+          placeholder="Phone*"
+          class="text-base p-2 w-full"
+        />
+      </div>
+      <div class="field flex justify-content-center">
+        <input
+          formControlName="email"
+          type="text"
+          placeholder="E-Mail*"
+          class="text-base p-2 w-full"
+        />
+      </div>
+      <div class="field flex justify-content-center pb-2">
+        <div class="grid">
+          <div class="col-6">
+            <input
+              formControlName="password1"
+              type="text"
+              placeholder="Password*"
+              class="text-base p-2 w-full"
+            />
+          </div>
+          <div class="col-6">
+            <input
+              formControlName="password2"
+              type="text"
+              placeholder="Confirm Password*"
+              class="text-base p-2 w-full"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="field flex justify-content-center photo w-full">
+        <p-button
+          (click)="uploader.click()"
+          class="w-full"
+          label="ADD PHOTOS (OPTIONAL)"
+        ></p-button>
+        <input hidden type="file" #uploader (change)="uploadFile($event)" />
+      </div>
+      <div class="field flex justify-content-center w-full submit">
+        <p-button
+          class="min-w-full"
+          label="CREATE ACCOUNT"
+          type="submit"
+        ></p-button>
+      </div>
+      <div
+        class="field flex justify-content-center align-items-center pt-1 flex-column w-full"
+      >
+        <span>Already have an account?</span>
+        <a href="#" class="pt-1">Sign in here</a>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { HeaderComponent } from './components/header/header.component';
+import { SideMenuComponent } from './components/side-menu/side-menu.component';
+import { RegisterOdFormComponent } from './components/register-od-form/register-od-form.component';
+import { RegisterPupFormComponent } from './components/register-pup-form/register-pup-form.component';
+import { LoginFormComponent } from './components/login-form/login-form.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, HeaderComponent, SideMenuComponent, RegisterOdFormComponent, RegisterPupFormComponent, LoginFormComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

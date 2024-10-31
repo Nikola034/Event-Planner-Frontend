@@ -96,12 +96,16 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/primeng/resources/themes/md-dark-indigo/theme.css"
             ],
             "scripts": []
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "d475ed46-6c5a-49b6-a2e5-929626e764a8"
   }
 }

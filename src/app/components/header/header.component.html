@@ -1,0 +1,57 @@
+<div class="header">
+  <div class="left">
+    <p-iconField iconPosition="left">
+      <p-inputIcon styleClass="pi pi-search" />
+      <input type="text" pInputText placeholder="Search..." />
+    </p-iconField>
+  </div>
+  <div class="right">
+    <button class="toolbar-button" (click)="toggleFullscreen()">
+      <span class="fullscreen">
+        <i class="pi pi-expand" style="font-size: 1rem"></i>
+      </span>
+    </button>
+    <button class="toolbar-button">
+      <span class="notifications">
+        <i class="pi pi-bell" style="font-size: 1rem"></i>
+      </span>
+    </button>
+    <button class="toolbar-button avatar-btn" (click)="handleClick()">
+      <span class="avatar">
+        <div class="image"></div>
+        <span class="name">Goci Ristic</span>
+        <i
+          class="pi pi-angle-down"
+          style="font-size: 1rem; margin-left: 10px"
+        ></i>
+      </span>
+    </button>
+    <div class="dropdown visibility" #navdrop id="navdrop">
+      <div class="content">
+        <ul>
+          <li>
+            <i class="pi pi-user" style="font-size: 1rem"></i>
+            <span>Profile</span>
+          </li>
+          <li>
+            <i class="pi pi-cog" style="font-size: 1rem"></i>
+            <span>Settings</span>
+          </li>
+          <li>
+            <i class="pi pi-question" style="font-size: 1rem"></i>
+            <span>Help</span>
+          </li>
+          <li>
+            <i class="pi pi-sign-out" style="font-size: 1rem"></i>
+            <span>Logout</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <button class="toolbar-button">
+      <span class="align-right">
+        <i class="pi pi-align-right" style="font-size: 1rem"></i>
+      </span>
+    </button>
+  </div>
+</div>
