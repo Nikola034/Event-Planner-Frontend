@@ -89,7 +89,6 @@ export class EventsComponent implements OnInit {
         return n1[event.value] > n2[event.value] ? 1 : (n1[event.value] < n2[event.value] ? -1 : 0)
       }
     });
-    // Reset to first page after sorting
     this.first = 0;
     this.updateDisplayedEvents();
   }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { EventsComponent } from "./events/events.component";
+import { EventsComponent } from "./event/events/events.component";
 
 @Component({
   selector: 'app-root',
