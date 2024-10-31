@@ -8,7 +8,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'header',
+  selector: 'app-header',
   standalone: true,
   imports: [ToolbarModule, SplitButtonModule, InputTextModule, ButtonModule, InputIconModule, IconFieldModule, FormsModule],
   templateUrl: './header.component.html',

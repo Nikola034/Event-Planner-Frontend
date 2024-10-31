@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { ViewEncapsulation } from '@angular/core';
 
 @Component({
-  selector: 'login-form',
+  selector: 'app-login-form',
   standalone: true,
   imports: [ReactiveFormsModule, ButtonModule],
   templateUrl: './login-form.component.html',

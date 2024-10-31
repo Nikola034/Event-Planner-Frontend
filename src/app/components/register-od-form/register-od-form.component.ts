@@ -7,7 +7,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 
 @Component({
-  selector: 'register-od-form',
+  selector: 'app-register-od-form',
   standalone: true,
   imports: [ButtonModule, ReactiveFormsModule, FileUploadModule, ToastModule],
   templateUrl: './register-od-form.component.html',

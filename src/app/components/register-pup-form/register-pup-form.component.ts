@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 @Component({
-  selector: 'register-pup-form',
+  selector: 'app-register-pup-form',
   standalone: true,
   imports: [ButtonModule, ReactiveFormsModule, FileUploadModule, ToastModule],
   templateUrl: './register-pup-form.component.html',
