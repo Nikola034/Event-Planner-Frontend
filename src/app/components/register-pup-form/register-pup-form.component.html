@@ -1,17 +1,19 @@
-<div class="register-form">
-  <div class="header flex justify-content-center align-items-center">
+<div class="register-form w-27rem">
+  <div
+    class="header bg-primary flex justify-content-center align-items-center h-8rem border-round-top-md"
+  >
     <span>
       <i class="pi pi-user-plus" style="font-size: 5rem"></i>
     </span>
   </div>
-  <div class="flex w-full content justify-content-center">
+  <div class="flex w-full content surface-100 justify-content-center">
     <form [formGroup]="registerForm" class="flex pt-4 flex-column w-full px-4">
       <div class="field flex justify-content-center">
         <input
           formControlName="company"
           type="text"
           placeholder="Company*"
-          class="text-base p-2 w-full"
+          class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
         />
       </div>
       <div class="field flex justify-content-center">
@@ -19,7 +21,7 @@
           formControlName="address"
           type="text"
           placeholder="Address*"
-          class="text-base p-2 w-full"
+          class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
         />
       </div>
       <div class="field flex justify-content-center">
@@ -29,7 +31,7 @@
           cols="40"
           rows="5"
           placeholder="Description*"
-          class="text-base p-2 w-full"
+          class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 max-h-7rem surface-50"
         ></textarea>
       </div>
       <div class="field flex justify-content-center">
@@ -37,7 +39,7 @@
           formControlName="phone"
           type="text"
           placeholder="Phone*"
-          class="text-base p-2 w-full"
+          class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
         />
       </div>
       <div class="field flex justify-content-center">
@@ -45,7 +47,7 @@
           formControlName="email"
           type="text"
           placeholder="E-Mail*"
-          class="text-base p-2 w-full"
+          class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
         />
       </div>
       <div class="field flex justify-content-center pb-2">
@@ -55,7 +57,7 @@
               formControlName="password1"
               type="text"
               placeholder="Password*"
-              class="text-base p-2 w-full"
+              class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
             />
           </div>
           <div class="col-6">
@@ -63,22 +65,22 @@
               formControlName="password2"
               type="text"
               placeholder="Confirm Password*"
-              class="text-base p-2 w-full"
+              class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
             />
           </div>
         </div>
       </div>
-      <div class="field flex justify-content-center photo w-full">
+      <div class="field flex justify-content-left photo w-full">
         <p-button
           (click)="uploader.click()"
-          class="w-full"
+          styleClass="w-full border-noround border-1 border-primary"
           label="ADD PHOTOS (OPTIONAL)"
         ></p-button>
         <input hidden type="file" #uploader (change)="uploadFile($event)" />
       </div>
-      <div class="field flex justify-content-center w-full submit">
+      <div class="field justify-content-center w-full submit">
         <p-button
-          class="min-w-full"
+          styleClass="min-w-full w-full h-3rem border-noround"
           label="CREATE ACCOUNT"
           type="submit"
         ></p-button>
@@ -87,7 +89,7 @@
         class="field flex justify-content-center align-items-center pt-1 flex-column w-full"
       >
         <span>Already have an account?</span>
-        <a href="#" class="pt-1">Sign in here</a>
+        <a href="#" class="pt-1 text-color">Sign in here</a>
       </div>
     </form>
   </div>

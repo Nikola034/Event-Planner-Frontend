@@ -6,11 +6,14 @@ import { ButtonModule } from 'primeng/button';
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { FormsModule } from '@angular/forms';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [ToolbarModule, SplitButtonModule, InputTextModule, ButtonModule, InputIconModule, IconFieldModule, FormsModule],
+  imports: [ToolbarModule, SplitButtonModule, InputTextModule, ButtonModule, InputIconModule, IconFieldModule, FormsModule, AvatarModule, AvatarGroupModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -33,4 +36,18 @@ export class HeaderComponent {
       this.fullscreen = false;
     }
   }
+  items: MenuItem[] | undefined;
+
+    ngOnInit() {
+        this.items = [
+            {
+                label: 'Update',
+                icon: 'pi pi-refresh'
+            },
+            {
+                label: 'Delete',
+                icon: 'pi pi-times'
+            }
+        ];
+    }
 }
