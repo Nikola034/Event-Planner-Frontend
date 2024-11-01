@@ -12,18 +12,7 @@
                     <input type="text" pInputText placeholder="Search"/>
                 </p-iconField>
             </div>
-            <div class="xl:col-3 flex col-12">
-                <div class="card flex justify-content-center">
-                    <p-floatLabel>
-                        <p-dropdown [options]="sortOptions" inputId="float-label" (onChange)="onChange($event)" />
-                        <label for="float-label">Sort by</label>
-                    </p-floatLabel>
-                </div>
-            </div>
             <div class="xl:col-2 flex col-12">
-                <p-sidebar [(visible)]="filterSidebarVisible" position="right" styleClass="xl:w-25rem w-20rem">
-                    <app-events-filter></app-events-filter>
-                </p-sidebar>
                 <p-button
                     type="button"
                     styleClass="p-button-secondary"
@@ -36,8 +25,8 @@
         </div>
     </ng-template>
     <p-divider styleClass="m-0"/>
-    <div *ngFor="let event of displayedEvents">
-        <app-event-card [event]="event"></app-event-card>
+    <div *ngFor="let merchandise of displayedMerchandise">
+        <app-merchandise-card [merchandise]="merchandise"></app-merchandise-card>
         <p-divider styleClass="m-0"/>
     </div>
 

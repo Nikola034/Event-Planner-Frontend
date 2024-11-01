@@ -1,0 +1,43 @@
+<p-panel [toggleable]="true">
+    <ng-template pTemplate="header">
+        <div class="flex align-items-center gap-2 p-text-secondary">
+            <p>
+                {{ merchandise.category.title }}
+            </p>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <div class="grid col-12">
+            
+            <div class="col-12 xl:col-3">
+                <div class="flex flex-column gap-3">
+                    <img src="{{merchandise.photos[0]}}" alt="">
+                    <p class="text-xl font-semibold">{{ merchandise.title }}</p>
+                    
+                    <div>
+                        
+                        <span>{{ merchandise.price }}</span>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+            
+            
+            <div class="col-12 xl:col-9">
+                <div class="p-2">
+                    <p class="m-0 line-height-3">{{ merchandise.description }}</p>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="flex justify-content-end">
+            <p-button 
+                label="See details" 
+                styleClass="p-button-secondary text-color"
+            ></p-button>
+        </div>
+    </ng-template>
+    
+</p-panel>
