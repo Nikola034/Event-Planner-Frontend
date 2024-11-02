@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
-import { EventsComponent } from './components/event/events/events.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
+
 export const routes: Routes = [
     {
-        path:'',component:EventsComponent
+        path:'',component:HomePageComponent
     },
 ];

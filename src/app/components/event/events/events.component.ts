@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
@@ -19,6 +19,8 @@ import { PaginatorModule } from 'primeng/paginator';
 import { SidebarModule } from 'primeng/sidebar';
 import { Merchandise } from '../../merchandise/merchandise';
 import { MerchandiseService } from '../../merchandise/merchandise.service';
+import { AddressService } from '../../address/address.service';
+import { StreetAddress } from '../../address/street-address';
 
 interface PageEvent {
   first: number;
@@ -59,8 +61,8 @@ export class EventsComponent implements OnInit {
   public first: number = 0;
   public rows: number = 3;
   public totalRecords: number = 0;
-  
-  constructor(private eventService: EventService,private merchandiseService:MerchandiseService) {}
+  @Input() panelTitle:string='';
+  constructor(private eventService: EventService,private merchandiseService:MerchandiseService,private addressService:AddressService) {}
   
   ngOnInit(): void {
     this.eventService.getAll().subscribe({
@@ -70,28 +72,11 @@ export class EventsComponent implements OnInit {
         this.updateDisplayedEvents();
       }
     });
-    this.sortOptions = this.eventService.SortOptions;
   }
   
   updateDisplayedEvents() {
     const end = this.first + this.rows;
     this.displayedEvents = this.events.slice(this.first, end);
-  }
-  
-  onChange(event: any) {
-    this.events.sort((n1: any, n2: any) => {
-      if (event.value === 'type') {
-        return n1[event.value].title.localeCompare(n2[event.value].title);
-      }
-      else if(event.value === 'city'){
-        return n1.address.city.localeCompare(n2.address.city);
-      }
-      else {
-        return n1[event.value] > n2[event.value] ? 1 : (n1[event.value] < n2[event.value] ? -1 : 0)
-      }
-    });
-    this.first = 0;
-    this.updateDisplayedEvents();
   }
   
   onPageChange(event: PageEvent) {

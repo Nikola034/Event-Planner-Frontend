@@ -31,6 +31,10 @@ export class ServiceService {
         title: "Portrait Photography",
         description: "Professional portrait sessions for individuals and families",
         pending: false
+      },
+      address: {
+        latitude: "45.255115849023438",
+        longitude: "19.844731241859632"
       }
     },
     {
@@ -57,6 +61,10 @@ export class ServiceService {
         title: "Wedding Photography",
         description: "Comprehensive wedding day photography services",
         pending: false
+      },
+      address: {
+        latitude: "46.100245923847392",
+        longitude: "19.667845234789123"
       }
     },
     {
@@ -83,6 +91,10 @@ export class ServiceService {
         title: "Post-Production",
         description: "Professional photo editing and enhancement services",
         pending: false
+      },
+      address: {
+        latitude: "45.245678912345678",
+        longitude: "19.851234567891234"
       }
     },
     {
@@ -109,6 +121,10 @@ export class ServiceService {
         title: "Portrait Photography",
         description: "Professional portrait sessions for individuals and families",
         pending: false
+      },
+      address: {
+        latitude: "46.095678912345678",
+        longitude: "19.673456789123456"
       }
     },
     {
@@ -135,6 +151,10 @@ export class ServiceService {
         title: "Event Photography",
         description: "Professional photography for corporate and social events",
         pending: false
+      },
+      address: {
+        latitude: "45.249876543210987",
+        longitude: "19.837654321098765"
       }
     },
     {
@@ -161,7 +181,11 @@ export class ServiceService {
         title: "Education",
         description: "Photography workshops and training sessions",
         pending: false
-      }
+      },
+      address: {
+        latitude: "46.105678912345678",
+        longitude: "19.659876543210987"
+      } 
     },
     {
       id: 7,
@@ -187,6 +211,10 @@ export class ServiceService {
         title: "Commercial Photography",
         description: "Professional photography for business and commercial use",
         pending: false
+      },
+      address: {
+        latitude: "45.262345678912345",
+        longitude: "19.833456789123456"
       }
     },
     {
@@ -213,6 +241,10 @@ export class ServiceService {
         title: "Real Estate Photography",
         description: "Professional photography for real estate listings",
         pending: false
+      },
+      address: {
+        latitude: "46.108765432109876",
+        longitude: "19.665432109876543"
       }
     },
     {
@@ -239,6 +271,10 @@ export class ServiceService {
         title: "Post-Production",
         description: "Professional photo editing and enhancement services",
         pending: false
+      },
+      address: {
+        latitude: "45.267890123456789",
+        longitude: "19.847890123456789"
       }
     },
     {
@@ -265,6 +301,10 @@ export class ServiceService {
         title: "Specialty Photography",
         description: "Specialized photography services using advanced equipment",
         pending: false
+      },
+      address: {
+        latitude: "46.091234567891234",
+        longitude: "19.669876543210987"
       }
     }
   ];

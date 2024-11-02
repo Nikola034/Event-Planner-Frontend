@@ -1,4 +1,4 @@
-import { Address } from "./address";
+import { Address } from "../address/address";
 import { EventType } from "./event-type";
 
 export interface Event {

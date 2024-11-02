@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
@@ -52,6 +52,7 @@ export class MerchandiseComponent {
   public first: number = 0;
   public rows: number = 3;
   public totalRecords: number = 0;
+  @Input() panelTitle:string='';
   
   constructor(private merchandiseService:MerchandiseService) {}
   

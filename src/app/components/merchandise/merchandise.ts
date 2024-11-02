@@ -1,3 +1,4 @@
+import { Address } from "../address/address";
 import { Category } from "../category/category";
 
 export interface Merchandise {
@@ -16,5 +17,6 @@ export interface Merchandise {
     automaticReservation: boolean;
     deleted: boolean;
     photos: string[];
-    category:Category
+    category:Category,
+    address:Address
 }

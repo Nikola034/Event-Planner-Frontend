@@ -15,5 +15,10 @@ export class MerchandiseService {
       map(([services, products]) => [...services, ...products])
   );
   }
+
+  getType(merchandise:Merchandise):string{
+    return 'availableTimeslots' in merchandise?'Service':'Product';
+  }
+
   constructor(private serviceService:ServiceService,private productService:ProductService) { }
 }

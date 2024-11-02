@@ -1,26 +1,10 @@
-<p-panel>
+<p-panel [toggleable]="true">
     <ng-template pTemplate="header">
-        <div class="grid align-items-center m-0 col-12">
+        <div class="grid align-items-center m-0 col-6">
             <div class="xl:col-3 flex col-12">
                 <span class="text-xl font-semibold text-center">
-                    Top Events
+                    {{panelTitle}}
                 </span>
-            </div>
-            <div class="xl:col-4 flex col-12">
-                <p-iconField iconPosition="left">
-                    <p-inputIcon styleClass="pi pi-search" />
-                    <input type="text" pInputText placeholder="Search"/>
-                </p-iconField>
-            </div>
-            <div class="xl:col-2 flex col-12">
-                <p-button
-                    type="button"
-                    styleClass="p-button-secondary"
-                    (onClick)="filterSidebarVisible = true"
-                    label="Filters"
-                    iconPos="right"
-                    icon="pi pi-arrow-left"
-                />
             </div>
         </div>
     </ng-template>

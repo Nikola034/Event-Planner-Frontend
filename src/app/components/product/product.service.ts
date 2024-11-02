@@ -29,6 +29,10 @@ export class ProductService {
       title: "Cameras",
       description: "Professional-grade cameras for photography and videography, including DSLRs, mirrorless cameras, and specialized video cameras. Our selection features the latest technology and reliable performance for all shooting scenarios.",
       pending: false
+    },
+    address: {
+      latitude: '45.255115849023438',
+      longitude: '19.844731241859632'
     }
   },
   {
@@ -54,6 +58,10 @@ export class ProductService {
       title: "Lighting Equipment",
       description: "Comprehensive lighting solutions for studio and location photography. From continuous LED lights to professional strobes, our lighting equipment ensures optimal illumination for any photography or video project.",
       pending: false
+    },
+    address: {
+      latitude: '46.100245923847392',
+      longitude: '19.667845234789123'
     }
   },
   {
@@ -79,6 +87,10 @@ export class ProductService {
       title: "Aerial Equipment",
       description: "State-of-the-art drones and aerial photography equipment for capturing stunning aerial perspectives. Our selection includes professional-grade drones with advanced features for both photography and videography.",
       pending: false
+    },
+    address: {
+      latitude: '45.245678912345678',
+      longitude: '19.851234567891234'
     }
   },
   {
@@ -104,6 +116,10 @@ export class ProductService {
       title: "Cameras",
       description: "Professional-grade cameras for photography and videography, including DSLRs, mirrorless cameras, and specialized video cameras. Our selection features the latest technology and reliable performance for all shooting scenarios.",
       pending: false
+    },
+    address: {
+      latitude: '46.095678912345678',
+      longitude: '19.673456789123456'
     }
   },
   {
@@ -129,6 +145,10 @@ export class ProductService {
       title: "Camera Support",
       description: "Professional camera support solutions including gimbals, tripods, monopods, and stabilization systems. Essential equipment for achieving smooth, professional-quality footage and stable shots in any situation.",
       pending: false
+    },
+    address: {
+      latitude: '45.249876543210987',
+      longitude: '19.837654321098765'
     }
   },
   {
@@ -154,6 +174,10 @@ export class ProductService {
       title: "Lenses",
       description: "Premium photographic lenses for all shooting situations, from wide-angle to telephoto. Our collection includes prime and zoom lenses from leading manufacturers, suitable for both photography and videography.",
       pending: false
+    },
+    address: {
+      latitude: '46.105678912345678',
+      longitude: '19.659876543210987'
     }
   },
   {
@@ -179,6 +203,10 @@ export class ProductService {
       title: "Audio Equipment",
       description: "Professional audio recording solutions including wireless microphones, field recorders, and audio interfaces. Essential equipment for capturing high-quality sound for video production and live events.",
       pending: false
+    },
+    address: {
+      latitude: '45.262345678912345',
+      longitude: '19.833456789123456'
     }
   },
   {
@@ -204,6 +232,10 @@ export class ProductService {
       title: "Studio Accessories",
       description: "Complete range of studio photography accessories including backdrops, props, and studio organization equipment. Essential items for creating professional studio setups and achieving desired creative effects.",
       pending: false
+    },
+    address: {
+      latitude: '46.108765432109876',
+      longitude: '19.665432109876543'
     }
   },
   {
@@ -229,6 +261,10 @@ export class ProductService {
       title: "Specialty Equipment",
       description: "Specialized photography equipment for unique shooting situations, including underwater housings, macro photography gear, and technical camera accessories. Professional-grade equipment for specific photography needs.",
       pending: false
+    },
+    address: {
+      latitude: '45.267890123456789',
+      longitude: '19.847890123456789'
     }
   },
   {
@@ -254,6 +290,10 @@ export class ProductService {
       title: "Camera Support",
       description: "Professional camera support solutions including gimbals, tripods, monopods, and stabilization systems. Essential equipment for achieving smooth, professional-quality footage and stable shots in any situation.",
       pending: false
+    },
+    address: {
+      latitude: '46.091234567891234',
+      longitude: '19.669876543210987'
     }
   }
 ];

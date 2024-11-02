@@ -15,8 +15,7 @@ export class EventService {
     'date',
     'type'];
 
-
-  private events: Event[] = [
+private events: Event[] = [
     {
       id: 1,
       title: "Summer Music Festival",
@@ -24,9 +23,8 @@ export class EventService {
       maxParticipants: 5000,
       public: true,
       address: {
-        street: "Central Park",
-        number: "5th Avenue",
-        city: "New York"
+        longitude: "19.833826521793377",
+        latitude: "45.26938344115615"
       },
       date: new Date('2024-07-15'),
       type: {
@@ -43,9 +41,8 @@ export class EventService {
       maxParticipants: 1000,
       public: true,
       address: {
-        street: "Convention Center",
-        number: "123 Tech Street",
-        city: "San Francisco"
+        longitude: "19.833826521793377",
+        latitude: "45.26938344115615"
       },
       date: new Date('2024-11-20'),
       type: {
@@ -62,9 +59,8 @@ export class EventService {
       maxParticipants: 500,
       public: true,
       address: {
-        street: "Riverside Park",
-        number: "",
-        city: "New York"
+        longitude: "19.833826521793377",
+        latitude: "45.26938344115615"
       },
       date: new Date('2024-09-10'),
       type: {
@@ -81,9 +77,8 @@ export class EventService {
       maxParticipants: 150,
       public: false,
       address: {
-        street: "Grand Hotel",
-        number: "Ballroom",
-        city: "Los Angeles"
+        longitude: "19.833826521793377",
+        latitude: "45.26938344115615"
       },
       date: new Date('2024-06-25'),
       type: {
@@ -100,9 +95,8 @@ export class EventService {
       maxParticipants: 2000,
       public: true,
       address: {
-        street: "Downtown Food District",
-        number: "",
-        city: "Chicago"
+        longitude: "-87.6298",
+        latitude: "41.8781"
       },
       date: new Date('2024-08-05'),
       type: {
@@ -119,9 +113,8 @@ export class EventService {
       maxParticipants: 200,
       public: true,
       address: {
-        street: "Metropolitan Art Gallery",
-        number: "",
-        city: "New York"
+        longitude: "-73.9665",
+        latitude: "40.7829"
       },
       date: new Date('2024-12-01'),
       type: {
@@ -138,9 +131,8 @@ export class EventService {
       maxParticipants: 50,
       public: false,
       address: {
-        street: "Mountain Resort",
-        number: "",
-        city: "Denver"
+        longitude: "-104.9903",
+        latitude: "39.7392"
       },
       date: new Date('2024-10-15'),
       type: {
@@ -157,9 +149,8 @@ export class EventService {
       maxParticipants: 300,
       public: true,
       address: {
-        street: "Community Center",
-        number: "",
-        city: "Los Angeles"
+        longitude: "-118.2437",
+        latitude: "34.0522"
       },
       date: new Date('2024-10-31'),
       type: {
@@ -176,9 +167,8 @@ export class EventService {
       maxParticipants: 400,
       public: true,
       address: {
-        street: "High School Gymnasium",
-        number: "",
-        city: "Chicago"
+        longitude: "-87.6298",
+        latitude: "41.8781"
       },
       date: new Date('2024-05-20'),
       type: {
@@ -195,9 +185,8 @@ export class EventService {
       maxParticipants: 25,
       public: true,
       address: {
-        street: "Public Library",
-        number: "",
-        city: "New York"
+        longitude: "-73.9665",
+        latitude: "40.7829"
       },
       date: new Date('2024-11-05'),
       type: {
@@ -214,9 +203,8 @@ export class EventService {
       maxParticipants: 100,
       public: true,
       address: {
-        street: "Sunrise Park",
-        number: "",
-        city: "San Francisco"
+        longitude: "-122.4194",
+        latitude: "37.7749"
       },
       date: new Date('2024-07-01'),
       type: {
@@ -233,9 +221,8 @@ export class EventService {
       maxParticipants: 600,
       public: true,
       address: {
-        street: "Cinema Complex",
-        number: "",
-        city: "Los Angeles"
+        longitude: "-118.2437",
+        latitude: "34.0522"
       },
       date: new Date('2024-09-25'),
       type: {
@@ -252,9 +239,8 @@ export class EventService {
       maxParticipants: 75,
       public: false,
       address: {
-        street: "Luxury Resort",
-        number: "",
-        city: "Miami"
+        longitude: "-80.1918",
+        latitude: "25.7617"
       },
       date: new Date('2024-08-20'),
       type: {
@@ -271,9 +257,8 @@ export class EventService {
       maxParticipants: 1000,
       public: true,
       address: {
-        street: "Market Square",
-        number: "",
-        city: "Chicago"
+        longitude: "-87.6298",
+        latitude: "41.8781"
       },
       date: new Date('2024-06-15'),
       type: {
@@ -290,9 +275,8 @@ export class EventService {
       maxParticipants: 128,
       public: true,
       address: {
-        street: "Community Chess Club",
-        number: "",
-        city: "New York"
+        longitude: "-73.9665",
+        latitude: "40.7829"
       },
       date: new Date('2024-11-15'),
       type: {
@@ -309,9 +293,8 @@ export class EventService {
       maxParticipants: 40,
       public: true,
       address: {
-        street: "Botanical Gardens",
-        number: "",
-        city: "San Francisco"
+        longitude: "-122.4194",
+        latitude: "37.7749"
       },
       date: new Date('2024-05-10'),
       type: {
@@ -328,9 +311,8 @@ export class EventService {
       maxParticipants: 200,
       public: false,
       address: {
-        street: "Jazz Club",
-        number: "",
-        city: "New York"
+        longitude: "-73.9665",
+        latitude: "40.7829"
       },
       date: new Date('2024-07-30'),
       type: {
@@ -347,9 +329,8 @@ export class EventService {
       maxParticipants: 1500,
       public: true,
       address: {
-        street: "University Campus",
-        number: "",
-        city: "Chicago"
+        longitude: "-87.6298",
+        latitude: "41.8781"
       },
       date: new Date('2024-09-15'),
       type: {
@@ -366,9 +347,8 @@ export class EventService {
       maxParticipants: 300,
       public: true,
       address: {
-        street: "City Art Museum",
-        number: "",
-        city: "Los Angeles"
+        longitude: "-118.2437",
+        latitude: "34.0522"
       },
       date: new Date('2024-08-10'),
       type: {
@@ -385,9 +365,8 @@ export class EventService {
       maxParticipants: 500,
       public: true,
       address: {
-        street: "Grand Plaza Hotel",
-        number: "",
-        city: "New York"
+        longitude: "-73.9665",
+        latitude: "40.7829"
       },
       date: new Date('2024-12-31'),
       type: {
