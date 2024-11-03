@@ -1,7 +1,29 @@
 import { Routes } from '@angular/router';
-import { EventsComponent } from './components/event/events/events.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { SearchPageComponent } from './components/search-page/search-page.component';
+
 export const routes: Routes = [
     {
-        path:'',component:EventsComponent
-    },
+        path: '',
+        data:{
+            breadcrumb:null
+        },
+        children: [
+            {
+                path: '',
+                data:{
+                    breadcrumb:null
+                },
+                component: HomePageComponent
+            },
+            {
+                path: 'search',
+                data:{
+                    breadcrumb:'Search'
+                },
+                component: SearchPageComponent
+            }
+        ]
+    }
+
 ];

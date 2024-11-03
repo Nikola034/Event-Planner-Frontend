@@ -6,11 +6,13 @@ import { RegisterOdFormComponent } from './components/register-od-form/register-
 import { RegisterPupFormComponent } from './components/register-pup-form/register-pup-form.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { EventsComponent } from "./components/event/events/events.component";
+import { MerchandiseComponent } from "./components/merchandise/merchandise/merchandise.component";
+import { BreadcrumbComponent } from "./components/breadcrumb/breadcrumb/breadcrumb.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, HeaderComponent, SideMenuComponent, RegisterOdFormComponent, RegisterPupFormComponent, LoginFormComponent, EventsComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, HeaderComponent, SideMenuComponent, RegisterOdFormComponent, RegisterPupFormComponent, LoginFormComponent, EventsComponent, MerchandiseComponent, BreadcrumbComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
