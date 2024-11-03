@@ -1,12 +1,59 @@
-<p-toolbar styleClass="flex justify-content-between w-10 fixed top-0 right-0 z-5 border-noround">
+<p-toolbar
+  styleClass="flex justify-content-between w-full xl:w-10 fixed top-0 right-0 z-5 border-noround"
+>
   <div class="p-toolbar-group-start">
+    <p-button
+      icon="pi pi-align-justify"
+      styleClass="mr-2 surface-50 xl:hidden"
+      (onClick)="sidemenuVisible = true"
+    />
     <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
       <input pInputText placeholder="Search" />
     </span>
+    <p-button (onClick)="showLoginDialog()" icon="pi pi-user" label="Login" />
   </div>
   <div class="p-toolbar-group-end">
     <p-menubar [model]="items" styleClass="border-none h-3rem" />
-    <p-button icon="pi pi-align-right" styleClass="mr-2 surface-100" />
+    <p-button
+      (onClick)="notificationsVisible = true"
+      icon="pi pi-align-right"
+      styleClass="mr-2 surface-100"
+    />
   </div>
 </p-toolbar>
+<div class="card flex justify-content-center">
+  <p-sidebar [(visible)]="sidemenuVisible" styleClass="w-5">
+    <app-side-menu-bar></app-side-menu-bar>
+  </p-sidebar>
+</div>
+<div class="card flex justify-content-center">
+  <p-sidebar
+    [(visible)]="notificationsVisible"
+    styleClass="w-2"
+    position="right"
+  >
+    <app-sidebar-notifications></app-sidebar-notifications>
+  </p-sidebar>
+</div>
+<p-dialog [(visible)]="loginDialogVisible" [modal]="true">
+  <ng-template pTemplate="headless">
+    <p-scrollPanel [style]="{ width: '100%', height: '450px' }">
+      <app-login-form></app-login-form>
+    </p-scrollPanel>
+  </ng-template>
+</p-dialog>
+<p-dialog [(visible)]="registerPupDialogVisible" [modal]="true">
+  <ng-template pTemplate="headless">
+    <p-scrollPanel [style]="{ width: '100%', height: '800px' }">
+      <app-register-pup-form></app-register-pup-form>
+    </p-scrollPanel>
+  </ng-template>
+</p-dialog>
+<p-dialog [(visible)]="registerOdDialogVisible" [modal]="true">
+  <ng-template pTemplate="headless">
+    <p-scrollPanel [style]="{ width: '100%', height: '800px' }">
+      <app-register-od-form></app-register-od-form>
+    </p-scrollPanel>
+  </ng-template>
+</p-dialog>
