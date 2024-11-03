@@ -1,5 +1,6 @@
 import { Address } from "../address/address";
 import { Category } from "../category/category";
+import { Review } from "./review";
 
 export interface Merchandise {
     id: number;
@@ -18,5 +19,6 @@ export interface Merchandise {
     deleted: boolean;
     photos: string[];
     category:Category,
-    address:Address
+    address:Address,
+    reviews:Review[]
 }

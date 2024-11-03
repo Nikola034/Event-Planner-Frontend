@@ -7,30 +7,24 @@ import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
 import { DividerModule } from 'primeng/divider';
 import { MerchandiseService } from '../merchandise.service';
-import { AddressService } from '../../address/address.service';
-import { StreetAddress } from '../../address/street-address';
-
+import { RatingModule } from 'primeng/rating';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-merchandise-card',
   standalone: true,
-  imports: [ButtonModule,CardModule,CommonModule,PanelModule,AvatarModule,DividerModule],
+  imports: [ButtonModule,CardModule,CommonModule,PanelModule,AvatarModule,DividerModule,RatingModule,FormsModule],
   templateUrl: './merchandise-card.component.html',
   styleUrl: './merchandise-card.component.scss'
 })
 export class MerchandiseCardComponent implements OnInit{
   @Input() merchandise!: Merchandise;
   public merchandiseType!:string;
-  @Input() event!: Event;
-  public address!:Promise<StreetAddress>;
-  constructor(private merchandiseService:MerchandiseService,private addressService:AddressService){
-    
+  public rating!:number;
+  constructor(private merchandiseService:MerchandiseService){
   }
-  async ngOnInit() {
+  ngOnInit():void {
     this.merchandiseType=this.merchandiseService.getType(this.merchandise);
-    this.getAddress();
-  }
-  private async getAddress(){
-    this.address=this.addressService.getRealAddress(this.merchandise.address);
+    this.rating=this.merchandiseService.getRating(this.merchandise);
   }
 
 }

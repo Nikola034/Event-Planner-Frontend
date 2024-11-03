@@ -18,9 +18,9 @@
                         <span>{{ event.date | date:'dd.M.yyyy.' }}</span>
                     </div>
                     
-                    <div *ngIf="address | async as streetAddress">
+                    <div>
                         <i class="pi pi-map-marker mr-1"></i>
-                        <span>{{ streetAddress.street}} {{ streetAddress.number }}, {{ streetAddress.city }}</span>
+                        <span>{{ event.address.street}} {{ event.address.number }}, {{ event.address.city }}</span>
                     </div>
                 </div>
             </div>

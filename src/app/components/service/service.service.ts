@@ -33,9 +33,60 @@ export class ServiceService {
         pending: false
       },
       address: {
+        city: "Novi Sad",
+        street: "Bulevar Oslobođenja",
+        number: "76",
         latitude: "45.255115849023438",
         longitude: "19.844731241859632"
-      }
+      },
+      reviews: [
+        {
+          id: 1,
+          user: {
+            id: 101,
+
+            name: "Ana",
+            surname: "Petrović",
+            address: {
+              city: "Novi Sad",
+              street: "Futoška",
+              number: "12",
+              latitude: "45.254789",
+              longitude: "19.841234"
+            },
+            phoneNumber: "+381641234567",
+            email: "ana.petrovic@email.com",
+            password: "hashedPassword123",
+            photo: "/profiles/ana.jpg",
+            active: true
+          },
+          comment: "Amazing experience! The photographer made me feel so comfortable and the photos turned out beautifully.",
+          rating: 5
+        },
+        {
+          id: 22,
+          user: {
+            id: 102,
+
+            name: "Milan",
+            surname: "Jovanović",
+            address: {
+              city: "Subotica",
+              street: "Maksima Gorkog",
+              number: "28",
+              latitude: "46.101234",
+              longitude: "19.665432"
+            },
+            phoneNumber: "+381637654321",
+            email: "milan.jovanovic@email.com",
+            password: "hashedPassword456",
+            photo: "/profiles/milan.jpg",
+            active: true
+          },
+          comment: "Exceeded our expectations! Every important moment was captured perfectly.",
+          rating: 4
+        }
+      ]
     },
     {
       id: 2,
@@ -63,9 +114,37 @@ export class ServiceService {
         pending: false
       },
       address: {
+        city: "Subotica",
+        street: "Matije Korvina",
+        number: "17",
         latitude: "46.100245923847392",
         longitude: "19.667845234789123"
-      }
+      },
+      reviews: [
+        {
+          id: 2,
+          user: {
+            id: 102,
+
+            name: "Milan",
+            surname: "Jovanović",
+            address: {
+              city: "Subotica",
+              street: "Maksima Gorkog",
+              number: "28",
+              latitude: "46.101234",
+              longitude: "19.665432"
+            },
+            phoneNumber: "+381637654321",
+            email: "milan.jovanovic@email.com",
+            password: "hashedPassword456",
+            photo: "/profiles/milan.jpg",
+            active: true
+          },
+          comment: "Exceeded our expectations! Every important moment was captured perfectly.",
+          rating: 5
+        }
+      ]
     },
     {
       id: 3,
@@ -93,9 +172,37 @@ export class ServiceService {
         pending: false
       },
       address: {
+        city: "Novi Sad",
+        street: "Žitni Trg",
+        number: "5",
         latitude: "45.245678912345678",
         longitude: "19.851234567891234"
-      }
+      },
+      reviews: [
+        {
+          id: 3,
+          user: {
+            id: 103,
+
+            name: "Marko",
+            surname: "Nikolić",
+            address: {
+              city: "Novi Sad",
+              street: "Narodnog Fronta",
+              number: "45",
+              latitude: "45.243210",
+              longitude: "19.849876"
+            },
+            phoneNumber: "+381649876543",
+            email: "marko.nikolic@email.com",
+            password: "hashedPassword789",
+            photo: "/profiles/marko.jpg",
+            active: true
+          },
+          comment: "Quick turnaround and professional results. Very satisfied with the editing work.",
+          rating: 4
+        }
+      ]
     },
     {
       id: 4,
@@ -123,9 +230,38 @@ export class ServiceService {
         pending: false
       },
       address: {
+
+        city: "Subotica",
+        street: "Petra Drapšina",
+        number: "8",
         latitude: "46.095678912345678",
         longitude: "19.673456789123456"
-      }
+      },
+      reviews: [
+        {
+          id: 4,
+          user: {
+            id: 104,
+
+            name: "Jelena",
+            surname: "Đorđević",
+            address: {
+              city: "Subotica",
+              street: "Braće Radić",
+              number: "15",
+              latitude: "46.094567",
+              longitude: "19.672345"
+            },
+            phoneNumber: "+381631234567",
+            email: "jelena.djordjevic@email.com",
+            password: "hashedPasswordABC",
+            photo: "/profiles/jelena.jpg",
+            active: true
+          },
+          comment: "Perfect for my professional headshots. The lighting was fantastic!",
+          rating: 5
+        }
+      ]
     },
     {
       id: 5,
@@ -153,9 +289,38 @@ export class ServiceService {
         pending: false
       },
       address: {
+        
+        city: "Novi Sad",
+        street: "Vojvođanskih Brigada",
+        number: "28",
         latitude: "45.249876543210987",
         longitude: "19.837654321098765"
-      }
+      },
+      reviews: [
+        {
+          id: 5,
+          user: {
+            id: 105,
+            name: "Stefan",
+            surname: "Pavlović",
+            address: {
+             
+              city: "Novi Sad",
+              street: "Bulevar Cara Lazara",
+              number: "32",
+              latitude: "45.248765",
+              longitude: "19.836543"
+            },
+            phoneNumber: "+381647894561",
+            email: "stefan.pavlovic@email.com",
+            password: "hashedPasswordDEF",
+            photo: "/profiles/stefan.jpg",
+            active: true
+          },
+          comment: "Excellent coverage of our corporate event. The photos were delivered promptly.",
+          rating: 5
+        }
+      ]
     },
     {
       id: 6,
@@ -183,9 +348,38 @@ export class ServiceService {
         pending: false
       },
       address: {
+       
+        city: "Subotica",
+        street: "Trg Republike",
+        number: "2",
         latitude: "46.105678912345678",
         longitude: "19.659876543210987"
-      } 
+      },
+      reviews: [
+        {
+          id: 6,
+          user: {
+            id: 106,
+            name: "Nina",
+            surname: "Kovačević",
+            address: {
+              
+              city: "Subotica",
+              street: "Zagrebačka",
+              number: "5",
+              latitude: "46.104567",
+              longitude: "19.658765"
+            },
+            phoneNumber: "+381633216547",
+            email: "nina.kovacevic@email.com",
+            password: "hashedPasswordGHI",
+            photo: "/profiles/nina.jpg",
+            active: true
+          },
+          comment: "Great workshop for beginners. The instructor was very knowledgeable and patient.",
+          rating: 4
+        }
+      ]
     },
     {
       id: 7,
@@ -213,101 +407,37 @@ export class ServiceService {
         pending: false
       },
       address: {
+        city: "Novi Sad",
+        street: "Industrijska",
+        number: "15",
         latitude: "45.262345678912345",
         longitude: "19.833456789123456"
-      }
-    },
-    {
-      id: 8,
-      title: "Premium Real Estate Photography",
-      description: "Comprehensive Real Estate Photography service showcasing properties in their best light",
-      specificity: "Interior and exterior property shots using wide-angle lenses, HDR techniques, and optimal natural lighting. Includes virtual tour options and aerial photography integration when needed.",
-      price: 299.99,
-      discount: 0,
-      visible: true,
-      available: true,
-      minDuration: 120,
-      maxDuration: 180,
-      reservationDeadline: 48,
-      cancelReservation: 72,
-      automaticReservation: false,
-      deleted: false,
-      photos: [
-        "https://example.com/real-estate.jpg"
-      ],
-      availableTimeslots: "Monday-Saturday: 10:00-16:00",
-      category: {
-        id: 7,
-        title: "Real Estate Photography",
-        description: "Professional photography for real estate listings",
-        pending: false
       },
-      address: {
-        latitude: "46.108765432109876",
-        longitude: "19.665432109876543"
-      }
-    },
-    {
-      id: 9,
-      title: "Heritage Photo Restoration",
-      description: "Specialized Photo Restoration service bringing new life to treasured old photographs",
-      specificity: "Restore and repair old photographs including damage repair, color restoration, contrast enhancement, and digital preservation. Suitable for family heirlooms and historical photographs.",
-      price: 79.99,
-      discount: 0,
-      visible: true,
-      available: true,
-      minDuration: 60,
-      maxDuration: 120,
-      reservationDeadline: 24,
-      cancelReservation: 48,
-      automaticReservation: true,
-      deleted: false,
-      photos: [
-        "https://example.com/restoration.jpg"
-      ],
-      availableTimeslots: "Monday-Friday: 9:00-17:00",
-      category: {
-        id: 3,
-        title: "Post-Production",
-        description: "Professional photo editing and enhancement services",
-        pending: false
-      },
-      address: {
-        latitude: "45.267890123456789",
-        longitude: "19.847890123456789"
-      }
-    },
-    {
-      id: 10,
-      title: "Aerial Photography & Videography",
-      description: "Professional Drone Photography service offering unique perspectives from above",
-      specificity: "Drone photography and videography for real estate, events, and commercial projects. Includes HD video footage, still photographs, and compliance with local aviation regulations.",
-      price: 449.99,
-      discount: 10,
-      visible: true,
-      available: true,
-      minDuration: 120,
-      maxDuration: 240,
-      reservationDeadline: 72,
-      cancelReservation: 96,
-      automaticReservation: false,
-      deleted: false,
-      photos: [
-        "https://example.com/aerial.jpg"
-      ],
-      availableTimeslots: "Monday-Sunday: 8:00-18:00",
-      category: {
-        id: 8,
-        title: "Specialty Photography",
-        description: "Specialized photography services using advanced equipment",
-        pending: false
-      },
-      address: {
-        latitude: "46.091234567891234",
-        longitude: "19.669876543210987"
-      }
-    }
-  ];
+      reviews: [
+        {
+          id: 7,
+          user: {
+            id:12,
+            name: "Luka",
+            surname: "Simić",
+            address: {
+              city: "Novi Sad",
+              street: "Radnička",
+              number: "23",
+              latitude: "45.261234",
+              longitude: "19.832345"
+            },
+            phoneNumber: "+381649632587",
+            email: "luka.simic@email.com",
+            password: "hashedPasswordJKL",
+            photo: "/profiles/luka.jpg",
+            active: true
+          },
+          comment: "Professional product photos that boosted our online sales. Highly recommended!",
+          rating: 5
+        }
+      ]
+    }];
   getAll(): Observable<Service[]> {
     return of(this.services);
   }

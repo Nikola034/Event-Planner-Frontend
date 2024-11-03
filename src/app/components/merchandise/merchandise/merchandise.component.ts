@@ -27,7 +27,7 @@ interface PageEvent {
 @Component({
   selector: 'app-merchandise',
   standalone: true,
-  imports: [ CardModule,
+  imports: [CardModule,
     ButtonModule,
     PanelModule,
     CommonModule,
@@ -52,20 +52,37 @@ export class MerchandiseComponent {
   public first: number = 0;
   public rows: number = 3;
   public totalRecords: number = 0;
-  @Input() panelTitle:string='';
-  
-  constructor(private merchandiseService:MerchandiseService) {}
-  
-  ngOnInit(): void {
-    this.merchandiseService.getAll().subscribe({
-      next: (data: Merchandise[]) => {
-        this.merchandise = data;
-        this.totalRecords = this.merchandise.length;
-        this.updateDisplayedEvents();
+  @Input() panelTitle: string = '';
+  @Input() panelType: string = '';
+  constructor(private merchandiseService: MerchandiseService) { }
+
+  async ngOnInit() {
+    switch (this.panelType) {
+      case 'Top':
+      case 'top':
+        {
+          this.merchandiseService.getTop().subscribe({
+            next: (data: Merchandise[]) => {
+              this.merchandise = data;
+              this.totalRecords = this.merchandise.length;
+              this.updateDisplayedEvents();
+            }
+          });
+          break;
+        }
+      default: {
+        this.merchandiseService.getAll().subscribe({
+          next: (data: Merchandise[]) => {
+            this.merchandise = data;
+            this.totalRecords = this.merchandise.length;
+            this.updateDisplayedEvents();
+          }
+        });
+        break;
       }
-    });
+    }
   }
-  
+
   updateDisplayedEvents() {
     const end = this.first + this.rows;
     this.displayedMerchandise = this.merchandise.slice(this.first, end);
@@ -75,5 +92,5 @@ export class MerchandiseComponent {
     this.rows = event.rows;
     this.updateDisplayedEvents();
   }
-  
+
 }

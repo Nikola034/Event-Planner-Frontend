@@ -11,14 +11,37 @@ export class MerchandiseService {
     return forkJoin([
       this.serviceService.getAll(),
       this.productService.getAll()
-  ]).pipe(
+    ]).pipe(
       map(([services, products]) => [...services, ...products])
-  );
+    );
   }
 
-  getType(merchandise:Merchandise):string{
-    return 'availableTimeslots' in merchandise?'Service':'Product';
+  getType(merchandise: Merchandise): string {
+    return 'availableTimeslots' in merchandise ? 'Service' : 'Product';
   }
 
-  constructor(private serviceService:ServiceService,private productService:ProductService) { }
+  getRating(merchandise: Merchandise): number {
+    if (!merchandise.reviews || merchandise.reviews.length === 0) {
+      return 0;
+    }
+
+    const totalRating = merchandise.reviews.reduce((sum, review) => sum + review.rating, 0);
+    return Number((totalRating / merchandise.reviews.length).toFixed(1));
+  }
+
+  getTop(count: number = 5, city = 'Novi Sad'): Observable<Merchandise[]> {
+    return this.getAll().pipe(
+      map(merchandise =>
+        merchandise
+          .filter(merch => {
+            return merch.address.city === city;
+          })
+          .sort((a, b) => this.getRating(b) - this.getRating(a))
+          .slice(0, count)
+      )
+    );
+  }
+
+
+  constructor(private serviceService: ServiceService, private productService: ProductService) { }
 }
