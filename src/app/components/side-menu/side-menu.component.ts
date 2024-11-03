@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
-import { AvatarModule
+import { AvatarModule } from 'primeng/avatar';
+import { ButtonModule } from 'primeng/button';
 
- } from 'primeng/avatar';
 @Component({
   selector: 'app-side-menu',
   standalone: true,
-  imports: [AvatarModule],
+  imports: [AvatarModule ],
   templateUrl: './side-menu.component.html',
   styleUrl: './side-menu.component.scss'
 })
 export class SideMenuComponent {
-
 }
