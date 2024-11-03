@@ -9,45 +9,43 @@ import { FormsModule } from '@angular/forms';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { MenuItem } from 'primeng/api';
+import { MenubarModule } from 'primeng/menubar';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [ToolbarModule, SplitButtonModule, InputTextModule, ButtonModule, InputIconModule, IconFieldModule, FormsModule, AvatarModule, AvatarGroupModule],
+  imports: [ToolbarModule, SplitButtonModule, InputTextModule, ButtonModule, InputIconModule, IconFieldModule, FormsModule, AvatarModule, AvatarGroupModule, MenubarModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  @ViewChild('navdrop') navdrop: ElementRef | undefined;
-  fullscreen: boolean = false;
- 
-  handleClick(){
-    this.navdrop?.nativeElement.classList.toggle("visibility");
-  }
-  toggleFullscreen() {
-    let elem =  document.body; 
-    let methodToBeInvoked = elem.requestFullscreen;
-    if(!this.fullscreen) {
-      methodToBeInvoked.call(elem);
-      this.fullscreen = true;
-    }
-    else{
-      document.exitFullscreen();
-      this.fullscreen = false;
-    }
-  }
   items: MenuItem[] | undefined;
+  username: string = "Goci Ristic";
 
     ngOnInit() {
-        this.items = [
-            {
-                label: 'Update',
-                icon: 'pi pi-refresh'
-            },
-            {
-                label: 'Delete',
-                icon: 'pi pi-times'
-            }
-        ];
+      this.items = [
+        {
+            label: this.username,
+            icon: '',
+            items: [
+                {
+                    label: 'Profile',
+                    icon: 'pi pi-user'
+                },
+                {
+                    label: 'Settings',
+                    icon: 'pi pi-cog'
+                },
+                {
+                    label: 'Help',
+                    icon: 'pi pi-question'
+                },
+                {
+                    label: 'Logout',
+                    icon: 'pi pi-sign-out'
+                }
+            ]
+        }
+    ]
     }
 }
