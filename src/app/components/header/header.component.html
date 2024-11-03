@@ -1,11 +1,12 @@
-<div class="card surface-50">
-  <p-toolbar styleClass="w-full">
-    <div class="p-toolbar-group-center">
-      <span class="p-input-icon-left">
-        <i class="pi pi-search"></i>
-        <input pInputText placeholder="Search" />
-      </span>
-      <p-splitButton label="Save" icon="pi pi-check" [model]="items" />
-    </div>
-  </p-toolbar>
-</div>
+<p-toolbar styleClass="flex justify-content-between w-10 fixed top-0 right-0 z-5 border-noround">
+  <div class="p-toolbar-group-start">
+    <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input pInputText placeholder="Search" />
+    </span>
+  </div>
+  <div class="p-toolbar-group-end">
+    <p-menubar [model]="items" styleClass="border-none h-3rem" />
+    <p-button icon="pi pi-align-right" styleClass="mr-2 surface-100" />
+  </div>
+</p-toolbar>

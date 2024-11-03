@@ -1,11 +1,15 @@
-<!-- <app-side-menu class="fixed left-0 top-0 h-screen z-1"></app-side-menu>
-<app-header class="fixed left-0 top-0 z-0"></app-header> -->
-<div class="">
-  <app-breadcrumb></app-breadcrumb>
-  
-  <!-- <div class="w-30rem"></div>
-  <div class="w-30rem"></div> -->
+
+<app-side-menu></app-side-menu>
+
+<app-header></app-header>
+
+<div class="grid bg-primary h-17rem absolute w-full z-0">
+</div>
+<app-breadcrumb></app-breadcrumb>
+<div class="relative z-4 grid">
+  <div class="pt-4 col-9 col-offset-2">
   <router-outlet></router-outlet>
 </div>
-<!-- <app-events [panelTitle]="'Top events'"></app-events>
-<app-merchandise [panelTitle]="'Top Services/Products'"></app-merchandise> -->
+</div>
+
+
