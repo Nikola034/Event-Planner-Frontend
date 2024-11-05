@@ -1,0 +1,131 @@
+<!-- filter-sidebar.component.html -->
+<div class="filter-sidebar p-3">
+    <h2 class="text-xl mb-3">Filters</h2>
+    
+    <form [formGroup]="filterForm">
+      <div class="show-options mb-4">
+        <div class="flex align-items-center mb-2">
+          <p-checkbox formControlName="showEvents" [binary]="true" inputId="showEvents"></p-checkbox>
+          <label for="showEvents" class="ml-2">Events</label>
+        </div>
+        <div class="flex align-items-center mb-2">
+          <p-checkbox formControlName="showServices" [binary]="true" inputId="showServices"></p-checkbox>
+          <label for="showServices" class="ml-2">Services</label>
+        </div>
+        <div class="flex align-items-center mb-2">
+          <p-checkbox formControlName="showProducts" [binary]="true" inputId="showProducts"></p-checkbox>
+          <label for="showProducts" class="ml-2">Products</label>
+        </div>
+      </div>
+  
+      <p-accordion>
+        <!-- Events Section -->
+        <p-accordionTab header="Event filters" [selected]="true" formGroupName="events">
+          <div class="field mb-3">
+            <span class="p-float-label">
+              <p-calendar formControlName="eventDate" selectionMode="range" styleClass="w-full"></p-calendar>
+              <label>Event date</label>
+            </span>
+          </div>
+          <div class="field mb-3">
+            <span class="p-float-label">
+              <input type="text" pInputText formControlName="type" class="w-full">
+              <label>Type</label>
+            </span>
+          </div>
+          <div class="field mb-3">
+            <span class="p-float-label">
+              <input type="text" pInputText formControlName="city" class="w-full">
+              <label>City</label>
+            </span>
+          </div>
+        </p-accordionTab>
+  
+        <!-- Services Section -->
+        <p-accordionTab header="Service filters" formGroupName="services">
+          <div class="field mb-3">
+            <label class="block mb-2">Price</label>
+            <div class="flex gap-2">
+              <span class="p-float-label w-6">
+                <input type="number" pInputText formControlName="priceMin" class="w-full">
+                <label>Min</label>
+              </span>
+              <span class="p-float-label w-6">
+                <input type="number" pInputText formControlName="priceMax" class="w-full">
+                <label>Max</label>
+              </span>
+            </div>
+          </div>
+          <div class="field mb-3">
+            <span class="p-float-label">
+              <input type="text" pInputText formControlName="category" class="w-full">
+              <label>Category</label>
+            </span>
+          </div>
+          <div class="field mb-3">
+            <label class="block mb-2">Duration</label>
+            <div class="flex gap-2">
+              <span class="p-float-label w-6">
+                <input type="number" pInputText formControlName="durationMin" class="w-full">
+                <label>Min</label>
+              </span>
+              <span class="p-float-label w-6">
+                <input type="number" pInputText formControlName="durationMax" class="w-full">
+                <label>Max</label>
+              </span>
+            </div>
+          </div>
+          <div class="field mb-3">
+            <span class="p-float-label">
+              <input type="text" pInputText formControlName="city" class="w-full">
+              <label>City</label>
+            </span>
+          </div>
+        </p-accordionTab>
+  
+        <!-- Products Section -->
+        <p-accordionTab header="Product filters" formGroupName="products">
+          <div class="field mb-3">
+            <label class="block mb-2">Price</label>
+            <div class="flex gap-2">
+              <span class="p-float-label w-6">
+                <input type="number" pInputText formControlName="priceMin" class="w-full">
+                <label>Min</label>
+              </span>
+              <span class="p-float-label w-6">
+                <input type="number" pInputText formControlName="priceMax" class="w-full">
+                <label>Max</label>
+              </span>
+            </div>
+          </div>
+          <div class="field mb-3">
+            <span class="p-float-label">
+              <input type="text" pInputText formControlName="category" class="w-full">
+              <label>Category</label>
+            </span>
+          </div>
+          <div class="field mb-3">
+            <label class="block mb-2">Duration</label>
+            <div class="flex gap-2">
+              <span class="p-float-label w-6">
+                <input type="number" pInputText formControlName="durationMin" class="w-full">
+                <label>Min</label>
+              </span>
+              <span class="p-float-label w-6">
+                <input type="number" pInputText formControlName="durationMax" class="w-full">
+                <label>Max</label>
+              </span>
+            </div>
+          </div>
+          <div class="field mb-3">
+            <span class="p-float-label">
+              <input type="text" pInputText formControlName="city" class="w-full">
+              <label>City</label>
+            </span>
+          </div>
+        </p-accordionTab>
+      </p-accordion>
+      
+      <p-button label="Apply filters" styleClass="w-full mt-4" (onClick)="applyFilters()"></p-button>
+    </form>
+  </div>

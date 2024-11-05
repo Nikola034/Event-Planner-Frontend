@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
@@ -8,6 +8,7 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { EventsComponent } from "./components/event/events/events.component";
 import { MerchandiseComponent } from "./components/merchandise/merchandise/merchandise.component";
 import { BreadcrumbComponent } from "./components/breadcrumb/breadcrumb/breadcrumb.component";
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,10 @@ import { BreadcrumbComponent } from "./components/breadcrumb/breadcrumb/breadcru
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  constructor(private primengConfig: PrimeNGConfig){}
+  ngOnInit(): void {
+    this.primengConfig.ripple = true;
+  }
   title = 'EventPlanner';
 }
