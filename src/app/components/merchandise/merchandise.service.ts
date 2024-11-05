@@ -7,6 +7,15 @@ import { ProductService } from '../product/product.service';
   providedIn: 'root'
 })
 export class MerchandiseService {
+  public SortOptions: string[] = [
+    'title',
+    'description',
+    'specificity',
+    'price',
+    'discount',
+    'duration',
+    'rating'
+  ];
   getAll(): Observable<Merchandise[]> {
     return forkJoin([
       this.serviceService.getAll(),

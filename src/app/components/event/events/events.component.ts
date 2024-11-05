@@ -13,7 +13,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { TableModule } from 'primeng/table';
-import { EventsFilterComponent } from '../events-filter/events-filter.component';
 import { EventType } from '@angular/router';
 import { PaginatorModule } from 'primeng/paginator';
 import { SidebarModule } from 'primeng/sidebar';
@@ -44,7 +43,6 @@ interface PageEvent {
     FloatLabelModule,
     TableModule,
     SidebarModule,
-    EventsFilterComponent,
     PaginatorModule
   ],
   templateUrl: './events.component.html',

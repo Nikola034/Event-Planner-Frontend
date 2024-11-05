@@ -1,74 +1,60 @@
-<div
-  class="side-menu fixed h-full surface-50 font-roboto w-2 left-0 top-0 z-5 hidden xl:flex"
->
+<div class="side-menu fixed h-full surface-50 font-roboto w-2 left-0 top-0 z-4 hidden xl:flex">
   <div class="content w-full flex flex-column pt-3 text-color">
     <div class="header flex justify-content-center gap-4">
       <img class="w-2 h-3" src="/calendar.png" alt="" />
       <span class="text-4xl">E Planner</span>
     </div>
-    <div
-      class="user flex flex-column justify-content-between align-items-center gap-1 mb-4 mt-4"
-    >
-      <p-avatar
-        styleClass="mr-2"
-        size="xlarge"
-        shape="circle"
-        image="dinja.jpg"
-      />
+    <div class="user flex flex-column justify-content-between align-items-center gap-1 mb-4 mt-4">
+      <p-avatar styleClass="mr-2" size="xlarge" shape="circle" image="dinja.jpg" />
       <span class="name text-2xl">Goci Ristic</span>
       <span class="email text-base opacity-70">goci.ristic&#64;gmail.com</span>
     </div>
     <div class="flex flex-column options">
       <div class="flex align-items-center divider mt-2 mb-2 pl-2 text-xs">
-        <span>OPTIONS</span>
+        <span class="text-color-secondary">OPTIONS</span>
       </div>
-      <div class="flex align-items-center justify-content-center option">
-        <a
-          href="#"
-          class="w-full align-items-center justify-content-left flex no-underline gap-4 pl-3 border-round-right-xl h-3rem text-color hover:surface-50"
+
+      <p-button
+        styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
+        [text]="true"
+        [routerLink]="''"
         >
-          <span class="icon">
-            <i class="pi pi-objects-column" style="font-size: 1rem"></i>
-          </span>
-          <span class="option-text">Dashboard</span>
-        </a>
-      </div>
-      <div class="flex align-items-center justify-content-center option">
-        <a
-          href="#"
-          class="w-full align-items-center justify-content-left flex no-underline gap-4 pl-3 border-round-right-xl h-3rem text-color hover:surface-50"
-        >
-          <span class="icon">
-            <i class="pi pi-objects-column" style="font-size: 1rem"></i>
-          </span>
-          <span class="option-text">Table</span>
-        </a>
-      </div>
+        <ng-template pTemplate="content">
+          <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>
+          <span>Dashboard</span>
+        </ng-template>
+      </p-button>
+
+      <p-button
+        styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
+        [text]="true">
+        <ng-template pTemplate="content">
+          <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>
+          <span>Table</span>
+        </ng-template>
+      </p-button>
+
       <div class="flex align-items-center divider mt-2 mb-2 pl-2 text-xs">
-        <span>NIKOLICI</span>
+        <span class="text-color-secondary">NIKOLICI</span>
       </div>
-      <div class="flex align-items-center justify-content-center option">
-        <a
-          href="#"
-          class="w-full align-items-center justify-content-left flex no-underline gap-4 pl-3 border-round-right-xl h-3rem text-color hover:surface-50"
-        >
-          <span class="icon">
-            <i class="pi pi-objects-column" style="font-size: 1rem"></i>
-          </span>
-          <span class="option-text">Calendar</span>
-        </a>
-      </div>
-      <div class="flex align-items-center justify-content-center option">
-        <a
-          href="#"
-          class="w-full align-items-center justify-content-left flex no-underline gap-4 pl-3 border-round-right-xl h-3rem text-color hover:surface-50"
-        >
-          <span class="icon">
-            <i class="pi pi-objects-column" style="font-size: 1rem"></i>
-          </span>
-          <span class="option-text">Filmovi</span>
-        </a>
-      </div>
+
+      <p-button
+        styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
+        [text]="true">
+        <ng-template pTemplate="content">
+          <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>
+          <span>Calendar</span>
+        </ng-template>
+      </p-button>
+
+      <p-button
+        styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
+        [text]="true">
+        <ng-template pTemplate="content">
+          <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>
+          <span>Filmovi</span>
+        </ng-template>
+      </p-button>
     </div>
   </div>
 </div>
