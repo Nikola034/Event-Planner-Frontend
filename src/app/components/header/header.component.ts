@@ -18,6 +18,7 @@ import { LoginFormComponent } from "../login-form/login-form.component";
 import { RegisterPupFormComponent } from "../register-pup-form/register-pup-form.component";
 import { RegisterOdFormComponent } from '../register-od-form/register-od-form.component';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { ThemeService } from '../../theme.service';
 
 @Component({
   selector: 'app-header',
@@ -34,6 +35,7 @@ export class HeaderComponent {
   
 
   loginDialogVisible: boolean = false;
+  constructor(private themeService:ThemeService){}
 
     showLoginDialog() {
         this.loginDialogVisible = true;
@@ -60,6 +62,9 @@ export class HeaderComponent {
 
     closeOdDialog() {
         this.registerOdDialogVisible = false;
+    }
+    changeTheme() {
+        this.themeService.changeTheme();
     }
     ngOnInit() {
       this.items = [
