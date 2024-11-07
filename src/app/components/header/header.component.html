@@ -8,9 +8,11 @@
     <p-button (onClick)="showLoginDialog()" icon="pi pi-user" label="Login" />
   </div>
   <div class="p-toolbar-group-end">
+    <p-button icon="pi pi-lightbulb" styleClass="max-h-2rem max-w-2rem text-color" [rounded]="true" (click)="changeTheme()" [link]="true"/>
     <p-menubar [model]="items" styleClass="border-none h-3rem" />
-    <p-button (onClick)="notificationsVisible = true" icon="pi pi-align-right" styleClass="mr-2 surface-100" />
+    <p-button (onClick)="notificationsVisible = true" icon="pi pi-align-right" styleClass="mr-2" severity="secondary" />
   </div>
+  
 </p-toolbar>
 <div class="card flex justify-content-center">
   <p-sidebar [(visible)]="sidemenuVisible" styleClass="w-5">
