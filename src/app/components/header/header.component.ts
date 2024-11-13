@@ -11,7 +11,6 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
 import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
 import { SidebarModule } from 'primeng/sidebar';
-import { SideMenuBarComponent } from "../side-menu-bar/side-menu-bar.component";
 import { SidebarNotificationsComponent } from "../sidebar-notifications/sidebar-notifications.component";
 import { DialogModule } from 'primeng/dialog';
 import { LoginFormComponent } from "../login-form/login-form.component";
@@ -19,11 +18,12 @@ import { RegisterPupFormComponent } from "../register-pup-form/register-pup-form
 import { RegisterOdFormComponent } from '../register-od-form/register-od-form.component';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { ThemeService } from '../../theme.service';
+import { SideMenuComponent } from "../side-menu/side-menu.component";
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [ToolbarModule, ScrollPanelModule,DialogModule, SplitButtonModule, InputTextModule, ButtonModule, InputIconModule, RegisterPupFormComponent, RegisterOdFormComponent,IconFieldModule, FormsModule, AvatarModule, AvatarGroupModule, MenubarModule, SidebarModule, SideMenuBarComponent, SidebarNotificationsComponent, LoginFormComponent, RegisterPupFormComponent],
+  imports: [ToolbarModule, ScrollPanelModule, DialogModule, SplitButtonModule, InputTextModule, ButtonModule, InputIconModule, RegisterPupFormComponent, RegisterOdFormComponent, IconFieldModule, FormsModule, AvatarModule, AvatarGroupModule, MenubarModule, SidebarModule,  SidebarNotificationsComponent, LoginFormComponent, RegisterPupFormComponent, SideMenuComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
