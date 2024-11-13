@@ -1,6 +1,6 @@
 <p-toolbar styleClass="flex justify-content-between w-full xl:w-10 fixed top-0 right-0 z-4 border-noround">
   <div class="p-toolbar-group-start">
-    <p-button icon="pi pi-align-justify" styleClass="mr-2 surface-50 xl:hidden" (onClick)="sidemenuVisible = true" />
+    <p-button icon="pi pi-align-justify" styleClass="mr-2 xl:hidden" severity="secondary" (onClick)="sidemenuVisible = true" />
     <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
       <input pInputText placeholder="Search" />
@@ -15,8 +15,8 @@
   
 </p-toolbar>
 <div class="card flex justify-content-center">
-  <p-sidebar [(visible)]="sidemenuVisible" styleClass="w-5">
-    <app-side-menu-bar></app-side-menu-bar>
+  <p-sidebar [(visible)]="sidemenuVisible" styleClass="w-7">
+    <app-side-menu></app-side-menu>
   </p-sidebar>
 </div>
 <div class="card flex justify-content-center">

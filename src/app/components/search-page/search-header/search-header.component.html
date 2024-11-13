@@ -1,21 +1,20 @@
-<div class="flex justify-content-end align-items-center">
+<div class="flex justify-content-end align-items-center grid">
     <!-- events -->
-    <div class="mr-4">
+    <div class="mr-4 xl:col-4 col-10">
         <span class="text-color mr-2">Sort events by</span>
         <p-dropdown [options]="eventSortOptions" [(ngModel)]="selectedEventSortOption" styleClass="w-15rem" />
     </div>
     <!-- merchandise -->
-    <div class="mr-4">
+    <div class="mr-4 xl:col-4 col-10">
         <span class="text-color mr-2">Sort services/products by</span>
         <p-dropdown [options]="merchandiseSortOptions" [(ngModel)]="selectedMerchandiseSortOption"
             styleClass="w-15rem" />
     </div>
+    <div class="xl:col-2">
     <!-- filters -->
-    
-        <p-sidebar [(visible)]="filtersVisible" position="right" styleClass="w-3">
+        <p-sidebar [(visible)]="filtersVisible" position="right" styleClass="xl:w-3 w-full">
             <app-filter></app-filter>
         </p-sidebar>
-        <!-- <span class="text-color mr-2">Filters</span> -->
         <p-button type="button" (onClick)="filtersVisible = true" icon="pi pi-arrow-left" label="Filters" iconPos="right"/>
-    
+    </div>
 </div>
