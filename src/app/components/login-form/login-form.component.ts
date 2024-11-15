@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -16,4 +17,10 @@ export class LoginFormComponent {
     email: new FormControl(''),
     password: new FormControl(''),
   })
+
+  constructor(private router: Router){}
+
+  login() : void{
+    this.router.navigate(['events'])
+  }
 }
