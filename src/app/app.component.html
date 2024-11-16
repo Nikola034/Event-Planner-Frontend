@@ -11,7 +11,7 @@
 ></div>
 <app-breadcrumb *ngIf="showBasicNavigation"></app-breadcrumb>
 <div class="relative grid">
-  <div class="pt-4 xl:col-10 xl:col-offset-2 col-12">
+  <div [ngClass]="showBasicNavigation ? 'pt-4 xl:col-10 xl:col-offset-2 col-12' : 'xl:col-offset-3 xl:col-6 pt-8'">
     <router-outlet></router-outlet>
   </div>
 </div>
