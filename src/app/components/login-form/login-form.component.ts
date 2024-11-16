@@ -21,6 +21,6 @@ export class LoginFormComponent {
   constructor(private router: Router){}
 
   login() : void{
-    this.router.navigate(['events'])
+    this.router.navigate(['home'])
   }
 }

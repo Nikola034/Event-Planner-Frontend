@@ -7,7 +7,7 @@ import { RegisterPupFormComponent } from './components/register-pup-form/registe
 
 export const routes: Routes = [
     {
-        path: 'events',
+        path: 'home',
         data:{
             breadcrumb:null
         },

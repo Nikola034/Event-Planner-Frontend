@@ -13,7 +13,7 @@ import { BreadcrumbService } from '../breadcrumb.service';
 })
 export class BreadcrumbComponent implements OnInit {
   
-  readonly home = {icon: 'pi pi-home', url: '/',target:'_self'};
+  readonly home = {icon: 'pi pi-home', url: '/home',target:'_self'};
   menuItems!: MenuItem[];
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,private breadcrumbService:BreadcrumbService) {}
