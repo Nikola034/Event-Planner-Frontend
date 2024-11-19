@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegisterPupFormComponent } from './register-pup-form.component';
+import { RegisterEoFormComponent } from './register-eo-form.component';
 
-describe('RegisterPupFormComponent', () => {
-  let component: RegisterPupFormComponent;
-  let fixture: ComponentFixture<RegisterPupFormComponent>;
+describe('RegisterEoFormComponent', () => {
+  let component: RegisterEoFormComponent;
+  let fixture: ComponentFixture<RegisterEoFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RegisterPupFormComponent]
+      imports: [RegisterEoFormComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RegisterPupFormComponent);
+    fixture = TestBed.createComponent(RegisterEoFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
