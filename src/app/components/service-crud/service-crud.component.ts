@@ -4,14 +4,29 @@ import { RouterLink, RouterModule } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { CurrencyPipe } from '@angular/common';
 import { Service } from '../service/service';
+import { DialogModule } from 'primeng/dialog';
+import { EditServiceFormComponent } from "../edit-service-form/edit-service-form.component";
+import { AddServiceFormComponent } from "../add-service-form/add-service-form.component";
+
 @Component({
   selector: 'app-service-crud',
   standalone: true,
-  imports: [ButtonModule, RouterModule, TableModule, CurrencyPipe],
+  imports: [ButtonModule, RouterModule, TableModule, CurrencyPipe, DialogModule, EditServiceFormComponent, AddServiceFormComponent],
   templateUrl: './service-crud.component.html',
   styleUrl: './service-crud.component.scss'
 })
+
 export class ServiceCrudComponent {
+  displayAddForm: boolean = false;
+  showAddServiceForm() {
+    this.displayAddForm = true;
+  }
+
+  displayEditForm: boolean = false;
+  showEditServiceForm() {
+    this.displayEditForm = true;
+  }
+
   allServices: Service[] = [
     {
       id: 1,
@@ -31,6 +46,7 @@ export class ServiceCrudComponent {
       photos: [
         '/weddingHall.jpg'
       ],
+      eventTypes: [],
       category: {
         id: 1,
         title: "Venue",
@@ -65,6 +81,7 @@ export class ServiceCrudComponent {
       photos: [
         '/funneralCar.jpeg'
       ],
+      eventTypes: [],
       category: {
         id: 2,
         title: "Transportation",
@@ -90,7 +107,7 @@ export class ServiceCrudComponent {
       discount: 0,
       visible: true,
       available: true,
-      minDuration: 180,
+      minDuration: 45,
       maxDuration: 1440,
       reservationDeadline: 30,
       cancelReservation: 7,
@@ -99,6 +116,7 @@ export class ServiceCrudComponent {
       photos: [
         '/decorations.jpg'
       ],
+      eventTypes: [],
       category: {
         id: 3,
         title: "Decorations",
@@ -133,6 +151,7 @@ export class ServiceCrudComponent {
       photos: [
         '/dinja.jpg'
       ],
+      eventTypes: [],
       category: {
         id: 1,
         title: "Venue",
@@ -167,6 +186,7 @@ export class ServiceCrudComponent {
       photos: [
         '/weddingHall.jpg'
       ],
+      eventTypes: [],
       category: {
         id: 1,
         title: "Venue",
@@ -201,6 +221,7 @@ export class ServiceCrudComponent {
       photos: [
         '/weddingHall.jpg'
       ],
+      eventTypes: [],
       category: {
         id: 1,
         title: "Venue",
@@ -235,6 +256,7 @@ export class ServiceCrudComponent {
       photos: [
         '/weddingHall.jpg'
       ],
+      eventTypes: [],
       category: {
         id: 1,
         title: "Venue",

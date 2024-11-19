@@ -1,5 +1,6 @@
 import { Address } from "../address/address";
 import { Category } from "../category/category";
+import { EventType } from "../event/event-type";
 import { Review } from "./review";
 
 export interface Merchandise {
@@ -18,6 +19,7 @@ export interface Merchandise {
     automaticReservation: boolean;
     deleted: boolean;
     photos: string[];
+    eventTypes: EventType[],
     category:Category,
     address:Address,
     reviews:Review[]

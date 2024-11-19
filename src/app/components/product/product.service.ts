@@ -23,6 +23,7 @@ export class ProductService {
         automaticReservation: false,
         deleted: false,
         photos: ["/dinja.jpg"],
+        eventTypes: [],
         category: {
             id: 1,
             title: "Cameras",
@@ -99,6 +100,7 @@ export class ProductService {
         automaticReservation: false,
         deleted: false,
         photos: ["https://example.com/studio-kit.jpg"],
+        eventTypes: [],
         category: {
             id: 2,
             title: "Lighting Equipment",
@@ -153,6 +155,7 @@ export class ProductService {
         automaticReservation: false,
         deleted: false,
         photos: ["https://example.com/drone.jpg"],
+        eventTypes: [],
         category: {
             id: 3,
             title: "Aerial Equipment",
@@ -207,6 +210,7 @@ export class ProductService {
         automaticReservation: true,
         deleted: false,
         photos: ["https://example.com/gopro.jpg"],
+        eventTypes: [],
         category: {
             id: 1,
             title: "Cameras",
@@ -261,6 +265,7 @@ export class ProductService {
         automaticReservation: false,
         deleted: false,
         photos: ["https://example.com/gimbal.jpg"],
+        eventTypes: [],
         category: {
             id: 4,
             title: "Camera Support",
@@ -315,6 +320,7 @@ export class ProductService {
         automaticReservation: false,
         deleted: false,
         photos: ["https://example.com/lens-kit.jpg"],
+        eventTypes: [],
         category: {
             id: 5,
             title: "Lenses",
@@ -369,6 +375,7 @@ export class ProductService {
         automaticReservation: true,
         deleted: false,
         photos: ["https://example.com/audio-kit.jpg"],
+        eventTypes: [],
         category: {
             id: 6,
             title: "Audio Equipment",
