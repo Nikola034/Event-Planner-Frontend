@@ -2,8 +2,10 @@ import { Routes } from '@angular/router';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { SearchPageComponent } from './components/search-page/search-page.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
+import { ServiceCrudComponent } from './components/service-crud/service-crud.component';
 import { RegisterEoFormComponent } from './components/register-eo-form/register-eo-form.component';
 import { RegisterSpFormComponent } from './components/register-sp-form/register-sp-form.component';
+
 
 export const routes: Routes = [
     {
@@ -25,6 +27,13 @@ export const routes: Routes = [
                     breadcrumb:'Search'
                 },
                 component: SearchPageComponent
+            },
+            {
+                path: 'my_services',
+                data:{
+                    breadcrumb:'My services'
+                },
+                component: ServiceCrudComponent
             }
         ]
     },

@@ -1,0 +1,119 @@
+<div class="flex justify-content-center w-full pt-4">
+    <div class="w-27rem">
+        <div class="flex w-full content surface-100 justify-content-center">
+            <form [formGroup]="editServiceForm" class="flex pt-4 flex-column w-full px-4">
+            <div class="field flex justify-content-center">
+                <input type="text" placeholder="Title*" formControlName="title"
+                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
+            </div>
+            <div class="field flex justify-content-center">
+                <input type="text" placeholder="Description*" formControlName="description"
+                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
+            </div>
+            <div class="field flex justify-content-center">
+                <input type="text" placeholder="Specificity*" formControlName="specificity"
+                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
+            </div>
+            <div class="field flex justify-content-center">
+                <div class="grid">
+                    <div class="col-6">
+                        <input type="number" placeholder="Price*" formControlName="price"
+                        class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
+                    </div>
+                    <div class="col-6">
+                        <input type="number" placeholder="Discount*" formControlName="discount"
+                        class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
+                    </div>
+                </div>
+            </div>
+            <div class="field flex justify-content-left">
+                <p-multiSelect [options]="eventTypes"
+                    placeholder="event types*" formControlName="eventTypes" filter="false"/>
+            </div>
+            <div class="field flex justify-content-center">
+                <div class="grid">
+                    <div class="col-4">
+                        <input type="number" placeholder="min Duration" formControlName="minDuration"
+                        class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
+                    </div>
+                    <div class="col-4">
+                        <input type="number" placeholder="max Duration" formControlName="maxDuration"
+                        class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
+                    </div>
+                    <div class="col-4">
+                        <input type="number" placeholder="Duration" formControlName="duration"
+                        class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
+                    </div>
+                </div>
+            </div>
+            <div class="field flex justify-content-center">
+                <div class="grid">
+                    <div class="col-6">
+                        <input type="number" placeholder="Reservation Deadline*" formControlName="reservationDeadline"
+                        class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
+                    </div>
+                    <div class="col-6">
+                        <input type="number" placeholder="CancellationDeadline*" formControlName="cancellationDeadline"
+                        class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
+                    </div>
+                </div>
+            </div>
+            <div class="field flex justify-content-center">
+                <div class="grid">
+                    <div class="col-5">
+                        <label>Choose reservation type</label>
+                    </div>
+                    <div class="col-7">
+                        <div class="flex flex-wrap gap-3">
+                            <div class="flex align-items-center">
+                                <p-radioButton 
+                                    name="automaticReservation" 
+                                    value="true"
+                                    formControlName="automaticReservation"
+                                    inputId="ingredient1" />
+                                <label for="ingredient1" class="ml-2">
+                                    Automatic
+                                </label>
+                            </div>
+                            
+                            <div class="flex align-items-center">
+                                <p-radioButton 
+                                    name="automaticReservation" 
+                                    formControlName="automaticReservation"
+                                    value="false"
+                                    inputId="ingredient2" />
+                                <label for="ingredient2" class="ml-2">
+                                    Manual
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="field flex justify-content-center">
+                <div class="justify-content-left mr-5">
+                    <p-button
+                        (click)="uploader1.click()"
+                        styleClass="w-full border-noround border-1 border-primary"
+                        label="PHOTOS"></p-button>
+                    <input hidden type="file" #uploader1 (change)="uploadFile($event)" />
+                </div>
+                    <div class="flex align-items-center mr-3">
+                        <p-checkbox 
+                            label="Visible" 
+                            formControlName="visible" 
+                            binary="true"/>
+                    </div>
+                    <div class="flex align-items-center">
+                        <p-checkbox 
+                            label="Available"
+                            formControlName="available" 
+                            binary="true"/>
+                    </div>
+            </div>
+            <p-button class="field flex justify-content-center">Submit</p-button>
+        </form>
+        </div>
+    </div>
+</div>

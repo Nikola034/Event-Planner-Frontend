@@ -25,6 +25,7 @@ export class ServiceService {
       photos: [
         "/dinja.jpg"
       ],
+      eventTypes: [],
       availableTimeslots: "Monday-Friday: 9:00-17:00",
       category: {
         id: 1,
@@ -106,6 +107,7 @@ export class ServiceService {
       photos: [
         "https://example.com/wedding-photo.jpg"
       ],
+      eventTypes: [],
       availableTimeslots: "Saturday-Sunday: 8:00-22:00",
       category: {
         id: 2,
@@ -164,6 +166,7 @@ export class ServiceService {
       photos: [
         "https://example.com/editing.jpg"
       ],
+      eventTypes: [],
       availableTimeslots: "Monday-Sunday: 9:00-18:00",
       category: {
         id: 3,
@@ -222,6 +225,7 @@ export class ServiceService {
       photos: [
         "https://example.com/portrait.jpg"
       ],
+      eventTypes: [],
       availableTimeslots: "Tuesday-Saturday: 10:00-19:00",
       category: {
         id: 1,
@@ -281,6 +285,7 @@ export class ServiceService {
       photos: [
         "https://example.com/event-photo.jpg"
       ],
+      eventTypes: [],
       availableTimeslots: "Monday-Sunday: 8:00-23:00",
       category: {
         id: 4,
@@ -340,6 +345,7 @@ export class ServiceService {
       photos: [
         "https://example.com/workshop.jpg"
       ],
+      eventTypes: [],
       availableTimeslots: "Saturday: 10:00-16:00",
       category: {
         id: 5,
@@ -399,6 +405,7 @@ export class ServiceService {
       photos: [
         "https://example.com/product-photo.jpg"
       ],
+      eventTypes: [],
       availableTimeslots: "Monday-Friday: 9:00-17:00",
       category: {
         id: 6,
