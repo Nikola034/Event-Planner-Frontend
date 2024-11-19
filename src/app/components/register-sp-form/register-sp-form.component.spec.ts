@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegisterOdFormComponent } from './register-od-form.component';
+import { RegisterSpFormComponent } from './register-sp-form.component';
 
-describe('RegisterOdFormComponent', () => {
-  let component: RegisterOdFormComponent;
-  let fixture: ComponentFixture<RegisterOdFormComponent>;
+describe('RegisterSpFormComponent', () => {
+  let component: RegisterSpFormComponent;
+  let fixture: ComponentFixture<RegisterSpFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RegisterOdFormComponent]
+      imports: [RegisterSpFormComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RegisterOdFormComponent);
+    fixture = TestBed.createComponent(RegisterSpFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

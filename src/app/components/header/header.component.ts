@@ -14,16 +14,17 @@ import { SidebarModule } from 'primeng/sidebar';
 import { SidebarNotificationsComponent } from "../sidebar-notifications/sidebar-notifications.component";
 import { DialogModule } from 'primeng/dialog';
 import { LoginFormComponent } from "../login-form/login-form.component";
-import { RegisterPupFormComponent } from "../register-pup-form/register-pup-form.component";
-import { RegisterOdFormComponent } from '../register-od-form/register-od-form.component';
+import { RegisterSpFormComponent } from "../register-sp-form/register-sp-form.component";
+import { RegisterEoFormComponent } from '../register-eo-form/register-eo-form.component';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { ThemeService } from '../../theme.service';
 import { SideMenuComponent } from "../side-menu/side-menu.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [ToolbarModule, ScrollPanelModule, DialogModule, SplitButtonModule, InputTextModule, ButtonModule, InputIconModule, RegisterPupFormComponent, RegisterOdFormComponent, IconFieldModule, FormsModule, AvatarModule, AvatarGroupModule, MenubarModule, SidebarModule,  SidebarNotificationsComponent, LoginFormComponent, RegisterPupFormComponent, SideMenuComponent],
+  imports: [ToolbarModule, ScrollPanelModule, DialogModule, SplitButtonModule, InputTextModule, ButtonModule, InputIconModule, IconFieldModule, FormsModule, AvatarModule, AvatarGroupModule, MenubarModule, SidebarModule,  SidebarNotificationsComponent, SideMenuComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -33,36 +34,8 @@ export class HeaderComponent {
   sidemenuVisible: boolean = false;
   notificationsVisible: boolean = false;
   
+  constructor(private themeService:ThemeService, private router: Router){}
 
-  loginDialogVisible: boolean = false;
-  constructor(private themeService:ThemeService){}
-
-    showLoginDialog() {
-        this.loginDialogVisible = true;
-    }
-
-    closeLoginDialog() {
-        this.loginDialogVisible = false;
-    }
-
-    registerPupDialogVisible: boolean = false;
-
-    showPupDialog() {
-        this.registerPupDialogVisible = true;
-    }
-
-    closePupDialog() {
-        this.registerPupDialogVisible = false;
-    }
-    registerOdDialogVisible: boolean = false;
-
-    showOdDialog() {
-        this.registerOdDialogVisible = true;
-    }
-
-    closeOdDialog() {
-        this.registerOdDialogVisible = false;
-    }
     changeTheme() {
         this.themeService.changeTheme();
     }
@@ -86,10 +59,15 @@ export class HeaderComponent {
                 },
                 {
                     label: 'Logout',
-                    icon: 'pi pi-sign-out'
+                    icon: 'pi pi-sign-out',
+                    command: () => this.logout(),
                 }
             ]
         }
     ]
+    }
+
+    logout(){
+        this.router.navigate(['']);
     }
 }

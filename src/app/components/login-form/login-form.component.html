@@ -45,9 +45,36 @@
           class="field flex justify-content-center align-items-center pt-1 flex-column w-full"
         >
           <span>Don't have an account?</span>
-          <a href="register-od" class="pt-1 text-color">Register</a>
+          <a (click)="showRegisterDialog()"  class="pt-1 text-color">Register</a>
         </div>
       </form>
     </div>
   </div>
 </div>
+
+<p-dialog
+  header="Register As"
+  [(visible)]="isDialogVisible"
+  [modal]="true"
+  [closable]="true"
+  [dismissableMask]="true"
+  styleClass="w-20rem"
+>
+  <div class="flex flex-column align-items-center">
+    <p>Choose your registration type:</p>
+    <div class="flex w-full justify-content-evenly mt-3">
+      <button
+        pButton
+        label="Service provider"
+        (click)="register('sp')"
+        class="p-button-primary"
+      ></button>
+      <button
+        pButton
+        label="Event organizer"
+        (click)="register('eo')"
+        class="p-button-secondary"
+      ></button>
+    </div>
+  </div>
+</p-dialog>
