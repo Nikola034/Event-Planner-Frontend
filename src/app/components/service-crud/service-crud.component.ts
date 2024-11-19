@@ -22,8 +22,10 @@ export class ServiceCrudComponent {
     this.displayAddForm = true;
   }
 
+  selectedService!: Service;
   displayEditForm: boolean = false;
-  showEditServiceForm() {
+  showEditServiceForm(service: Service) {
+    this.selectedService = service;
     this.displayEditForm = true;
   }
 

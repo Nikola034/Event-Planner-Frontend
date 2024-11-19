@@ -5,7 +5,6 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ButtonModule } from 'primeng/button';
 import { ReactiveFormsModule } from '@angular/forms';
-import { EventEmitter } from 'stream';
 
 @Component({
   selector: 'app-add-service-form',

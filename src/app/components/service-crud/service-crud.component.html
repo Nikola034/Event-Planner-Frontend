@@ -33,13 +33,13 @@
             <td>{{service.price - (service.price*service.discount)/100 | currency:'USD'}}</td>
             <td>{{service.category.title}}</td>
             <td>{{service.minDuration + "-"+ service.maxDuration}}</td>
-            <td><p-button icon="pi pi-pencil" (onClick)="showEditServiceForm()"></p-button></td>
+            <td><p-button icon="pi pi-pencil" (onClick)="showEditServiceForm(service)"></p-button></td>
             <td><p-button icon="pi pi-trash"></p-button></td>
         </tr>
     </ng-template>
 </p-table>
 <p-dialog header="Edit Service" [(visible)]="displayEditForm" [modal]="true" [responsive]="true">
-    <app-edit-service-form></app-edit-service-form>
+    <app-edit-service-form [serviceData]="selectedService"></app-edit-service-form>
 </p-dialog> 
 <p-dialog header="Add Service" [(visible)]="displayAddForm" [modal]="true" [responsive]="true">
     <app-add-service-form></app-add-service-form>
