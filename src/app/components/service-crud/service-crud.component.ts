@@ -7,11 +7,13 @@ import { Service } from '../service/service';
 import { DialogModule } from 'primeng/dialog';
 import { EditServiceFormComponent } from "../edit-service-form/edit-service-form.component";
 import { AddServiceFormComponent } from "../add-service-form/add-service-form.component";
+import { CommonModule } from '@angular/common';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-service-crud',
   standalone: true,
-  imports: [ButtonModule, RouterModule, TableModule, CurrencyPipe, DialogModule, EditServiceFormComponent, AddServiceFormComponent],
+  imports: [ButtonModule, DropdownModule, RouterModule, TableModule, CurrencyPipe, DialogModule, EditServiceFormComponent, AddServiceFormComponent, CommonModule],
   templateUrl: './service-crud.component.html',
   styleUrl: './service-crud.component.scss'
 })
@@ -48,7 +50,14 @@ export class ServiceCrudComponent {
       photos: [
         '/weddingHall.jpg'
       ],
-      eventTypes: [],
+      eventTypes: [
+        {
+          id: 1,
+          title: "Wedding",
+          description: "description...",
+          active: true
+        }
+      ],
       category: {
         id: 1,
         title: "Venue",
@@ -83,7 +92,14 @@ export class ServiceCrudComponent {
       photos: [
         '/funneralCar.jpeg'
       ],
-      eventTypes: [],
+      eventTypes: [
+        {
+          id: 2,
+          title: "Funeral",
+          description: "description...",
+          active: true
+        }
+      ],
       category: {
         id: 2,
         title: "Transportation",
@@ -118,7 +134,20 @@ export class ServiceCrudComponent {
       photos: [
         '/decorations.jpg'
       ],
-      eventTypes: [],
+      eventTypes: [
+        {
+          id: 1,
+          title: "Wedding",
+          description: "description...",
+          active: true
+        },
+        {
+          id: 3,
+          title: "Birthday",
+          description: "description...",
+          active: true
+        }
+      ],
       category: {
         id: 3,
         title: "Decorations",
@@ -137,7 +166,7 @@ export class ServiceCrudComponent {
     },
     {
       id: 1,
-      title: 'Wedding Hall',
+      title: 'Catering',
       description: "Lorem Ipsum is sim's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
       specificity: 'Beautiful wedding hall in city center',
       price: 10000,
@@ -153,10 +182,35 @@ export class ServiceCrudComponent {
       photos: [
         '/dinja.jpg'
       ],
-      eventTypes: [],
+      eventTypes: [
+        {
+          id: 1,
+          title: "Wedding",
+          description: "description...",
+          active: true
+        },
+        {
+          id: 2,
+          title: "Funeral",
+          description: "description...",
+          active: true
+        },
+        {
+          id: 3,
+          title: "Birthday",
+          description: "description...",
+          active: true
+        },
+        {
+          id: 4,
+          title: "Conference",
+          description: "description...",
+          active: true
+        }
+      ],
       category: {
         id: 1,
-        title: "Venue",
+        title: "Food",
         description: "Place where celebration happens",
         pending: false
       },
@@ -178,7 +232,7 @@ export class ServiceCrudComponent {
       price: 10000,
       discount: 5,
       visible: true,
-      available: true,
+      available: false,
       minDuration: 30,
       maxDuration: 90,
       reservationDeadline: 30,
@@ -188,7 +242,14 @@ export class ServiceCrudComponent {
       photos: [
         '/weddingHall.jpg'
       ],
-      eventTypes: [],
+      eventTypes: [
+        {
+          id: 1,
+          title: "Wedding",
+          description: "description...",
+          active: true
+        }
+      ],
       category: {
         id: 1,
         title: "Venue",
@@ -213,7 +274,7 @@ export class ServiceCrudComponent {
       price: 10000,
       discount: 0,
       visible: true,
-      available: true,
+      available: false,
       minDuration: 30,
       maxDuration: 90,
       reservationDeadline: 30,
@@ -223,7 +284,14 @@ export class ServiceCrudComponent {
       photos: [
         '/weddingHall.jpg'
       ],
-      eventTypes: [],
+      eventTypes: [
+        {
+          id: 1,
+          title: "Wedding",
+          description: "description...",
+          active: true
+        }
+      ],
       category: {
         id: 1,
         title: "Venue",
@@ -258,7 +326,14 @@ export class ServiceCrudComponent {
       photos: [
         '/weddingHall.jpg'
       ],
-      eventTypes: [],
+      eventTypes: [
+        {
+          id: 1,
+          title: "Wedding",
+          description: "description...",
+          active: true
+        }
+      ],
       category: {
         id: 1,
         title: "Venue",
