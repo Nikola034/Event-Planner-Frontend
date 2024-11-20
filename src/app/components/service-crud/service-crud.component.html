@@ -38,9 +38,9 @@
         </tr>
     </ng-template>
 </p-table>
-<p-dialog header="Edit Service" [(visible)]="displayEditForm" [modal]="true" [responsive]="true">
+<p-dialog header="Edit Service" [(visible)]="displayEditForm" [modal]="true">
     <app-edit-service-form [serviceData]="selectedService"></app-edit-service-form>
 </p-dialog> 
-<p-dialog header="Add Service" [(visible)]="displayAddForm" [modal]="true" [responsive]="true">
+<p-dialog header="Add Service" [(visible)]="displayAddForm" [modal]="true">
     <app-add-service-form></app-add-service-form>
 </p-dialog>
