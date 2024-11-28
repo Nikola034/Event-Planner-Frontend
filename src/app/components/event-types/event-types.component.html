@@ -1,0 +1,56 @@
+<p-table [value]="eventTypes" class="w-full" [responsiveLayout]="'scroll'">
+  <ng-template pTemplate="caption">
+    <div class="flex align-items-center justify-content-between">
+      <h2>Event Types</h2>
+      <p-button (onClick)="showAddForm()" icon="pi pi-plus" />
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Recommended Services/Products</th>
+      <th class="text-center">Active</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-eventType>
+    <tr>
+      <td>{{ eventType.title }}</td>
+      <td>{{ eventType.description }}</td>
+      <td>
+        <ul>
+          <li *ngFor="let item of eventType.recommendedServices">{{ item }}</li>
+        </ul>
+      </td>
+      <td class="text-center">
+        <i
+          class="pi"
+          [ngClass]="{
+            'pi-check': eventType.active,
+            'pi-times': !eventType.active
+          }"
+          [ngStyle]="{ color: eventType.active ? 'green' : 'red' }"
+        ></i>
+      </td>
+      <td>
+        <p-button
+          class="mr-2"
+          icon="pi pi-pencil"
+          (onClick)="showEditForm()"
+        ></p-button>
+        <p-button icon="pi pi-times"></p-button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-dialog
+  header="Create Event Type"
+  [(visible)]="displayAddForm"
+  [modal]="true"
+>
+  <app-create-event-type-form> </app-create-event-type-form>
+</p-dialog>
+<p-dialog header="Edit Event Type" [(visible)]="displayEditForm" [modal]="true">
+  <app-edit-event-type-form> </app-edit-event-type-form>
+</p-dialog>
