@@ -8,7 +8,7 @@ import { RegisterSpFormComponent } from './components/register-sp-form/register-
 import { EditAuFormComponent } from './components/edit-au-form/edit-au-form.component';
 import { EditEoFormComponent } from './components/edit-eo-form/edit-eo-form.component';
 import { EditSpFormComponent } from './components/edit-sp-form/edit-sp-form.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { FastRegisterComponent } from './components/fast-register/fast-register.component';
 
 
@@ -42,8 +42,8 @@ export const routes: Routes = [
             }
         ]
     },
-    { path: '', component: EditEoFormComponent},
-    { path: 'reset-password', component: ResetPasswordComponent},
+    { path: '', component: LoginFormComponent},
+    { path: 'change-password', component: ChangePasswordComponent},
     { path: 'register-au', component: FastRegisterComponent},
     { path: 'register-eo', component: RegisterEoFormComponent},
     { path: 'register-sp', component: RegisterSpFormComponent},

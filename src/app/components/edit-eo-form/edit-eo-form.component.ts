@@ -37,6 +37,6 @@ export class EditEoFormComponent {
   }
 
   changePassword(): void{
-    this.router.navigate(['reset-password']);
+    this.router.navigate(['change-password']);
   }
 }
