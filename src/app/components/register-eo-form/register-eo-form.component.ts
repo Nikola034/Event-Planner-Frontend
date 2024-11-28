@@ -32,6 +32,7 @@ export class RegisterEoFormComponent {
 
   createAccount(): void{
     this.router.navigate(['']);
+    console.log('import test')
   }
 
   uploadFile($event: any) {

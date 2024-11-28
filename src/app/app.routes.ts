@@ -9,6 +9,7 @@ import { EditAuFormComponent } from './components/edit-au-form/edit-au-form.comp
 import { EditEoFormComponent } from './components/edit-eo-form/edit-eo-form.component';
 import { EditSpFormComponent } from './components/edit-sp-form/edit-sp-form.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { FastRegisterComponent } from './components/fast-register/fast-register.component';
 
 
 export const routes: Routes = [
@@ -43,6 +44,7 @@ export const routes: Routes = [
     },
     { path: '', component: EditEoFormComponent},
     { path: 'reset-password', component: ResetPasswordComponent},
+    { path: 'register-au', component: FastRegisterComponent},
     { path: 'register-eo', component: RegisterEoFormComponent},
     { path: 'register-sp', component: RegisterSpFormComponent},
     { path: 'edit-au', component: EditAuFormComponent},

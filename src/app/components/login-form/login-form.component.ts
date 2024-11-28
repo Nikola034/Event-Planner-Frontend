@@ -33,6 +33,9 @@ export class LoginFormComponent {
     } else if (role === 'eo') {
       this.router.navigate(['register-eo']);
     }
+    else if (role === 'au'){
+      this.router.navigate(['register-au']);
+    }
   }
 
   login() : void{
