@@ -5,7 +5,7 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { ServiceCrudComponent } from './components/service-crud/service-crud.component';
 import { RegisterEoFormComponent } from './components/register-eo-form/register-eo-form.component';
 import { RegisterSpFormComponent } from './components/register-sp-form/register-sp-form.component';
-import { FastRegisterComponent } from './fast-register/fast-register.component';
+import { FastRegisterComponent } from './components/fast-register/fast-register.component';
 
 
 export const routes: Routes = [
