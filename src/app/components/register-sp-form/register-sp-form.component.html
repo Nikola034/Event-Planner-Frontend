@@ -109,6 +109,13 @@
             label="ADD PHOTOS (OPTIONAL)"
           ></p-button>
           <input hidden type="file" #uploader2 (change)="uploadFile($event)" />
+          <img
+            *ngIf="selectedPhoto"
+            [src]="selectedPhoto"
+            src="dinja.jpg"
+            alt="Profile Photo"
+            class="ml-2 border-round w-4rem h-3rem"
+          />
         </div>
         <div class="field justify-content-center h-3rem w-full submit">
           <p-button

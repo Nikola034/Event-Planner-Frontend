@@ -51,30 +51,19 @@
         <div class="field flex justify-content-center">
           <input
             formControlName="email"
+            readonly
             type="text"
             placeholder="E-Mail*"
             class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
           />
         </div>
-        <div class="field flex justify-content-center pb-2">
-          <div class="grid">
-            <div class="col-6">
-              <input
-                formControlName="password1"
-                type="text"
-                placeholder="Password*"
-                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
-              />
-            </div>
-            <div class="col-6">
-              <input
-                formControlName="password2"
-                type="text"
-                placeholder="Confirm Password*"
-                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
-              />
-            </div>
-          </div>
+        <div class="field justify-content-center h-3rem w-full submit">
+          <p-button
+            styleClass="min-w-full w-full h-3rem border-noround"
+            label="CHANGE PASSWORD"
+            type="submit"
+            (click)="changePassword()"
+          ></p-button>
         </div>
         <div class="field flex photo w-full">
           <p-button
@@ -83,20 +72,21 @@
             label="CHOOSE PROFILE PHOTO"
           ></p-button>
           <input hidden type="file" #uploader (change)="uploadFile($event)" />
+          <img
+            *ngIf="selectedPhoto"
+            [src]="selectedPhoto"
+            src="dinja.jpg"
+            alt="Profile Photo"
+            class="ml-2 border-round w-4rem h-3rem"
+          />
         </div>
         <div class="field justify-content-center h-3rem w-full submit">
           <p-button
             styleClass="min-w-full w-full h-3rem border-noround"
-            label="CREATE ACCOUNT"
+            label="EDIT PROFILE"
             type="submit"
-            (click)="createAccount()"
+            (click)="editAccount()"
           ></p-button>
-        </div>
-        <div
-          class="field flex justify-content-center align-items-center pt-1 flex-column w-full"
-        >
-          <span>Already have an account?</span>
-          <a href="" class="pt-1 text-color">Sign in here</a>
         </div>
       </form>
     </div>
