@@ -6,6 +6,7 @@ import { ServiceCrudComponent } from './components/service-crud/service-crud.com
 import { RegisterEoFormComponent } from './components/register-eo-form/register-eo-form.component';
 import { RegisterSpFormComponent } from './components/register-sp-form/register-sp-form.component';
 import { FastRegisterComponent } from './components/fast-register/fast-register.component';
+import { MyEventsComponent } from './components/my-events/my-events.component';
 
 
 export const routes: Routes = [
@@ -35,6 +36,13 @@ export const routes: Routes = [
                     breadcrumb:'My services'
                 },
                 component: ServiceCrudComponent
+            },
+            {
+                path: 'my_events',
+                data:{
+                    breadcrumb:'My events'
+                },
+                component: MyEventsComponent
             }
         ]
     },
