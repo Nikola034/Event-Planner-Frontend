@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
 import { DividerModule } from 'primeng/divider';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-event-card',
@@ -16,4 +17,14 @@ import { DividerModule } from 'primeng/divider';
 })
 export class EventCardComponent{
   @Input() event!: Event;
+
+  constructor(private router: Router){}
+
+  showAgenda(){
+    this.router.navigate(['home/agenda'])
+  }
+
+  showEditEventForm(){
+    this.router.navigate(['home/edit-event'])
+  }
 }

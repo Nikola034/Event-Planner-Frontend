@@ -16,6 +16,7 @@ import { EventCardComponent } from '../event/event-card/event-card.component';
 import { EventService } from '../event/event.service';
 import { MerchandiseService } from '../merchandise/merchandise.service';
 import { Event } from '../event/event';
+import { Router } from '@angular/router';
 
 interface PageEvent {
   first: number;
@@ -57,7 +58,7 @@ export class MyEventsComponent  implements OnInit {
   public totalRecords: number = 0;
   @Input() panelTitle: string = 'My Events';
   @Input() panelType: string = '';
-  constructor(private eventService: EventService, private merchandiseService: MerchandiseService) { }
+  constructor(private eventService: EventService, private merchandiseService: MerchandiseService, private router: Router) { }
 
   async ngOnInit() {
     switch (this.panelType) {
@@ -98,6 +99,6 @@ export class MyEventsComponent  implements OnInit {
   }
 
   showAddEventForm() {
-    
+    this.router.navigate(['home/create-event']);
   }
 }

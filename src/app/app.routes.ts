@@ -12,6 +12,9 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { FastRegisterComponent } from './components/fast-register/fast-register.component';
 import { MyEventsComponent } from './components/my-events/my-events.component';
 import { EventTypesComponent } from './components/event-types/event-types.component';
+import { CreateEventFormComponent } from './components/create-event-form/create-event-form.component';
+import { EditEventFormComponent } from './components/edit-event-form/edit-event-form.component';
+import { AgendaComponent } from './components/agenda/agenda.component';
 
 
 export const routes: Routes = [
@@ -55,6 +58,27 @@ export const routes: Routes = [
                     breadcrumb:'Event Types'
                 },
                 component: EventTypesComponent
+            },
+            {
+                path: 'create-event',
+                data:{
+                    breadcrumb: null
+                },
+                component: CreateEventFormComponent
+            },
+            {
+                path: 'edit-event',
+                data:{
+                    breadcrumb: null
+                },
+                component: EditEventFormComponent
+            },
+            {
+                path: 'agenda',
+                data:{
+                    breadcrumb: null
+                },
+                component: AgendaComponent
             }
         ]
     },
