@@ -22,7 +22,7 @@ export class EditEventTypeFormComponent {
     })
   }
 
-  categories: string[] = [
+  serviceCategories: string[] = [
     'vanue',
     'food',
     'drinks',
@@ -41,7 +41,7 @@ export class EditEventTypeFormComponent {
     'birthday',
     'conference'
   ];
-  eventTypes: string[] = [
+  productCategories: string[] = [
     'wedding',
     'funeral',
     'birthday',

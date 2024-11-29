@@ -21,7 +21,7 @@ export class CreateEventTypeFormComponent {
     description: [''],
   });}
 
-  categories: string[] = [
+  serviceCategories: string[] = [
     'vanue',
     'food',
     'drinks',
@@ -40,7 +40,7 @@ export class CreateEventTypeFormComponent {
     'birthday',
     'conference'
   ];
-  eventTypes: string[] = [
+  productCategories: string[] = [
     'wedding',
     'funeral',
     'birthday',
