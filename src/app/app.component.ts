@@ -2,11 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
-import { RegisterEoFormComponent } from './components/register-eo-form/register-eo-form.component';
-import { RegisterSpFormComponent } from './components/register-sp-form/register-sp-form.component';
-import { LoginFormComponent } from './components/login-form/login-form.component';
-import { EventsComponent } from "./components/event/events/events.component";
-import { MerchandiseComponent } from "./components/merchandise/merchandise/merchandise.component";
 import { BreadcrumbComponent } from "./components/breadcrumb/breadcrumb/breadcrumb.component";
 import { PrimeNGConfig } from 'primeng/api';
 import { Subject, takeUntil, tap } from 'rxjs';
@@ -30,7 +25,7 @@ export class AppComponent implements OnInit {
     this.router.events.pipe(takeUntil(this.destroy$),tap((event) =>{
       if (event instanceof NavigationEnd) {
         // List of routes that should not show the navbar
-        const excludedRoutes = ['/', '/register-sp', '/register-eo', '/register-au'];
+        const excludedRoutes = ['/', '/change-password', '/register-sp', '/register-eo', '/register-au'];
 
         // Check if the current route is in the list of excluded routes
         this.showBasicNavigation = !excludedRoutes.includes(event.urlAfterRedirects);
