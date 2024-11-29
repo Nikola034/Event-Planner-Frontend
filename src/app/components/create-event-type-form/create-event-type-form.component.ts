@@ -13,10 +13,10 @@ import { RadioButtonModule } from 'primeng/radiobutton';
   styleUrl: './create-event-type-form.component.scss'
 })
 export class CreateEventTypeFormComponent {
-  addServiceForm!: FormGroup;
-  
+  addEventTypeForm!: FormGroup;
+
   constructor(private fb: FormBuilder) {
-    this.addServiceForm = this.fb.group({
+    this.addEventTypeForm = this.fb.group({
     title: [''],
     description: [''],
   });}
@@ -26,8 +26,37 @@ export class CreateEventTypeFormComponent {
     'food',
     'drinks',
     'decorations',
-    'transportation'
+    'transportation',
+    'wedding',
+    'funeral',
+    'birthday',
+    'conference',
+    'wedding',
+    'funeral',
+    'birthday',
+    'conference',
+    'wedding',
+    'funeral',
+    'birthday',
+    'conference'
   ];
-
+  eventTypes: string[] = [
+    'wedding',
+    'funeral',
+    'birthday',
+    'conference',
+    'wedding',
+    'funeral',
+    'birthday',
+    'conference',
+    'wedding',
+    'funeral',
+    'birthday',
+    'conference',
+    'wedding',
+    'funeral',
+    'birthday',
+    'conference'
+  ]
   
 }

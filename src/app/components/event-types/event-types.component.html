@@ -48,9 +48,15 @@
   header="Create Event Type"
   [(visible)]="displayAddForm"
   [modal]="true"
+  styleClass="w-6 h-full"
 >
   <app-create-event-type-form> </app-create-event-type-form>
 </p-dialog>
-<p-dialog header="Edit Event Type" [(visible)]="displayEditForm" [modal]="true">
+<p-dialog
+  header="Edit Event Type"
+  [(visible)]="displayEditForm"
+  [modal]="true"
+  styleClass="w-6 h-full"
+>
   <app-edit-event-type-form> </app-edit-event-type-form>
 </p-dialog>
