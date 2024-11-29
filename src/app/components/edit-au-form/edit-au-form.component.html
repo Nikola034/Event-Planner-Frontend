@@ -32,22 +32,6 @@
             </div>
           </div>
         </div>
-        <div class="field flex photo w-full">
-          <p-button
-            (click)="uploader.click()"
-            styleClass="w-full border-noround border-1 border-primary hover:bg-primary"
-            label="CHOOSE PROFILE PHOTO"
-          ></p-button>
-          <input hidden type="file" #uploader (change)="uploadFile($event)" />
-        </div>
-        <div class="field flex justify-content-center">
-          <input
-            formControlName="company"
-            type="text"
-            placeholder="Company*"
-            class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
-          />
-        </div>
         <div class="field flex justify-content-center">
           <input
             formControlName="address"
@@ -55,15 +39,6 @@
             placeholder="Address*"
             class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
           />
-        </div>
-        <div class="field flex justify-content-center">
-          <textarea
-            formControlName="description"
-            cols="40"
-            rows="5"
-            placeholder="Description*"
-            class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 max-h-7rem surface-50"
-          ></textarea>
         </div>
         <div class="field flex justify-content-center">
           <input
@@ -76,38 +51,27 @@
         <div class="field flex justify-content-center">
           <input
             formControlName="email"
+            readonly
             type="text"
             placeholder="E-Mail*"
             class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
           />
         </div>
-        <div class="field flex justify-content-center pb-2">
-          <div class="grid">
-            <div class="col-6">
-              <input
-                formControlName="password1"
-                type="password"
-                placeholder="Password*"
-                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
-              />
-            </div>
-            <div class="col-6">
-              <input
-                formControlName="password2"
-                type="password"
-                placeholder="Confirm Password*"
-                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="field flex justify-content-left photo w-full">
+        <div class="field justify-content-center h-3rem w-full submit">
           <p-button
-            (click)="uploader2.click()"
-            styleClass="w-full border-noround border-1 border-primary"
-            label="ADD PHOTOS (OPTIONAL)"
+            styleClass="min-w-full w-full h-3rem border-noround"
+            label="CHANGE PASSWORD"
+            type="submit"
+            (click)="changePassword()"
           ></p-button>
-          <input hidden type="file" #uploader2 (change)="uploadFile($event)" />
+        </div>
+        <div class="field flex photo w-full">
+          <p-button
+            (click)="uploader.click()"
+            styleClass="w-full border-noround border-1 border-primary hover:bg-primary"
+            label="CHOOSE PROFILE PHOTO"
+          ></p-button>
+          <input hidden type="file" #uploader (change)="uploadFile($event)" />
           <img
             *ngIf="selectedPhoto"
             [src]="selectedPhoto"
@@ -119,16 +83,10 @@
         <div class="field justify-content-center h-3rem w-full submit">
           <p-button
             styleClass="min-w-full w-full h-3rem border-noround"
-            label="CREATE ACCOUNT"
+            label="EDIT PROFILE"
             type="submit"
-            (click)="createAccount()"
+            (click)="editAccount()"
           ></p-button>
-        </div>
-        <div
-          class="field flex justify-content-center align-items-center pt-1 flex-column w-full"
-        >
-          <span>Already have an account?</span>
-          <a href="" class="pt-1 text-color">Sign in here</a>
         </div>
       </form>
     </div>

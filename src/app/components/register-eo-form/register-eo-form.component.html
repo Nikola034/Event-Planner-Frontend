@@ -61,7 +61,7 @@
             <div class="col-6">
               <input
                 formControlName="password1"
-                type="text"
+                type="password"
                 placeholder="Password*"
                 class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
               />
@@ -69,7 +69,7 @@
             <div class="col-6">
               <input
                 formControlName="password2"
-                type="text"
+                type="password"
                 placeholder="Confirm Password*"
                 class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
               />
@@ -83,6 +83,13 @@
             label="CHOOSE PROFILE PHOTO"
           ></p-button>
           <input hidden type="file" #uploader (change)="uploadFile($event)" />
+          <img
+            *ngIf="selectedPhoto"
+            [src]="selectedPhoto"
+            src="dinja.jpg"
+            alt="Profile Photo"
+            class="ml-2 border-round w-4rem h-3rem"
+          />
         </div>
         <div class="field justify-content-center h-3rem w-full submit">
           <p-button

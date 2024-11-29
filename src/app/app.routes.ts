@@ -5,6 +5,10 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { ServiceCrudComponent } from './components/service-crud/service-crud.component';
 import { RegisterEoFormComponent } from './components/register-eo-form/register-eo-form.component';
 import { RegisterSpFormComponent } from './components/register-sp-form/register-sp-form.component';
+import { EditAuFormComponent } from './components/edit-au-form/edit-au-form.component';
+import { EditEoFormComponent } from './components/edit-eo-form/edit-eo-form.component';
+import { EditSpFormComponent } from './components/edit-sp-form/edit-sp-form.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { FastRegisterComponent } from './components/fast-register/fast-register.component';
 import { EventTypesComponent } from './components/event-types/event-types.component';
 
@@ -47,8 +51,11 @@ export const routes: Routes = [
         ]
     },
     { path: '', component: LoginFormComponent},
+    { path: 'change-password', component: ChangePasswordComponent},
     { path: 'register-au', component: FastRegisterComponent},
     { path: 'register-eo', component: RegisterEoFormComponent},
-    { path: 'register-sp', component: RegisterSpFormComponent}
-
+    { path: 'register-sp', component: RegisterSpFormComponent},
+    { path: 'edit-au', component: EditAuFormComponent},
+    { path: 'edit-eo', component: EditEoFormComponent},
+    { path: 'edit-sp', component: EditSpFormComponent}
 ];

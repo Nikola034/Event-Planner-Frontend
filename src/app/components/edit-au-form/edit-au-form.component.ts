@@ -1,41 +1,41 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { ViewEncapsulation } from '@angular/core';
-import {FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Component, ViewEncapsulation } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
+
 @Component({
-  selector: 'app-register-sp-form',
+  selector: 'app-edit-au-form',
   standalone: true,
   imports: [ButtonModule, ReactiveFormsModule, FileUploadModule, ToastModule, CommonModule],
-  templateUrl: './register-sp-form.component.html',
-  styleUrl: './register-sp-form.component.scss',
+  templateUrl: './edit-au-form.component.html',
+  styleUrl: './edit-au-form.component.scss',
   encapsulation: ViewEncapsulation.None
 })
-export class RegisterSpFormComponent {
+export class EditAuFormComponent {
   selectedPhoto: undefined
 
   registerForm = new FormGroup({
-    company: new FormControl(''),
-    description: new FormControl(''),
-    address: new FormControl(''),
-    phone: new FormControl(''),
     name: new FormControl(''),
     surname: new FormControl(''),
-    email: new FormControl(''),
-    password1: new FormControl(''),
-    password2: new FormControl(''),
+    address: new FormControl(''),
+    phone: new FormControl(''),
+    email: new FormControl({value: '', disabled: true}),
   })
   
   constructor(private router: Router){}
 
-  createAccount(): void{
+  editAccount(): void{
     this.router.navigate(['']);
   }
 
   uploadFile($event: any) {
     console.log($event.target.files[0]); // outputs the first file
+  }
+
+  changePassword(): void{
+    this.router.navigate(['change-password']);
   }
 }
