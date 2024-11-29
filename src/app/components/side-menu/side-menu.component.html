@@ -1,11 +1,20 @@
-<div class="side-menu fixed h-full surface-50 xl:w-2 w-7 font-roboto left-0 top-0 z-4">
+<div
+  class="side-menu fixed h-full surface-50 xl:w-2 w-7 font-roboto left-0 top-0 z-4"
+>
   <div class="content w-full flex flex-column pt-3 text-color">
     <div class="header flex justify-content-center gap-4">
       <img class="w-2 h-3" src="/calendar.png" alt="" />
       <span class="text-4xl">E Planner</span>
     </div>
-    <div class="user flex flex-column justify-content-between align-items-center gap-1 mb-4 mt-4">
-      <p-avatar styleClass="mr-2" size="xlarge" shape="circle" image="dinja.jpg" />
+    <div
+      class="user flex flex-column justify-content-between align-items-center gap-1 mb-4 mt-4"
+    >
+      <p-avatar
+        styleClass="mr-2"
+        size="xlarge"
+        shape="circle"
+        image="dinja.jpg"
+      />
       <span class="name text-2xl">Goci Ristic</span>
       <span class="email text-base opacity-70">goci.ristic&#64;gmail.com</span>
     </div>
@@ -18,7 +27,7 @@
         styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
         [text]="true"
         [routerLink]="'/home'"
-        >
+      >
         <ng-template pTemplate="content">
           <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>
           <span>Home</span>
@@ -28,7 +37,8 @@
       <p-button
         styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
         [text]="true"
-        [routerLink]="'/home/my_services'">
+        [routerLink]="'/home/my_services'"
+      >
         <ng-template pTemplate="content">
           <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>
           <span>My services</span>
@@ -41,16 +51,19 @@
 
       <p-button
         styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
-        [text]="true">
+        [text]="true"
+        [routerLink]="'/home/event-types'"
+      >
         <ng-template pTemplate="content">
           <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>
-          <span>Placeholder</span>
+          <span>Event Types</span>
         </ng-template>
       </p-button>
 
       <p-button
         styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
-        [text]="true">
+        [text]="true"
+      >
         <ng-template pTemplate="content">
           <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>
           <span>Placeholder</span>

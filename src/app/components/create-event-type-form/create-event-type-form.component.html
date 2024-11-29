@@ -1,0 +1,54 @@
+<div class="flex justify-content-center pt-4 w-full h-full">
+  <div class="w-full h-full">
+    <div class="flex w-full content surface-100 justify-content-center">
+      <form
+        [formGroup]="addEventTypeForm"
+        class="flex pt-4 flex-column w-full px-4"
+      >
+        <div class="field flex justify-content-center">
+          <input
+            formControlName="title"
+            type="text"
+            placeholder="Title*"
+            name="title"
+            class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+          />
+        </div>
+        <div class="field flex justify-content-center">
+          <textarea
+            formControlName="description"
+            cols="40"
+            rows="5"
+            placeholder="Description*"
+            class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 max-h-7rem surface-50"
+          ></textarea>
+        </div>
+        <div class="field flex justify-content-center w-full mt-7 mb-8">
+          <div class="grid">
+            <div class="col-6">
+              <p-multiSelect
+                [options]="serviceCategories"
+                placeholder="Recommended service categories"
+                name="serviceCategories"
+                filter="false"
+                styleClass="w-full"
+              />
+            </div>
+            <div class="col-6">
+              <p-multiSelect
+                [options]="productCategories"
+                placeholder="Recommended product categories*"
+                name="productCategories"
+                filter="false"
+                styleClass="w-full"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="field flex justify-content-center mt-8">
+          <p-button styleClass="mt-8">ADD EVENT TYPE</p-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
