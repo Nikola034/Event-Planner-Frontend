@@ -1,0 +1,26 @@
+<div class="flex justify-content-center pt-4 h-full w-11">
+    <div class="h-full w-9">
+      <div class="flex content surface-100 pl-3">
+        <h2>Invite Participant</h2>
+      </div>
+      <div class="flex content surface-100 justify-content-center">
+        <form
+          [formGroup]="inviteForm"
+          class="flex pt-4 flex-column px-4 w-12"
+        >
+          <div class="field flex justify-content-center">
+            <input
+              formControlName="email"
+              type="email"
+              placeholder="Email*"
+              name="email"
+              class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+            />
+          </div>
+          <div class="field flex justify-content-center">
+            <p-button>INVITE MEMBER</p-button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

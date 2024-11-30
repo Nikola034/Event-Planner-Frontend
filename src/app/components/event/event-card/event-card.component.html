@@ -43,6 +43,12 @@
         (onClick)="showAgenda()"
       ></p-button>
       <p-button
+        label="Send Invitations"
+        styleClass="p-button-primary text-color mr-2 ml-2"
+        *ngIf="0 === 0 && !event.public"
+        (onClick)="showInvitationsForm()"
+      ></p-button>
+      <p-button
         class="mr-2"
         icon="pi pi-pencil"
         *ngIf="0 === 0"
@@ -57,3 +63,11 @@
     </div>
   </ng-template>
 </p-panel>
+<p-dialog
+  header="Invite Participants"
+  [(visible)]="displayInviteForm"
+  [modal]="true"
+  styleClass="w-6 h-22rem"
+>
+  <app-send-invitation></app-send-invitation>
+</p-dialog>
