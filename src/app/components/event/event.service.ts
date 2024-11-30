@@ -21,7 +21,7 @@ private events: Event[] = [
       title: "Summer Music Festival",
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum libero at malesuada consequat. Aliquam vel auctor ligula. Mauris blandit placerat sodales. Integer ligula neque, viverra in est consectetur, imperdiet imperdiet neque. In ac aliquet ipsum. Sed volutpat lorem eget imperdiet faucibus. Nunc velit nisl, ornare ut auctor sed, condimentum eget nulla. Ut tincidunt fermentum consectetur. Nullam dictum justo eget aliquam cursus. Suspendisse potenti. Aenean eget purus interdum, commodo nisi at, venenatis elit. Vestibulum luctus lacus velit, et porttitor nibh viverra nec. Maecenas vulputate, ex bibendum iaculis semper, nibh leo semper eros, quis mattis augue metus sed dui. Morbi bibendum, purus id facilisis congue, urna ex iaculis turpis, non lobortis lorem elit sit amet neque.",
       maxParticipants: 5000,
-      public: true,
+      public: false,
       address: {
           city: "Novi Sad",
           street: "Petrovaradin Fortress",
@@ -42,7 +42,7 @@ private events: Event[] = [
       title: "Tech Conference 2024",
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum libero at malesuada consequat. Aliquam vel auctor ligula. Mauris blandit placerat sodales. Integer ligula neque, viverra in est consectetur, imperdiet imperdiet neque. In ac aliquet ipsum. Sed volutpat lorem eget imperdiet faucibus. Nunc velit nisl, ornare ut auctor sed, condimentum eget nulla. Ut tincidunt fermentum consectetur. Nullam dictum justo eget aliquam cursus. Suspendisse potenti. Aenean eget purus interdum, commodo nisi at, venenatis elit. Vestibulum luctus lacus velit, et porttitor nibh viverra nec. Maecenas vulputate, ex bibendum iaculis semper, nibh leo semper eros, quis mattis augue metus sed dui. Morbi bibendum, purus id facilisis congue, urna ex iaculis turpis, non lobortis lorem elit sit amet neque.",
       maxParticipants: 1000,
-      public: true,
+      public: false,
       address: {
           city: "Novi Sad",
           street: "Futoška",

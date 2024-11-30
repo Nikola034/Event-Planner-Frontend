@@ -1,0 +1,95 @@
+<div class="flex justify-content-center pt-4 h-full w-11">
+  <div class="h-full w-9">
+    <div class="flex content surface-100 pl-3">
+      <h2>Edit Event</h2>
+    </div>
+    <div class="flex content surface-100 justify-content-center">
+      <form
+        [formGroup]="addEventTypeForm"
+        class="flex pt-4 flex-column px-4 w-12"
+      >
+        <div class="field flex justify-content-center">
+          <input
+            formControlName="title"
+            type="text"
+            placeholder="Title*"
+            name="title"
+            class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+          />
+        </div>
+        <div class="field flex justify-content-center">
+          <textarea
+            formControlName="description"
+            cols="40"
+            rows="5"
+            placeholder="Description*"
+            class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 max-h-7rem surface-50"
+          ></textarea>
+        </div>
+        <div class="field flex justify-content-center">
+          <input
+            formControlName="maxParticipants"
+            type="number"
+            placeholder="Max Participants*"
+            max="2000"
+            min="0"
+            name="maxParticipants"
+            class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+          />
+        </div>
+        <div class="field flex justify-content-center">
+          <input
+            formControlName="address"
+            type="text"
+            placeholder="Address*"
+            name="address"
+            class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+          />
+        </div>
+        <div class="field flex justify-content-center">
+          <p-calendar placeholder="Date*" formControlName="date" />
+        </div>
+        <div class="flex justify-content-center align-items-center gap-2">
+          <p-checkbox formControlName="public" value="yes" inputId="public" />
+          <label for="public">Public</label>
+        </div>
+        <div
+          class="flex justify-content-center align-items-center gap-2 mt-3 w-full"
+        >
+          <p-multiSelect
+            [options]="eventTypes"
+            placeholder="Event Types*"
+            name="eventTypes"
+            filter="false"
+            styleClass="w-full"
+          />
+        </div>
+        <div class="field flex justify-content-center w-full mt-7">
+          <div class="grid w-full">
+            <div class="col-6">
+              <p-multiSelect
+                [options]="services"
+                placeholder="Services*"
+                name="services"
+                filter="false"
+                styleClass="w-full"
+              />
+            </div>
+            <div class="col-6">
+              <p-multiSelect
+                [options]="products"
+                placeholder="Products*"
+                name="products"
+                filter="false"
+                styleClass="w-full"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="field flex justify-content-center">
+          <p-button>EDIT EVENT</p-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
