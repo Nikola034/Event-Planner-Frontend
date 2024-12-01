@@ -7,5 +7,6 @@ export interface EventOverviewDTO {
     date: Date;
     address: Address;
     description: string;
+    public:boolean
 }
 

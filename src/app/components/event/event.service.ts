@@ -18,6 +18,7 @@ export class EventService {
         'date',
         'type'];
 
+
     private events: Event[] = [];
     constructor(private http: HttpClient) { }
 

@@ -20,7 +20,7 @@
         <div class="field flex justify-content-center pb-5">
           <input
             formControlName="password"
-            type="text"
+            type="password"
             placeholder="Password*"
             class="text-base p-2 w-full border-round-top-xs border-none border-bottom-1 h-3rem surface-50"
           />
@@ -45,7 +45,7 @@
           class="field flex justify-content-center align-items-center pt-1 flex-column w-full"
         >
           <span>Don't have an account?</span>
-          <a (click)="showRegisterDialog()"  class="pt-1 text-color">Register</a>
+          <a (click)="showRegisterDialog()" class="pt-1 text-color">Register</a>
         </div>
       </form>
     </div>
@@ -76,5 +76,13 @@
         class="p-button-secondary"
       ></button>
     </div>
+  </div>
+  <div class="flex w-full justify-content-evenly mt-3">
+    <button
+      pButton
+      label="Fast registration"
+      (click)="register('au')"
+      class="p-button-secondary"
+    ></button>
   </div>
 </p-dialog>

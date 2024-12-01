@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 import {FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -8,12 +9,14 @@ import { ToastModule } from 'primeng/toast';
 @Component({
   selector: 'app-register-sp-form',
   standalone: true,
-  imports: [ButtonModule, ReactiveFormsModule, FileUploadModule, ToastModule],
+  imports: [ButtonModule, ReactiveFormsModule, FileUploadModule, ToastModule, CommonModule],
   templateUrl: './register-sp-form.component.html',
   styleUrl: './register-sp-form.component.scss',
   encapsulation: ViewEncapsulation.None
 })
 export class RegisterSpFormComponent {
+  selectedPhoto: undefined
+
   registerForm = new FormGroup({
     company: new FormControl(''),
     description: new FormControl(''),

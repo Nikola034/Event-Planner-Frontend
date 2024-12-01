@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 import {FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -9,12 +10,14 @@ import { ToastModule } from 'primeng/toast';
 @Component({
   selector: 'app-register-eo-form',
   standalone: true,
-  imports: [ButtonModule, ReactiveFormsModule, FileUploadModule, ToastModule],
+  imports: [ButtonModule, ReactiveFormsModule, FileUploadModule, ToastModule, CommonModule],
   templateUrl: './register-eo-form.component.html',
   styleUrl: './register-eo-form.component.scss',
   encapsulation: ViewEncapsulation.None
 })
 export class RegisterEoFormComponent {
+  selectedPhoto: undefined
+
   registerForm = new FormGroup({
     name: new FormControl(''),
     surname: new FormControl(''),
@@ -29,6 +32,7 @@ export class RegisterEoFormComponent {
 
   createAccount(): void{
     this.router.navigate(['']);
+    console.log('import test')
   }
 
   uploadFile($event: any) {
