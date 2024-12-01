@@ -6,9 +6,12 @@ import { CommonModule } from '@angular/common';
 import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
 import { DividerModule } from 'primeng/divider';
+
+import { EventOverviewDTO } from '../event-overview-dto';
 import { Router } from '@angular/router';
 import { SendInvitationComponent } from "../../send-invitation/send-invitation.component";
 import { DialogModule } from 'primeng/dialog';
+
 
 @Component({
   selector: 'app-event-card',
@@ -18,7 +21,7 @@ import { DialogModule } from 'primeng/dialog';
   styleUrl: './event-card.component.scss'
 })
 export class EventCardComponent{
-  @Input() event!: Event;
+  @Input() event!: EventOverviewDTO;
   displayInviteForm: boolean = false;
 
   constructor(private router: Router){}

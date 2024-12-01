@@ -18,6 +18,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { SidebarModule } from 'primeng/sidebar';
 import { Merchandise } from '../../merchandise/merchandise';
 import { MerchandiseService } from '../../merchandise/merchandise.service';
+import { EventOverviewDTO } from '../event-overview-dto';
 
 interface PageEvent {
   first: number;
@@ -49,8 +50,8 @@ interface PageEvent {
   styleUrl: './events.component.scss'
 })
 export class EventsComponent implements OnInit {
-  public events: Event[] = [];
-  public displayedEvents: Event[] = [];
+  public events: EventOverviewDTO[] = [];
+  public displayedEvents: EventOverviewDTO[] = [];
   public sortOptions: string[] = [];
   public filterSidebarVisible = false;
   // Pagination properties
@@ -62,12 +63,13 @@ export class EventsComponent implements OnInit {
   constructor(private eventService: EventService, private merchandiseService: MerchandiseService) { }
 
   async ngOnInit() {
+    console.log("asd");
     switch (this.panelType) {
       case 'Top':
       case 'top':
         {
           this.eventService.getTop().subscribe({
-            next: (data: Event[]) => {
+            next: (data: EventOverviewDTO[]) => {
               this.events = data;
               this.totalRecords = this.events.length;
               this.updateDisplayedEvents();
@@ -77,7 +79,7 @@ export class EventsComponent implements OnInit {
         }
       default: {
         this.eventService.getAll().subscribe({
-          next: (data: Event[]) => {
+          next: (data: EventOverviewDTO[]) => {
             this.events = data;
             this.totalRecords = this.events.length;
             this.updateDisplayedEvents();
@@ -89,6 +91,7 @@ export class EventsComponent implements OnInit {
   }
 
   updateDisplayedEvents() {
+    console.log(this.events)
     const end = this.first + this.rows;
     this.displayedEvents = this.events.slice(this.first, end);
   }

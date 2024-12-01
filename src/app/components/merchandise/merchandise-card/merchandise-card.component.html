@@ -2,7 +2,7 @@
     <ng-template pTemplate="header">
         <div class="flex align-items-center gap-2 p-text-secondary">
             <p>
-                {{ merchandise.category.title }}/{{merchandiseType}}
+                {{ merchandise.category }}/{{merchandise.type}}
             </p>
         </div>
     </ng-template>
@@ -11,7 +11,7 @@
 
             <div class="col-12 xl:col-3">
                 <div class="flex flex-column gap-3">
-                    <img src="{{merchandise.photos[0]}}" alt="">
+                    <img src="{{merchandise.photo}}" alt="">
                     <p class="text-xl font-semibold">{{ merchandise.title }}</p>
                     <div>
                         <i class="pi pi-map-marker mr-1"></i>
@@ -20,11 +20,11 @@
                     </div>
                     <div>   
                         <div class="flex align-items-center justify-content-start">
-                            <span>{{rating}}</span>
-                            <p-rating [(ngModel)]="rating" [readonly]="true" [cancel]="false" />
+                            <span>{{merchandise.rating}}</span>
+                            <p-rating [(ngModel)]="merchandise.rating" [readonly]="true" [cancel]="false" />
                         </div>
                     </div>
-                    <span>{{ merchandise.price }}</span>
+                    <span>{{merchandise.price}}</span>
 
 
                 </div>
