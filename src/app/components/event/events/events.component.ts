@@ -63,6 +63,7 @@ export class EventsComponent implements OnInit {
   constructor(private eventService: EventService, private merchandiseService: MerchandiseService) { }
 
   async ngOnInit() {
+    console.log("asd");
     switch (this.panelType) {
       case 'Top':
       case 'top':

@@ -72,13 +72,13 @@ export class MerchandiseComponent {
           break;
         }
       default: {
-        // this.merchandiseService.getAll().subscribe({
-        //   next: (data: MerchandiseOverviewDTO[]) => {
-        //     this.merchandise = data;
-        //     this.totalRecords = this.merchandise.length;
-        //     this.updateDisplayedEvents();
-        //   }
-        // });
+        this.merchandiseService.getAll().subscribe({
+          next: (data: MerchandiseOverviewDTO[]) => {
+            this.merchandise = data;
+            this.totalRecords = this.merchandise.length;
+            this.updateDisplayedEvents();
+          }
+        });
         break;
       }
     }

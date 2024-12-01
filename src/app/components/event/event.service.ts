@@ -5,6 +5,7 @@ import { map, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { EventOverviewDTO } from './event-overview-dto';
 import { API_URL } from '../../../globals';
+import { PageResponse } from '../page/page-response';
 @Injectable({
     providedIn: 'root'
 })
@@ -23,8 +24,8 @@ export class EventService {
     constructor(private http: HttpClient) { }
 
     getAll(): Observable<EventOverviewDTO[]> {
-        return this.http.get<EventOverviewDTO[]>(`${API_URL}/api/v1/events/top`).pipe(
-            map((page: any) => page.content)
+        return this.http.get<PageResponse>(`${API_URL}/api/v1/events/all`).pipe(
+            map((page: PageResponse) => page.content as EventOverviewDTO[])
           );
     }
 
@@ -35,8 +36,8 @@ export class EventService {
     }
 
     getTop(): Observable<EventOverviewDTO[]> {
-        return this.http.get<EventOverviewDTO[]>(`${API_URL}/api/v1/events/top`).pipe(
-            map((page: any) => page.content)
+        return this.http.get<PageResponse>(`${API_URL}/api/v1/events/top`).pipe(
+            map((page: PageResponse) => page.content as EventOverviewDTO[])
           );
     }
 
