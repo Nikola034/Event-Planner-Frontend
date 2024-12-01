@@ -16,6 +16,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { SidebarModule } from 'primeng/sidebar';
 import { Merchandise } from '../../merchandise/merchandise';
 import { MerchandiseService } from '../../merchandise/merchandise.service';
+import { MerchandiseOverviewDTO } from '../merchandise-overview-dto';
 
 interface PageEvent {
   first: number;
@@ -45,8 +46,8 @@ interface PageEvent {
   styleUrl: './merchandise.component.scss'
 })
 export class MerchandiseComponent {
-  public merchandise: Merchandise[] = [];
-  public displayedMerchandise: Merchandise[] = [];
+  public merchandise: MerchandiseOverviewDTO[] = [];
+  public displayedMerchandise: MerchandiseOverviewDTO[] = [];
   public filterSidebarVisible = false;
   // Pagination properties
   public first: number = 0;
@@ -62,7 +63,7 @@ export class MerchandiseComponent {
       case 'top':
         {
           this.merchandiseService.getTop().subscribe({
-            next: (data: Merchandise[]) => {
+            next: (data: MerchandiseOverviewDTO[]) => {
               this.merchandise = data;
               this.totalRecords = this.merchandise.length;
               this.updateDisplayedEvents();
@@ -71,13 +72,13 @@ export class MerchandiseComponent {
           break;
         }
       default: {
-        this.merchandiseService.getAll().subscribe({
-          next: (data: Merchandise[]) => {
-            this.merchandise = data;
-            this.totalRecords = this.merchandise.length;
-            this.updateDisplayedEvents();
-          }
-        });
+        // this.merchandiseService.getAll().subscribe({
+        //   next: (data: MerchandiseOverviewDTO[]) => {
+        //     this.merchandise = data;
+        //     this.totalRecords = this.merchandise.length;
+        //     this.updateDisplayedEvents();
+        //   }
+        // });
         break;
       }
     }

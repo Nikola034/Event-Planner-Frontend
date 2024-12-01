@@ -3,6 +3,9 @@ import { Merchandise } from './merchandise';
 import { forkJoin, map, mergeAll, Observable, of } from 'rxjs';
 import { ServiceService } from '../service/service.service';
 import { ProductService } from '../product/product.service';
+import { HttpClient } from '@angular/common/http';
+import { MerchandiseOverviewDTO } from './merchandise-overview-dto';
+import { API_URL } from '../../../globals';
 @Injectable({
   providedIn: 'root'
 })
@@ -38,19 +41,10 @@ export class MerchandiseService {
     return Number((totalRating / merchandise.reviews.length).toFixed(1));
   }
 
-  getTop(count: number = 5, city = 'Novi Sad'): Observable<Merchandise[]> {
-    return this.getAll().pipe(
-      map(merchandise =>
-        merchandise
-          .filter(merch => {
-            return merch.address.city === city;
-          })
-          .sort((a, b) => this.getRating(b) - this.getRating(a))
-          .slice(0, count)
-      )
-    );
+  getTop(): Observable<MerchandiseOverviewDTO[]> {
+    return this.http.get<MerchandiseOverviewDTO[]>(`${API_URL}/api/v1/merchandise/top`)
   }
 
 
-  constructor(private serviceService: ServiceService, private productService: ProductService) { }
+  constructor(private serviceService: ServiceService, private productService: ProductService,private http: HttpClient) { }
 }
