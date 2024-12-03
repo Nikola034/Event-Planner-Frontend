@@ -41,40 +41,29 @@ export class CategoryCrudComponent {
   deletePendingCategory(category: Category) {
     this.pendingCategories = this.pendingCategories.filter(c => c.id !== category.id);
   }
-  
-  addedCategories: Category[] = [
-    {
-      id: 1,
-      title: 'vanue',
-      description: 'place to celebrate your special day',
-      pending: false
-    },
-    {
-      id: 2,
-      title: 'food',
-      description: 'something to fil your stomach',
-      pending: false
-    },
-    {
-      id: 3,
-      title: 'drinks',
-      description: 'something to fil your stomach',
-      pending: false
+
+  updateCategory(updatedCategory: Category) {
+    let index = this.addedCategories.findIndex(c => c.id === updatedCategory.id);
+    if(index !== -1) {
+      this.addedCategories[index] = { ...updatedCategory };
     }
+
+    index = this.pendingCategories.findIndex(c => c.id === updatedCategory.id);
+    if(index !== -1) {
+      this.pendingCategories[index] = { ...updatedCategory };
+    }
+
+    this.displayEditForm = false;
+  }
+
+  addedCategories: Category[] = [
+    { id: 1, title: 'vanue', description: 'place to celebrate your special day', pending: false },
+    { id: 2, title: 'food', description: 'something to fil your stomach', pending: false },
+    { id: 3, title: 'drinks', description: 'something to fil your stomach', pending: false }
   ];
 
   pendingCategories: Category[] = [
-    {
-      id: 4,
-      title: 'decorations',
-      description: 'something to makes your place nicer',
-      pending: true
-    },
-    {
-      id: 5,
-      title: 'transportation',
-      description: 'an easy way to make it to your event',
-      pending: true
-    }
+    { id: 4, title: 'decorations', description: 'something to makes your place nicer', pending: true },
+    { id: 5, title: 'transportation', description: 'an easy way to make it to your event', pending: true }
   ]
 }
