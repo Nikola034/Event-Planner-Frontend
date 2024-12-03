@@ -15,6 +15,7 @@ import { EventTypesComponent } from './components/event-types/event-types.compon
 import { CreateEventFormComponent } from './components/create-event-form/create-event-form.component';
 import { EditEventFormComponent } from './components/edit-event-form/edit-event-form.component';
 import { AgendaComponent } from './components/agenda/agenda.component';
+import { CategoryCrudComponent } from './components/category/category-crud/category-crud.component';
 
 
 export const routes: Routes = [
@@ -79,6 +80,13 @@ export const routes: Routes = [
                     breadcrumb: null
                 },
                 component: AgendaComponent
+            },
+            {
+                path: 'category',
+                data: {
+                    breadcrumb: 'Categories'
+                },
+                component: CategoryCrudComponent
             }
         ]
     },
