@@ -10,6 +10,7 @@ import { MerchandiseService } from '../merchandise.service';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { MerchandiseOverviewDTO } from '../merchandise-overview-dto';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-merchandise-card',
   standalone: true,
@@ -20,5 +21,11 @@ import { MerchandiseOverviewDTO } from '../merchandise-overview-dto';
 export class MerchandiseCardComponent{
   @Input() merchandise!: MerchandiseOverviewDTO;
 
+  constructor(private router:Router){}
+
+  seeDetails(){
+    if(this.merchandise.type==='Service')
+      this.router.navigate(['home','service',this.merchandise.id]);
+  }
 
 }

@@ -1,0 +1,52 @@
+<p-dialog header="Reserve" [modal]="true" [(visible)]="visible" [contentStyle]="{ overflow: 'visible' }">
+    <h2 class="text-xl mb-3">Reserve Service</h2>
+    
+    <form [formGroup]="reservationForm">
+        <div class="field mb-3">
+            <span class="p-float-label">
+                <input 
+                    type="number" 
+                    pInputText 
+                    formControlName="eventId" 
+                    class="w-full"
+                    id="eventId">
+                <label for="eventId">Event ID</label>
+            </span>
+        </div>
+
+        <div class="field mb-3">
+            <span class="p-float-label">
+                <p-calendar 
+                    formControlName="startTime"
+                    [showTime]="true"
+                    dateFormat="yy-mm-dd"
+                    styleClass="w-full"
+                    inputId="startTime">
+                </p-calendar>
+                <label for="startTime">Start Time</label>
+            </span>
+        </div>
+
+        <div class="field mb-3">
+            <span class="p-float-label">
+                <p-calendar 
+                    formControlName="endTime"
+                    [showTime]="true"
+                    dateFormat="yy-mm-dd" 
+                    styleClass="w-full"
+                    inputId="endTime">
+                </p-calendar>
+                <label for="endTime">End Time (Optional)</label>
+            </span>
+        </div>
+
+        <div class="flex gap-2 mt-4">
+            <p-button 
+                label="Reserve" 
+                styleClass="w-6"
+                severity="primary"
+                (onClick)="submitReservation()">
+            </p-button>
+        </div>
+    </form>
+</p-dialog>

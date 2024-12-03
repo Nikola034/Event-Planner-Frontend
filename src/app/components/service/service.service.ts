@@ -6,6 +6,8 @@ import { ServiceFilters } from './service-filters';
 import { PageResponse } from '../page/page-response';
 import { MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto';
 import { API_URL } from '../../../globals';
+import { ReservationRequest } from './reservation-request';
+import { ReservationResponse } from './reservation-response';
 
 @Injectable({
   providedIn: 'root'
@@ -37,4 +39,10 @@ export class ServiceService {
       map((page: PageResponse) => page.content as MerchandiseOverviewDTO[])
     );
   }
+
+  reserve(serviceId: number, reservationRequest: ReservationRequest): Observable<any> {
+    return this.http.post(`${API_URL}/api/v1/services/${serviceId}/reserve`, reservationRequest);
+  }
+  
+
 }
