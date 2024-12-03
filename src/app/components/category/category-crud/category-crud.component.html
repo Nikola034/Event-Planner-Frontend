@@ -1,0 +1,65 @@
+<div class="grid">
+    <div class="col-6">
+        <div class="card">
+            <p-table [value]="addedCategories">
+                <ng-template pTemplate="caption">
+                    <div class="flex align-items-center justify-content-between">
+                        Existing Categories
+                        <p-button icon="pi pi-plus" (onClick)="showAddCategoryForm()"/>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-category>
+                    <tr>
+                        <td>{{category.title}}</td>
+                        <td>{{category.description}}</td>
+                        <td><p-button icon=" pi pi-pencil" (onClick)="showEditCategoryForm(category)"/></td>
+                        <td><p-button icon="pi pi-trash" styleClass="p-button-danger" (onClick)="deleteExistingCategory(category)"/></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <p-table [value]="pendingCategories">
+                <ng-template pTemplate="caption">
+                    <div class="flex align-items-center justify-content-between">
+                        Pending Categories
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Approve</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-category>
+                    <tr>
+                        <td>{{category.title}}</td>
+                        <td>{{category.description}}</td>
+                        <td><p-button icon="pi pi-check" styleClass="p-button-success" (onClick)="approveCategorySuggestion(category)"/></td>
+                        <td><p-button icon="pi pi-pencil" (onClick)="showEditCategoryForm(category)"/></td>
+                        <td><p-button icon="pi pi-trash" styleClass="p-button-danger" (onClick)="deletePendingCategory(category)"/></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+<p-dialog header="Edit Category" [(visible)]="displayEditForm" [modal]="true">
+    <app-edit-category [categoryData]="selectedCategory" (categoryUpdated)="updateCategory($event)"></app-edit-category>
+</p-dialog> 
+<p-dialog header="Add Category" [(visible)]="displayAddForm" [modal]="true">
+    <app-add-category (categoryCreated)="createCategory($event)"></app-add-category>
+</p-dialog>
