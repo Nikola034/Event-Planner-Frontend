@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { Category } from '../category';
 
 @Component({
   selector: 'app-add-category',
@@ -11,6 +12,7 @@ import { ButtonModule } from 'primeng/button';
 })
 export class AddCategoryComponent implements OnInit {
   addCategoryForm!: FormGroup;
+  @Output() categoryCreated = new EventEmitter<Category>();
 
   constructor(private fb: FormBuilder) {}
   ngOnInit(): void {
@@ -18,5 +20,19 @@ export class AddCategoryComponent implements OnInit {
       title: [''],
       description: ['']
     });
+  }
+
+  onSubmit() {
+    const createdCategory: Category = {
+      id: this.generateId(),
+      title: this.addCategoryForm.value.title,
+      description: this.addCategoryForm.value.description,
+      pending: false
+    };
+    this.categoryCreated.emit(createdCategory);
+  }
+
+  generateId() { //temporary helper function that generates category id, this will be removed after connecting frontend with backend
+    return 6;
   }
 }

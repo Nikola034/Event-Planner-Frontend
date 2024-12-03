@@ -3,14 +3,14 @@
         <div class="flex w-full content surface-100 justify-content-center">
             <form [formGroup]="addCategoryForm" class="flex pt-4 flex-column w-full px-4">
             <div class="field flex justify-content-center">
-                <input type="text" placeholder="Title*" name="title"
+                <input type="text" placeholder="Title*" name="title" formControlName="title"
                 class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
             </div>
             <div class="field flex justify-content-center">
-                <input type="text" placeholder="Description*" name="description"
+                <input type="text" placeholder="Description*" name="description" formControlName="description"
                 class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
             </div>
-            <p-button class="field flex justify-content-center">Submit</p-button>
+            <p-button class="field flex justify-content-center" (onClick)="onSubmit()">Submit</p-button>
         </form>
         </div>
     </div>

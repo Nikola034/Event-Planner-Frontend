@@ -38,6 +38,6 @@ export class EditCategoryComponent implements OnChanges {
       title: this.editCategoryForm.value.title,
       description: this.editCategoryForm.value.description
     };
-    this.categoryUpdated.emit(updatedCategory as Category);
+    this.categoryUpdated.emit(updatedCategory);
   }
 }

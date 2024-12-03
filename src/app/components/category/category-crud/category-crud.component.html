@@ -61,5 +61,5 @@
     <app-edit-category [categoryData]="selectedCategory" (categoryUpdated)="updateCategory($event)"></app-edit-category>
 </p-dialog> 
 <p-dialog header="Add Category" [(visible)]="displayAddForm" [modal]="true">
-    <app-add-category></app-add-category>
+    <app-add-category (categoryCreated)="createCategory($event)"></app-add-category>
 </p-dialog>

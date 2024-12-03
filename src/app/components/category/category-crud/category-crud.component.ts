@@ -56,6 +56,11 @@ export class CategoryCrudComponent {
     this.displayEditForm = false;
   }
 
+  createCategory(createdCategory: Category) {
+    this.addedCategories.push(createdCategory);
+    this.displayAddForm = false;
+  }
+
   addedCategories: Category[] = [
     { id: 1, title: 'vanue', description: 'place to celebrate your special day', pending: false },
     { id: 2, title: 'food', description: 'something to fil your stomach', pending: false },
