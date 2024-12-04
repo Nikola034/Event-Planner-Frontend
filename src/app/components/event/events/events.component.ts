@@ -21,6 +21,7 @@ import { MerchandiseService } from '../../merchandise/merchandise.service';
 import { EventOverviewDTO } from '../event-overview-dto';
 import { EventFilters } from '../event-filters';
 import { SearchService } from '../../search-page/search.service';
+import { combineLatest, debounceTime, distinctUntilChanged } from 'rxjs';
 
 interface PageEvent {
   first: number;
@@ -58,6 +59,7 @@ export class EventsComponent implements OnInit {
   public filterSidebarVisible = false;
   searchValue: string = '';
   filterValues: EventFilters | null = null;
+  eventSort:string='date';
   // Pagination properties
   public first: number = 0;
   public rows: number = 3;
@@ -82,19 +84,22 @@ export class EventsComponent implements OnInit {
         }
       case "Search":
       case "search": {
-        this.searchService.search$.subscribe({
-          next: (data: string) => {
-            this.searchValue = data;
+        combineLatest([
+          this.searchService.search$,
+          this.searchService.eventFilters$,
+          this.searchService.eventSort$
+        ]).pipe(
+          distinctUntilChanged(),
+          debounceTime(300)
+        ).subscribe({
+          next: ([searchValue, eventFilters, eventSort]) => {
+            this.searchValue = searchValue;
+            this.filterValues = eventFilters;
+            this.eventSort = eventSort;
+
             this.triggerEventSearch();
           }
         });
-        this.searchService.eventFilters$.subscribe({
-          next: (data: EventFilters) => {
-            this.filterValues = data;
-            this.triggerEventSearch();
-          }
-        });
-        this.triggerEventSearch();
         break;
       }
     }
@@ -107,7 +112,7 @@ export class EventsComponent implements OnInit {
 
 
   triggerEventSearch() {
-    this.eventService.search(this.filterValues, this.searchValue).subscribe({
+    this.eventService.search(this.filterValues, this.searchValue,this.eventSort).subscribe({
       next: (data: EventOverviewDTO[]) => {
         this.events = data;
         this.totalRecords = this.events.length;

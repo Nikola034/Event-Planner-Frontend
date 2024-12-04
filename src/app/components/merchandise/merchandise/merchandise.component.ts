@@ -61,6 +61,7 @@ export class MerchandiseComponent {
   searchValue: string = '';
   productFilterValues: ProductFilters | null = null;
   serviceFilterValues: ServiceFilters | null = null;
+  merchandiseSort:string='price';
   @Input() panelTitle: string = '';
   @Input() panelType: string = '';
   constructor(private merchandiseService: MerchandiseService, private searchService: SearchService) { }
@@ -84,23 +85,26 @@ export class MerchandiseComponent {
         combineLatest([
           this.searchService.search$,
           this.searchService.productFilters$,
-          this.searchService.serviceFilters$
+          this.searchService.serviceFilters$,
+          this.searchService.merchandiseSort$
         ]).pipe(
 
           distinctUntilChanged(),
 
           debounceTime(300)
         ).subscribe({
-          next: ([searchValue, productFilters, serviceFilters]) => {
+          next: ([searchValue, productFilters, serviceFilters,merchandiseSort]) => {
             this.searchValue = searchValue;
             this.productFilterValues = productFilters;
             this.serviceFilterValues = serviceFilters;
-
+            this.merchandiseSort=merchandiseSort
+            
             // Single search trigger
             this.merchandiseService.search(
               this.serviceFilterValues,
               this.productFilterValues,
-              this.searchValue
+              this.searchValue,
+              this.merchandiseSort
             ).subscribe({
               next: (data: MerchandiseOverviewDTO[]) => {
                 this.merchandise = data;

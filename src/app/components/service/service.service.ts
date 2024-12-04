@@ -6,6 +6,8 @@ import { ServiceFilters } from './service-filters';
 import { PageResponse } from '../page/page-response';
 import { MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto';
 import { API_URL } from '../../../globals';
+import { ReservationRequest } from './reservation-request';
+import { ReservationResponse } from './reservation-response';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +22,7 @@ export class ServiceService {
     return of(event);
   }
   constructor(private http: HttpClient) { }
-  search(filters: ServiceFilters | null = null, search: string = ''): Observable<MerchandiseOverviewDTO[]> {
+  search(filters: ServiceFilters | null = null, search: string = '',sort:string='price'): Observable<MerchandiseOverviewDTO[]> {
     if(!filters?.isActive) return of([]);
     const params = {
       priceMin: filters?.priceMin || '',
@@ -29,7 +31,8 @@ export class ServiceService {
       durationMin: filters?.durationMin || '',
       durationMax: filters?.durationMax || '',
       city: filters?.city || '',
-      search: search || ''
+      search: search || '',
+      sort:sort
     };
 
     // Send the GET request to your product search API with the constructed params
@@ -37,4 +40,10 @@ export class ServiceService {
       map((page: PageResponse) => page.content as MerchandiseOverviewDTO[])
     );
   }
+
+  reserve(serviceId: number, reservationRequest: ReservationRequest): Observable<any> {
+    return this.http.post(`${API_URL}/api/v1/services/${serviceId}/reserve`, reservationRequest);
+  }
+  
+
 }

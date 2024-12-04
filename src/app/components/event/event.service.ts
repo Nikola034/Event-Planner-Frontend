@@ -11,12 +11,11 @@ import { EventFilters } from './event-filters';
     providedIn: 'root'
 })
 export class EventService {
-    public SortOptions: string[] = ['id',
+    public SortOptions: string[] = [
         'title',
         'description',
         'maxParticipants',
-        'public',
-        'city',
+        'isPublic',
         'date',
         'type'];
 
@@ -49,7 +48,7 @@ export class EventService {
     };
 
     search(
-        filters: EventFilters|null=null, search: string='') {
+        filters: EventFilters|null=null, search: string='',sort:string='date') {
             if(!filters?.isActive) return of([]);
             
             const params = {
@@ -57,7 +56,8 @@ export class EventService {
                 endDate: this.formatDate(filters?.endDate),
                 type: filters?.type || '',
                 city: filters?.city || '',
-                search: search
+                search: search,
+                sort:sort
             };
             
             

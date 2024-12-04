@@ -2,13 +2,13 @@
     <!-- events -->
     <div class="mr-4 xl:col-4 col-10">
         <span class="text-color mr-2">Sort events by</span>
-        <p-dropdown [options]="eventSortOptions" [(ngModel)]="selectedEventSortOption" styleClass="w-15rem" />
+        <p-dropdown [options]="eventSortOptions" [(ngModel)]="selectedEventSortOption" styleClass="w-15rem"  (onChange)="onEventSortChange($event)"/>
     </div>
     <!-- merchandise -->
     <div class="mr-4 xl:col-4 col-10">
         <span class="text-color mr-2">Sort services/products by</span>
         <p-dropdown [options]="merchandiseSortOptions" [(ngModel)]="selectedMerchandiseSortOption"
-            styleClass="w-15rem" />
+            styleClass="w-15rem"  (onChange)="onMerchandiseSortChange($event)"/>
     </div>
     <div class="xl:col-2">
     <!-- filters -->
