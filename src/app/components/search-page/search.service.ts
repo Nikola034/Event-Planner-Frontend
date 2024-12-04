@@ -41,10 +41,22 @@ export class SearchService {
     city: null
   });
   serviceFilters$ = this.serviceFiltersSubject.asObservable();
+  private merchandiseSortSubject = new BehaviorSubject<string>("price");
+  merchandiseSort$ = this.merchandiseSortSubject.asObservable();
+  private eventSortSubject = new BehaviorSubject<string>("date");
+  eventSort$ = this.eventSortSubject.asObservable();
 
   updateSearch(value: string) {
     this.searchSubject.next(value);
     this.router.navigate(['home', 'search']);
+  }
+
+  updateMerchandiseSort(value:string){
+    this.merchandiseSortSubject.next(value);
+  }
+
+  updateEventSort(value:string){
+    this.eventSortSubject.next(value);
   }
 
   updateFilters(values: FilterFormValues) {

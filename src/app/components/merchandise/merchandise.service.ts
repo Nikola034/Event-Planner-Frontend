@@ -18,9 +18,7 @@ export class MerchandiseService {
     'description',
     'specificity',
     'price',
-    'discount',
-    'duration',
-    'rating'
+    'discount'
   ];
   getAll(): Observable<MerchandiseOverviewDTO[]> {
     return this.http.get<PageResponse>(`${API_URL}/api/v1/merchandise/all`).pipe(
@@ -33,10 +31,10 @@ export class MerchandiseService {
     return this.http.get<MerchandiseOverviewDTO[]>(`${API_URL}/api/v1/merchandise/top`);
   }
 
-  search(serviceFilters: ServiceFilters | null = null,productFilters: ProductFilters | null = null, search: string = ''): Observable<MerchandiseOverviewDTO[]> {
+  search(serviceFilters: ServiceFilters | null = null,productFilters: ProductFilters | null = null, search: string = '',sort:string='price'): Observable<MerchandiseOverviewDTO[]> {
     return forkJoin([
-      this.serviceService.search(serviceFilters,search),
-      this.productService.search(productFilters,search)
+      this.serviceService.search(serviceFilters,search,sort),
+      this.productService.search(productFilters,search,sort)
     ]).pipe(
       map(([services, products]) => [...services, ...products]));
   }

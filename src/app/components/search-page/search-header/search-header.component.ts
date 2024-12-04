@@ -7,6 +7,7 @@ import { MerchandiseService } from '../../merchandise/merchandise.service';
 import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
 import { FiltersComponent } from "../filter/filter.component";
+import { SearchService } from '../search.service';
 
 @Component({
   selector: 'app-search-header',
@@ -22,11 +23,18 @@ export class SearchHeaderComponent implements OnInit{
   public selectedMerchandiseSortOption:string='';
   public filtersVisible:boolean=false;
 
-  constructor(private eventService:EventService,private merchandiseService:MerchandiseService){}
+  constructor(private eventService:EventService,private merchandiseService:MerchandiseService,private searchService:SearchService){}
   ngOnInit(): void {
     this.eventSortOptions=this.eventService.SortOptions;
     this.merchandiseSortOptions=this.merchandiseService.SortOptions;
   }
 
+  onMerchandiseSortChange(event:any){
+    this.searchService.updateMerchandiseSort(event.value);
+  }
+
+  onEventSortChange(event:any){
+    this.searchService.updateEventSort(event.value);
+  }
 
 }

@@ -22,7 +22,7 @@ export class ServiceService {
     return of(event);
   }
   constructor(private http: HttpClient) { }
-  search(filters: ServiceFilters | null = null, search: string = ''): Observable<MerchandiseOverviewDTO[]> {
+  search(filters: ServiceFilters | null = null, search: string = '',sort:string='price'): Observable<MerchandiseOverviewDTO[]> {
     if(!filters?.isActive) return of([]);
     const params = {
       priceMin: filters?.priceMin || '',
@@ -31,7 +31,8 @@ export class ServiceService {
       durationMin: filters?.durationMin || '',
       durationMax: filters?.durationMax || '',
       city: filters?.city || '',
-      search: search || ''
+      search: search || '',
+      sort:sort
     };
 
     // Send the GET request to your product search API with the constructed params

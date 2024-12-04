@@ -58,6 +58,7 @@ export class EventsComponent implements OnInit {
   public filterSidebarVisible = false;
   searchValue: string = '';
   filterValues: EventFilters | null = null;
+  eventSort:string='date';
   // Pagination properties
   public first: number = 0;
   public rows: number = 3;
@@ -94,6 +95,12 @@ export class EventsComponent implements OnInit {
             this.triggerEventSearch();
           }
         });
+        this.searchService.eventSort$.subscribe({
+          next: (data: string) => {
+            this.eventSort = data;
+            this.triggerEventSearch();
+          }
+        });
         this.triggerEventSearch();
         break;
       }
@@ -107,7 +114,7 @@ export class EventsComponent implements OnInit {
 
 
   triggerEventSearch() {
-    this.eventService.search(this.filterValues, this.searchValue).subscribe({
+    this.eventService.search(this.filterValues, this.searchValue,this.eventSort).subscribe({
       next: (data: EventOverviewDTO[]) => {
         this.events = data;
         this.totalRecords = this.events.length;
