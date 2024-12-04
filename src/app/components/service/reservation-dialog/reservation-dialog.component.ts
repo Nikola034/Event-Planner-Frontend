@@ -52,8 +52,7 @@ export class ReservationDialogComponent {
     if (this.reservationForm.valid) {
       const reservationData: ReservationRequest = {
         ...this.reservationForm.value,
-        providerId: null,
-        providerEmail: null
+        organizerId:4
       };
       
       this.serviceService.reserve(this.serviceId,reservationData)
