@@ -20,7 +20,11 @@ export class EditAuFormComponent {
   registerForm = new FormGroup({
     name: new FormControl(''),
     surname: new FormControl(''),
-    address: new FormControl(''),
+    city: new FormControl(''),
+    street: new FormControl(''),
+    number: new FormControl(''),
+    latitude: new FormControl(''),
+    longitude: new FormControl(''),
     phone: new FormControl(''),
     email: new FormControl({value: '', disabled: true}),
   })

@@ -5,7 +5,7 @@ import {
   RouterStateSnapshot,
   Router,
 } from '@angular/router';
-import { JwtService } from './jwt-service';
+import { JwtService } from './jwt.service';
 
 
 @Injectable({
@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
   ): boolean {
-    const userRole :string = this.authService.user$.getValue();
+    const userRole = this.authService.getRoleFromToken();
 
     if (userRole == null) {
       this.router.navigate(['login']);

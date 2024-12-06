@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
     this.router.events.pipe(takeUntil(this.destroy$),tap((event) =>{
       if (event instanceof NavigationEnd) {
         // List of routes that should not show the navbar
-        const excludedRoutes = ['/', '/change-password', '/register-sp', '/register-eo', '/register-au'];
+        const excludedRoutes = ['/', '/change-password', '/register-sp', '/register-eo', '/register-au', '/edit-sp', '/edit-eo', '/edit-au'];
 
         // Check if the current route is in the list of excluded routes
         this.showBasicNavigation = !excludedRoutes.includes(event.urlAfterRedirects);

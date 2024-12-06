@@ -6,6 +6,9 @@ import { ButtonModule } from 'primeng/button';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { CommonModule } from '@angular/common';
+import { JwtService } from '../auth/jwt.service';
+import { tap } from 'rxjs';
+import { UpdateEoDto } from '../auth/update-dtos/register-dtos/UpdateEo.dto';
 
 @Component({
   selector: 'app-edit-eo-form',
@@ -16,20 +19,41 @@ import { CommonModule } from '@angular/common';
   encapsulation: ViewEncapsulation.None
 })
 export class EditEoFormComponent {
-  selectedPhoto: undefined
+  selectedPhoto: string | undefined
 
   registerForm = new FormGroup({
     name: new FormControl(''),
     surname: new FormControl(''),
-    address: new FormControl(''),
+    city: new FormControl(''),
+    street: new FormControl(''),
+    number: new FormControl<number | null>(1),
+    latitude: new FormControl<number | null>(1),
+    longitude: new FormControl<number | null>(1),
     phone: new FormControl(''),
     email: new FormControl({value: '', disabled: true}),
   })
   
-  constructor(private router: Router){}
+  constructor(private router: Router, private jwtService: JwtService){}
 
   editAccount(): void{
-    this.router.navigate(['']);
+    const dto: UpdateEoDto = {
+      name: this.registerForm.controls.name.value,
+      surname: this.registerForm.controls.surname.value,
+      phoneNumber: this.registerForm.controls.phone.value,
+      photo: this.selectedPhoto,
+      address: {
+        city: this.registerForm.controls.city.value,
+        street: this.registerForm.controls.street.value,
+        number: this.registerForm.controls.number.value,
+        latitude: this.registerForm.controls.latitude.value,
+        longitude: this.registerForm.controls.longitude.value,
+      }
+    }
+    this.jwtService.updateEo(1, dto).pipe(
+      tap(response => {
+          console.log('ohhhh')
+      })
+    ).subscribe()
   }
 
   uploadFile($event: any) {
