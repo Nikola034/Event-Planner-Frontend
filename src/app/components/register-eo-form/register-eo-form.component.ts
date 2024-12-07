@@ -6,6 +6,11 @@ import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
+import { JwtService } from '../auth/jwt.service';
+import { tap } from 'rxjs';
+import { RegisterEoDto } from '../auth/register-dtos/RegisterEo.dto';
+import { Role } from '../auth/register-dtos/role.dto';
+import { copyFileSync } from 'fs';
 
 @Component({
   selector: 'app-register-eo-form',
@@ -16,26 +21,53 @@ import { ToastModule } from 'primeng/toast';
   encapsulation: ViewEncapsulation.None
 })
 export class RegisterEoFormComponent {
-  selectedPhoto: undefined
+  selectedPhoto: string | undefined
 
   registerForm = new FormGroup({
     name: new FormControl(''),
     surname: new FormControl(''),
-    address: new FormControl(''),
+    city: new FormControl(''),
+    street: new FormControl(''),
+    number: new FormControl<number | null>(1),
+    latitude: new FormControl<number | null>(1),
+    longitude: new FormControl<number | null>(1),
     phone: new FormControl(''),
     email: new FormControl(''),
     password1: new FormControl(''),
     password2: new FormControl(''),
   })
   
-  constructor(private router: Router){}
+  constructor(private router: Router, private jwtService: JwtService){}
 
   createAccount(): void{
-    this.router.navigate(['']);
-    console.log('import test')
+    if(this.registerForm.controls.password1.value != this.registerForm.controls.password2.value){
+      //nisu iste sifre
+      return;
+    }
+    const dto: RegisterEoDto = {
+      name: this.registerForm.controls.name.value,
+      surname: this.registerForm.controls.surname.value,
+      phoneNumber: this.registerForm.controls.phone.value,
+      email: this.registerForm.controls.email.value,
+      password: this.registerForm.controls.password1.value,
+      photo: this.selectedPhoto,
+      role: 'EO',
+      address: {
+        city: this.registerForm.controls.city.value,
+        street: this.registerForm.controls.street.value,
+        number: this.registerForm.controls.number.value,
+        latitude: this.registerForm.controls.latitude.value,
+        longitude: this.registerForm.controls.longitude.value,
+      }
+    }
+    this.jwtService.registerEo(dto).pipe(
+      tap(response => {
+          console.log('ohhhh')
+      })
+    ).subscribe()
   }
 
   uploadFile($event: any) {
-    console.log($event.target.files[0]); // outputs the first file
+    this.selectedPhoto = $event.target.files[0].name
   }
 }

@@ -49,12 +49,52 @@
           />
         </div>
         <div class="field flex justify-content-center">
-          <input
-            formControlName="address"
-            type="text"
-            placeholder="Address*"
-            class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
-          />
+          <div class="grid">
+            <div class="col-4">
+              <input
+                formControlName="city"
+                type="text"
+                placeholder="City*"
+                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+              />
+            </div>
+            <div class="col-4">
+              <input
+                formControlName="street"
+                type="text"
+                placeholder="Street*"
+                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+              />
+            </div>
+            <div class="col-4">
+              <input
+                formControlName="number"
+                type="number"
+                placeholder="Number*"
+                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="field flex justify-content-center">
+          <div class="grid">
+            <div class="col-6">
+              <input
+                formControlName="latitude"
+                type="number"
+                placeholder="Latitude*"
+                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+              />
+            </div>
+            <div class="col-6">
+              <input
+                formControlName="longitude"
+                type="number"
+                placeholder="Longitude*"
+                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+              />
+            </div>
+          </div>
         </div>
         <div class="field flex justify-content-center">
           <textarea
