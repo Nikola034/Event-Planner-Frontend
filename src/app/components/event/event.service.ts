@@ -7,6 +7,7 @@ import { EventOverviewDTO } from './event-overview-dto';
 import { API_URL } from '../../../globals';
 import { PageResponse } from '../page/page-response';
 import { EventFilters } from './event-filters';
+import { JwtService } from '../auth/jwt.service';
 @Injectable({
     providedIn: 'root'
 })
@@ -21,7 +22,7 @@ export class EventService {
 
 
     private events: Event[] = [];
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,private jwtService:JwtService) { }
 
     getAll(): Observable<EventOverviewDTO[]> {
         return this.http.get<PageResponse>(`${API_URL}/api/v1/events/all`).pipe(
@@ -39,6 +40,15 @@ export class EventService {
         return this.http.get<PageResponse>(`${API_URL}/api/v1/events/top`).pipe(
             map((page: PageResponse) => page.content as EventOverviewDTO[])
         );
+    }
+
+    getFollowed(): Observable<EventOverviewDTO[]> {
+        let userId=this.jwtService.getIdFromToken();
+        userId="1";
+        const params={
+            userId:userId
+        };
+        return this.http.get<EventOverviewDTO[]>(`${API_URL}/api/v1/events/followed`,{params});
     }
 
 

@@ -102,6 +102,16 @@ export class EventsComponent implements OnInit {
         });
         break;
       }
+      case "followed":
+      case "Followed":
+        this.eventService.getFollowed().subscribe({
+          next: (data: EventOverviewDTO[]) => {
+            this.events = data;
+            this.totalRecords = this.events.length;
+            this.updateDisplayedEvents();
+          }
+        });
+        break;
     }
   }
 

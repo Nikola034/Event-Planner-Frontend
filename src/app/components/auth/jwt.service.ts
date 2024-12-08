@@ -3,7 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { TokensDto } from './tokens.dto';
 import { LoginDTO } from '../login-form/login.dto';
@@ -64,6 +64,16 @@ export class JwtService {
       `${environment.apiUrl}auth/login`,
       dto
     );
+  }
+
+  fastRegister(email: string): Observable<TokensDto> {
+    const params = new HttpParams().set('email', email);
+  
+  return this.httpClient.post<TokensDto>(
+    `${environment.apiUrl}auth/fast-register`,
+    null, // no request body
+    { params: params }
+  );
   }
 
   registerAu(dto: RegisterAuDto): Observable<RegisterAuResponseDto> {

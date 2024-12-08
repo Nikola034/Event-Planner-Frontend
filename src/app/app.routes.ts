@@ -17,6 +17,7 @@ import { EditEventFormComponent } from './components/edit-event-form/edit-event-
 import { AgendaComponent } from './components/agenda/agenda.component';
 import { CategoryCrudComponent } from './components/category/category-crud/category-crud.component';
 import { ServiceDetailsComponent } from './components/service/service-details/service-details.component';
+import { FollowedEventsComponent } from './components/followed-events/followed-events.component';
 
 
 export const routes: Routes = [
@@ -96,6 +97,13 @@ export const routes: Routes = [
                     breadcrumb: 'Service'
                 },
                 component: ServiceDetailsComponent
+            },
+            {
+                path: 'followed-events',
+                data: {
+                    breadcrumb: 'Followed Events'
+                },
+                component: FollowedEventsComponent
             }
         ]
     },
