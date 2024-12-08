@@ -1,4 +1,5 @@
 <div class="flex justify-content-center w-full pt-4">
+  <p-toast/>
   <div class="register-form w-27rem h-auto">
     <div
       class="header flex justify-content-center align-items-center h-8rem border-round-top-md bg-primary"
@@ -18,6 +19,7 @@
             type="text"
             placeholder="E-Mail*"
             class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+            (keyup.enter)="createAccount()"
           />
         </div>
         <div class="field justify-content-center h-3rem w-full submit">

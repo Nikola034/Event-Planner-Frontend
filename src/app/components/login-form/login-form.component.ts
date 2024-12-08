@@ -44,15 +44,15 @@ export class LoginFormComponent {
   }
 
   login() : void{
-    //this.router.navigate(['home'])
     const login: LoginDTO = {
-      email: "johnadoe@example.com",
-      password: "securepassword123"
-    }
+      email: this.loginForm.get('email')?.value || '',
+      password: this.loginForm.get('password')?.value || ''
+    };
     this.jwtService.login(login).pipe(tap(
       response => {
         this.jwtService.setTokens(response)
         if(this.jwtService.IsLoggedIn()) {
+          this.router.navigate(['home'])
           // if(this.jwtService.IsAu()){
           //   this.router.navigate([''])
           // }

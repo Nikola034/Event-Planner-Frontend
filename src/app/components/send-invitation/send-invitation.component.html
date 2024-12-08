@@ -15,10 +15,12 @@
               placeholder="Email*"
               name="email"
               class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+              (keyup.enter)="show()"
             />
           </div>
           <div class="field flex justify-content-center">
-            <p-button>INVITE MEMBER</p-button>
+            <p-toast />
+            <p-button (onClick)="show()">INVITE</p-button>
           </div>
         </form>
       </div>
