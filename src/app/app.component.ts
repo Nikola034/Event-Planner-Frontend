@@ -22,15 +22,30 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
-    this.router.events.pipe(takeUntil(this.destroy$),tap((event) =>{
-      if (event instanceof NavigationEnd) {
-        // List of routes that should not show the navbar
-        const excludedRoutes = ['/', '/change-password', '/register-sp', '/register-eo', '/register-au', '/edit-sp', '/edit-eo', '/edit-au'];
-
-        // Check if the current route is in the list of excluded routes
-        this.showBasicNavigation = !excludedRoutes.includes(event.urlAfterRedirects);
-      }
-    })).subscribe();
+    this.router.events.pipe(
+      takeUntil(this.destroy$),
+      tap((event) => {
+        if (event instanceof NavigationEnd) {
+          const excludedRoutes = [
+            '/', 
+            '/change-password', 
+            '/register-sp', 
+            '/register-eo', 
+            '/register-au', 
+            '/edit-sp', 
+            '/edit-eo', 
+            '/edit-au'
+          ];
+    
+          const currentUrl = event.urlAfterRedirects;
+          const currentFullUrl = window.location.href;
+    
+          this.showBasicNavigation = 
+            !excludedRoutes.includes(currentUrl) && 
+            !currentFullUrl.includes('inviteToken=');
+        }
+      })
+    ).subscribe();
   }
 
   title = 'EventPlanner';

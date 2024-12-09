@@ -35,8 +35,13 @@ export class LoginFormComponent implements OnInit {
         this.eventToken = { eventToken: params['inviteToken'] };
       }
     });
-    if (this.eventToken.eventToken != ""&&typeof window !== 'undefined' && window.localStorage) {
+    if (this.eventToken.eventToken != "" && typeof window !== 'undefined' && window.localStorage) {
       this.jwtService.setEventToken(this.eventToken);
+    }
+    if (typeof window !== 'undefined' && window.localStorage) {
+      if (this.jwtService.IsLoggedIn()) {
+        this.router.navigate(['home']);
+      }
     }
   }
 
@@ -65,7 +70,7 @@ export class LoginFormComponent implements OnInit {
       response => {
         this.jwtService.setTokens(response)
         if (this.jwtService.IsLoggedIn()) {
-          this.router.navigate(['home'])
+          this.router.navigate(['home']);
           // if(this.jwtService.IsAu()){
           //   this.router.navigate([''])
           // }
