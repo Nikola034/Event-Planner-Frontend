@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
@@ -11,6 +11,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { EventService } from '../event/event.service';
 
 
 
@@ -25,12 +26,13 @@ import { ToastModule } from 'primeng/toast';
 export class SendInvitationComponent {
   inviteForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private messageService: MessageService) {
+  constructor(private fb: FormBuilder, private messageService: MessageService,private eventService:EventService) {
     this.inviteForm = this.fb.group({
       email: ['']
     });
   }
 
+  @Input() eventId!:number;
 
   isValidEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -40,6 +42,17 @@ export class SendInvitationComponent {
   show() {
     if (this.isValidEmail(this.inviteForm.value.email)) {
       this.messageService.add({ severity: 'success', summary: 'Success', detail: "Invite sent to: " + this.inviteForm.value.email });
+      
+      this.eventService.inviteToEvent(this.inviteForm.value.email, this.eventId).subscribe({
+        next: (response) => {
+          // Handle successful invite
+          console.log('Invite response:', response);
+        },
+        error: (error) => {
+          // Handle error
+          console.error('Error inviting user:', error);
+        }
+      });
       this.inviteForm.reset({email:""});
     }
     else{
