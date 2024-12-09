@@ -51,7 +51,7 @@ export class EditEoFormComponent {
     }
     this.jwtService.updateEo(1, dto).pipe(
       tap(response => {
-          console.log('ohhhh')
+          
       })
     ).subscribe()
   }

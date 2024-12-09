@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { JwtService } from '../auth/jwt.service';
+import { ChangePasswordDto } from '../auth/update-dtos/register-dtos/ChangePassword.dto';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-change-password',
@@ -17,9 +20,20 @@ export class ChangePasswordComponent {
     new2: new FormControl('')
   })
   
-  constructor(private router: Router){}
+  constructor(private router: Router, private jwtService: JwtService){}
 
   changePassword(): void{
-    this.router.navigate(['']);
+    if(this.registerForm.controls.new1.value != this.registerForm.controls.new2.value){
+      //nisu iste 
+      return;
+    }
+    const dto: ChangePasswordDto = {
+      oldPassword: this.registerForm.controls.current.value,
+      newPassword1: this.registerForm.controls.new1.value,
+      newPassword2: this.registerForm.controls.new2.value
+    }
+    this.jwtService.changePassword(1, dto).pipe(tap(response => {
+
+    })).subscribe();
   }
 }

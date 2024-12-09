@@ -19,6 +19,8 @@ import { UpdateEoDto } from './update-dtos/register-dtos/UpdateEo.dto';
 import { UpdateEoResponseDto } from './update-dtos/register-dtos/UpdateEoResponse.dto';
 import { UpdateSpDto } from './update-dtos/register-dtos/UpdateSp.dto';
 import { UpdateSpResponseDto } from './update-dtos/register-dtos/UpdateSpResponse.dto';
+import { ChangePasswordDto } from './update-dtos/register-dtos/ChangePassword.dto';
+import { ChangePasswordResponseDto } from './update-dtos/register-dtos/ChangePasswordResponse.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -94,6 +96,10 @@ export class JwtService {
   }
   updateSp(id: number, dto: UpdateSpDto): Observable<UpdateSpResponseDto> {
     return this.httpClient.put<UpdateSpResponseDto>(`${environment.apiUrl}users/update-sp/${id}`, dto);
+  }
+
+  changePassword(id: number, dto: ChangePasswordDto): Observable<ChangePasswordResponseDto> {
+    return this.httpClient.put<ChangePasswordResponseDto>(`${environment.apiUrl}users/change-password/${id}`, dto);
   }
 
   IsLoggedIn(): boolean {

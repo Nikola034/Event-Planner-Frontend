@@ -65,7 +65,7 @@ export class RegisterSpFormComponent {
     }
     this.jwtService.registerSp(dto).pipe(
       tap(response => {
-          console.log('ohhhh')
+          
       })
     ).subscribe()
   }

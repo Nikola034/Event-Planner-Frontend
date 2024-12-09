@@ -52,9 +52,9 @@ export class EditSpFormComponent {
       description: this.registerForm.controls.description.value,
       photos: this.selectedPhotos
     }
-    this.jwtService.updateSp(1, dto).pipe(
+    this.jwtService.updateSp(2, dto).pipe(
       tap(response => {
-          console.log('ohhhh')
+          
       })
     ).subscribe()
   }
