@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Event } from './event';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { EventOverviewDTO } from './event-overview-dto';
 import { API_URL } from '../../../globals';
 import { PageResponse } from '../page/page-response';
 import { EventFilters } from './event-filters';
 import { JwtService } from '../auth/jwt.service';
+import { InviteResponseDTO } from './invite-response';
 @Injectable({
     providedIn: 'root'
 })
@@ -44,7 +45,6 @@ export class EventService {
 
     getFollowed(): Observable<EventOverviewDTO[]> {
         let userId=this.jwtService.getIdFromToken();
-        userId="1";
         const params={
             userId:userId
         };
@@ -77,4 +77,11 @@ export class EventService {
 
     }
 
+    inviteToEvent(email: string, eventId: number) {
+        const params = new HttpParams()
+          .set('email', email)
+          .set('eventId', eventId.toString());
+      
+        return this.http.post<InviteResponseDTO>(`${API_URL}/api/v1/events/invite`, {}, { params });
+      }
 }

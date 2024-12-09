@@ -19,6 +19,7 @@ import { UpdateEoDto } from './update-dtos/register-dtos/UpdateEo.dto';
 import { UpdateEoResponseDto } from './update-dtos/register-dtos/UpdateEoResponse.dto';
 import { UpdateSpDto } from './update-dtos/register-dtos/UpdateSp.dto';
 import { UpdateSpResponseDto } from './update-dtos/register-dtos/UpdateSpResponse.dto';
+import { EventToken } from './event-token';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,14 @@ export class JwtService {
   setTokens(tokens: TokensDto): void {
     localStorage.setItem('access_token', tokens.accessToken);
     localStorage.setItem('refresh_token', tokens.refreshToken);
+  }
+
+  setEventToken(token:EventToken):void{
+    localStorage.setItem("event_token",token.eventToken);
+  }
+
+  removeEventToken(): void {
+    localStorage.removeItem('event_token');
   }
 
   IsLogged(): boolean {
@@ -40,6 +49,15 @@ export class JwtService {
 
   getToken(): string | null {
     return localStorage.getItem('access_token');
+  }
+
+  getEventToken(): string | null {
+    return localStorage.getItem('event_token');
+  }
+
+  isInviteTokenValid():boolean{
+    if(this.getToken()===null||this.getEventToken()===null) return false;
+    return this.decodeToken(this.getToken()??"").sub==this.decodeToken(this.getEventToken()??"").userEmail;
   }
 
   decodeToken(token: string): any {
