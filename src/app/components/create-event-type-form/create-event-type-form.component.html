@@ -24,29 +24,26 @@
           ></textarea>
         </div>
         <div class="field flex justify-content-center w-full mt-7 mb-8">
-          <div class="grid">
-            <div class="col-6">
-              <p-multiSelect
-                [options]="serviceCategories"
-                placeholder="Recommended service categories*"
-                name="serviceCategories"
-                filter="false"
-                styleClass="w-full"
-              />
-            </div>
-            <div class="col-6">
-              <p-multiSelect
-                [options]="productCategories"
-                placeholder="Recommended product categories*"
-                name="productCategories"
-                filter="false"
-                styleClass="w-full"
-              />
-            </div>
-          </div>
+          <p-multiSelect
+            [options]="categories"
+            placeholder="Recommended categories*"
+            name="categories"
+            styleClass="w-full"
+            [showToggleAll]="false"
+            [filter]="false"
+            [showClear]="false"
+            [(ngModel)]="selectedCategories"
+            [ngModelOptions]="{ standalone: true }"
+            >
+            <ng-template let-category pTemplate="item">
+              <div>
+                <strong>{{ category.title }}</strong>
+              </div>
+            </ng-template>
+          </p-multiSelect>
         </div>
         <div class="field flex justify-content-center mt-8">
-          <p-button styleClass="mt-8">ADD EVENT TYPE</p-button>
+          <p-button styleClass="mt-8" (click)="createEventType()">ADD EVENT TYPE</p-button>
         </div>
       </form>
     </div>
