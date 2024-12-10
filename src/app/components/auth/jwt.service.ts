@@ -21,17 +21,26 @@ import { UpdateSpDto } from './update-dtos/register-dtos/UpdateSp.dto';
 import { UpdateSpResponseDto } from './update-dtos/register-dtos/UpdateSpResponse.dto';
 import { ChangePasswordDto } from './update-dtos/register-dtos/ChangePassword.dto';
 import { ChangePasswordResponseDto } from './update-dtos/register-dtos/ChangePasswordResponse.dto';
+import { EventToken } from './event-token';
 
 @Injectable({
   providedIn: 'root',
 })
 export class JwtService {
-  constructor(private httpClient: HttpClient, private router: Router) {}
+  constructor(private httpClient: HttpClient, private router: Router) { }
   setTokens(tokens: TokensDto): void {
     if (this.isLocalStorageAvailable()) {
       localStorage.setItem('access_token', tokens.accessToken);
       localStorage.setItem('refresh_token', tokens.refreshToken);
     }
+  }
+
+  setEventToken(token: EventToken): void {
+    localStorage.setItem("event_token", token.eventToken);
+  }
+
+  removeEventToken(): void {
+    localStorage.removeItem('event_token');
   }
 
   IsLogged(): boolean {
@@ -47,6 +56,15 @@ export class JwtService {
       return localStorage.getItem('access_token');
     }
     return null;
+  }
+
+  getEventToken(): string | null {
+    return localStorage.getItem('event_token');
+  }
+
+  isInviteTokenValid(): boolean {
+    if (this.getToken() === null || this.getEventToken() === null) return false;
+    return this.decodeToken(this.getToken() ?? "").sub == this.decodeToken(this.getEventToken() ?? "").userEmail;
   }
 
   decodeToken(token: string): any {
@@ -75,12 +93,12 @@ export class JwtService {
 
   fastRegister(email: string): Observable<TokensDto> {
     const params = new HttpParams().set('email', email);
-  
-  return this.httpClient.post<TokensDto>(
-    `${environment.apiUrl}auth/fast-register`,
-    null, // no request body
-    { params: params }
-  );
+
+    return this.httpClient.post<TokensDto>(
+      `${environment.apiUrl}auth/fast-register`,
+      null, // no request body
+      { params: params }
+    );
   }
 
   registerAu(dto: RegisterAuDto): Observable<RegisterAuResponseDto> {

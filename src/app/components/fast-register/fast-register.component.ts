@@ -1,13 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 import {FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { JwtService } from '../auth/jwt.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { EventToken } from '../auth/event-token';
 
 @Component({
   selector: 'app-fast-register',
@@ -18,12 +19,23 @@ import { ToastModule } from 'primeng/toast';
   encapsulation: ViewEncapsulation.None,
   providers: [MessageService]
 })
-export class FastRegisterComponent {
+export class FastRegisterComponent implements OnInit{
   registerForm = new FormGroup({
     email: new FormControl(''),
   })
+  eventToken: EventToken = { eventToken: "" };
   
-  constructor(private router: Router, private jwtService: JwtService, private messageService: MessageService){}
+  constructor(private router: Router, private jwtService: JwtService, private messageService: MessageService,private route: ActivatedRoute){}
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      if (params['inviteToken']) {
+        this.eventToken = { eventToken: params['inviteToken'] };
+      }
+    });
+    if (this.eventToken.eventToken != ""&&typeof window !== 'undefined' && window.localStorage) {
+      this.jwtService.setEventToken(this.eventToken);
+    }
+  }
 
   isValidEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

@@ -104,6 +104,7 @@ export class EventsComponent implements OnInit {
       }
       case "followed":
       case "Followed":
+        if (typeof window !== 'undefined' && window.localStorage){
         this.eventService.getFollowed().subscribe({
           next: (data: EventOverviewDTO[]) => {
             this.events = data;
@@ -111,6 +112,7 @@ export class EventsComponent implements OnInit {
             this.updateDisplayedEvents();
           }
         });
+      }
         break;
     }
   }

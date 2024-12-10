@@ -9,6 +9,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { SendInvitationComponent } from "../send-invitation/send-invitation.component";
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
+import { CreateEventTypeDTO } from '../create-event-type-form/dtos/create-event-type.dto';
 
 @Component({
   selector: 'app-create-event-form',
@@ -30,60 +31,7 @@ export class CreateEventFormComponent {
     public: ['']
   });}
   
-  eventTypes: string[] = [
-    'vanue',
-    'food',
-    'drinks',
-    'decorations',
-    'transportation',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference'
-  ];
-  services: string[] = [
-    'vanue',
-    'food',
-    'drinks',
-    'decorations',
-    'transportation',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference'
-  ];
-  products: string[] = [
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference'
-  ]
+  eventTypes: CreateEventTypeDTO[] = []
+  services: [] = []
+  products: string[] = []
 }
