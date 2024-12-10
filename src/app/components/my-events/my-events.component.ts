@@ -65,16 +65,20 @@ export class MyEventsComponent {
   ngOnInit() {
     switch (this.panelType) {
       default: {
-        this.eventService.getByEo(1/*this.jwtService.getIdFromToken()*/).subscribe({
-          next: (data: EventOverviewDTO[]) => {
-            this.events = data;
-            this.totalRecords = this.events.length;
-            this.updateDisplayedEvents();
-          }
-        });
+        this.loadData();
         break;
       }
     }
+  }
+
+  loadData(): void{
+    this.eventService.getByEo(1/*this.jwtService.getIdFromToken()*/).subscribe({
+      next: (data: EventOverviewDTO[]) => {
+        this.events = data;
+        this.totalRecords = this.events.length;
+        this.updateDisplayedEvents();
+      }
+    });
   }
 
   updateDisplayedEvents() {
