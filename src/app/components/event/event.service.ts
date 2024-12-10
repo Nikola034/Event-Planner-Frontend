@@ -8,6 +8,7 @@ import { API_URL } from '../../../globals';
 import { PageResponse } from '../page/page-response';
 import { EventFilters } from './event-filters';
 import { JwtService } from '../auth/jwt.service';
+import { environment } from '../../../environments/environment';
 @Injectable({
     providedIn: 'root'
 })
@@ -29,7 +30,11 @@ export class EventService {
             map((page: PageResponse) => page.content as EventOverviewDTO[])
         );
     }
-
+    getByEo(id: number | null): Observable<EventOverviewDTO[]> {
+        return this.http.get<PageResponse>(`${environment.apiUrl}events/eo/${id}`).pipe(
+            map((page: PageResponse) => page.content as EventOverviewDTO[])
+        );
+    }
 
     getById(id: number): Observable<Event | undefined> {
         const event = this.events.find(e => e.id === id);
@@ -44,7 +49,7 @@ export class EventService {
 
     getFollowed(): Observable<EventOverviewDTO[]> {
         let userId=this.jwtService.getIdFromToken();
-        userId="1";
+        userId=1;
         const params={
             userId:userId
         };

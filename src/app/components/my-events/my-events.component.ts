@@ -18,6 +18,7 @@ import { MerchandiseService } from '../merchandise/merchandise.service';
 import { Event } from '../event/event';
 import { Router } from '@angular/router';
 import { EventOverviewDTO } from '../event/event-overview-dto';
+import { JwtService } from '../auth/jwt.service';
 
 interface PageEvent {
   first: number;
@@ -48,7 +49,7 @@ interface PageEvent {
   templateUrl: './my-events.component.html',
   styleUrl: './my-events.component.scss'
 })
-export class MyEventsComponent  implements OnInit {
+export class MyEventsComponent {
   public events: EventOverviewDTO[] = [];
   public displayedEvents: EventOverviewDTO[] = [];
   public sortOptions: string[] = [];
@@ -59,12 +60,12 @@ export class MyEventsComponent  implements OnInit {
   public totalRecords: number = 0;
   @Input() panelTitle: string = 'My Events';
   @Input() panelType: string = '';
-  constructor(private eventService: EventService, private merchandiseService: MerchandiseService, private router: Router) { }
+  constructor(private eventService: EventService, private merchandiseService: MerchandiseService, private router: Router, private jwtService: JwtService) { }
 
-  async ngOnInit() {
+  ngOnInit() {
     switch (this.panelType) {
       default: {
-        this.eventService.getAll().subscribe({
+        this.eventService.getByEo(1/*this.jwtService.getIdFromToken()*/).subscribe({
           next: (data: EventOverviewDTO[]) => {
             this.events = data;
             this.totalRecords = this.events.length;

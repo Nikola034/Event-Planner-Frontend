@@ -28,8 +28,10 @@ import { ChangePasswordResponseDto } from './update-dtos/register-dtos/ChangePas
 export class JwtService {
   constructor(private httpClient: HttpClient, private router: Router) {}
   setTokens(tokens: TokensDto): void {
-    localStorage.setItem('access_token', tokens.accessToken);
-    localStorage.setItem('refresh_token', tokens.refreshToken);
+    if (this.isLocalStorageAvailable()) {
+      localStorage.setItem('access_token', tokens.accessToken);
+      localStorage.setItem('refresh_token', tokens.refreshToken);
+    }
   }
 
   IsLogged(): boolean {
@@ -41,7 +43,10 @@ export class JwtService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem('access_token');
+    if (this.isLocalStorageAvailable()) {
+      return localStorage.getItem('access_token');
+    }
+    return null;
   }
 
   decodeToken(token: string): any {
@@ -134,35 +139,42 @@ export class JwtService {
     return '';
   }
 
-  getIdFromToken(): string {
-    let token = localStorage.getItem('access_token');
+  getIdFromToken(): number {
+    if (this.isLocalStorageAvailable()){
+      let token = localStorage.getItem('access_token');
     if (token != null) {
       const tokenInfo = this.decodeToken(token);
       const id = tokenInfo.id;
-      return id;
+      return parseInt(id, 10);
     }
-    return '';
+    }
+    return -1;
+    
   }
 
   Logout(): void {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+    if (this.isLocalStorageAvailable()) {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+    }
   }
 
   refreshAccessToken(): Observable<any> {
-    const refreshToken = localStorage.getItem('refresh_token') || '';
-    const accessToken = localStorage.getItem('access_token') || '';
-
+    const refreshToken = this.isLocalStorageAvailable() ? localStorage.getItem('refresh_token') || '' : '';
+    const accessToken = this.isLocalStorageAvailable() ? localStorage.getItem('access_token') || '' : '';
+  
     const url = `${environment.apiUrl}/auth/refreshToken`;
-
+  
     const token: TokensDto = {
       accessToken,
       refreshToken,
     };
     return this.httpClient.post<TokensDto>(url, token).pipe(
       tap((response) => {
-        localStorage.setItem('access_token', response.accessToken);
-        localStorage.setItem('refresh_token', response.refreshToken);
+        if (this.isLocalStorageAvailable()) {
+          localStorage.setItem('access_token', response.accessToken);
+          localStorage.setItem('refresh_token', response.refreshToken);
+        }
       }),
       catchError((error) => {
         this.router.navigate(['/auth/login']);
@@ -170,5 +182,9 @@ export class JwtService {
         return throwError(error);
       })
     );
+  }
+
+  private isLocalStorageAvailable(): boolean {
+    return typeof localStorage !== 'undefined';
   }
 }
