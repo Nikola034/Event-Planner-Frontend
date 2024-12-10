@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { SearchPageComponent } from './components/search-page/search-page.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
-import { ServiceCrudComponent } from './components/service-crud/service-crud.component';
+import { ServiceCrudComponent } from './components/service/service-crud/service-crud.component';
 import { RegisterEoFormComponent } from './components/register-eo-form/register-eo-form.component';
 import { RegisterSpFormComponent } from './components/register-sp-form/register-sp-form.component';
 import { EditAuFormComponent } from './components/edit-au-form/edit-au-form.component';

@@ -1,0 +1,74 @@
+<p-table [value]="allServices"
+        [tableStyle]="{'min-width': '60rem'}"
+        [paginator]="true"
+        [rows]="5"
+        [rowsPerPageOptions]="[3, 5, 10, 20]"
+        [globalFilterFields]="['Category', 'Event Type', 'Price', 'available']">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            <h2>Services</h2>
+            <p-button icon="pi pi-plus" (onClick)="showAddServiceForm()"/>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Specificity</th>
+            <th>Image</th>
+            <th>Base Price</th>
+            <th>Discounted Price</th>
+            <th>Category</th>
+            <th>Event Types</th>
+            <th>Available</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        <tr> <!--Ovaj ovde red-->
+            <th colspan="2">
+                <p-columnFilter
+                type="text" field="service.category.title" placeholder="Filter category" ariaLabel="Filter Category"/>
+            </th>
+            <th colspan="3">
+                <p-columnFilter
+                type="text" field="service.eventTypes.title" placeholder="Filter event Types" ariaLabel="Filter Event Types"/>
+            </th>
+            <th colspan="3">
+                <p-columnFilter
+                type="text" field="service.price" placeholder="Filter price" ariaLabel="Filter Price"/>
+            </th>
+            <th colspan="2">
+                <p-columnFilter type="boolean" field="available"/>
+            </th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-service>
+        <tr>
+            <td>{{service.title}}</td>
+            <td>{{service.description}}</td>
+            <td>{{service.specificity}}</td>
+            <td></td>
+            <!-- <td><img [src]="service.photos[0].photo" [alt]="service.name" width="100" class="shadow-4"/></td> -->
+            <td>{{service.price | currency:'USD'}}</td>
+            <td>{{service.price - (service.price*service.discount)/100 | currency:'USD'}}</td>
+            <td>{{service.category.title}}</td>
+            <td>
+                <ng-container *ngFor="let eventType of service.eventTypes; let last = last">
+                    <div>{{eventType.title}},</div>
+                </ng-container>
+            </td>
+            <td>
+                <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': service.available, 'text-red-500 pi-times-circle': !service.available }"></i>
+            </td>
+            <td><p-button icon="pi pi-pencil" (onClick)="showEditServiceForm(service)"></p-button></td>
+            <td><p-button icon="pi pi-trash" (onClick)="deleteService(service)"></p-button></td>
+        </tr>
+    </ng-template>
+</p-table>
+<p-dialog header="Edit Service" [(visible)]="displayEditForm" [modal]="true">
+    <app-edit-service-form [serviceData]="selectedService" (serviceUpdated)="updateService($event)"></app-edit-service-form>
+</p-dialog> 
+<p-dialog header="Add Service" [(visible)]="displayAddForm" [modal]="true">
+    <app-add-service-form (serviceCreated)="createService($event)"></app-add-service-form>
+</p-dialog>
