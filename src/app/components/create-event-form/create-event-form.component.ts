@@ -10,6 +10,11 @@ import { SendInvitationComponent } from "../send-invitation/send-invitation.comp
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
 import { CreateEventTypeDTO } from '../create-event-type-form/dtos/create-event-type.dto';
+import { ServiceService } from '../service/service.service';
+import { tap } from 'rxjs';
+import { response } from 'express';
+import { Service } from '../service/service';
+import { ProductService } from '../product/product.service';
 
 @Component({
   selector: 'app-create-event-form',
@@ -21,7 +26,7 @@ import { CreateEventTypeDTO } from '../create-event-type-form/dtos/create-event-
 export class CreateEventFormComponent {
   addEventTypeForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private serviceService: ServiceService, private productService: ProductService) {
     this.addEventTypeForm = this.fb.group({
     title: [''],
     description: [''],
@@ -32,6 +37,13 @@ export class CreateEventFormComponent {
   });}
   
   eventTypes: CreateEventTypeDTO[] = []
-  services: [] = []
+  services: Service[] = []
   products: string[] = []
+
+  ngOnInit(){
+      this.serviceService.getAll().pipe(tap(response => {
+        console.log(response)
+      })).subscribe()
+      
+  }
 }

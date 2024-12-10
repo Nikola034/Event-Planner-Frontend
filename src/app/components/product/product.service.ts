@@ -5,12 +5,16 @@ import { PageResponse } from '../page/page-response';
 import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../../../globals';
 import { MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto';
+import { Product } from './product';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
     constructor(private http: HttpClient){}
+
+    
+
     search(filters: ProductFilters | null = null, search: string = '',sort:string='price'): Observable<MerchandiseOverviewDTO[]> {
         if(!filters?.isActive) return of([]);
         const params = {
