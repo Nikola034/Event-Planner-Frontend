@@ -1,26 +1,31 @@
 <p-dialog header="Reserve" [modal]="true" [(visible)]="visible" [contentStyle]="{ overflow: 'visible' }">
+    <p-toast />
+
+    <h1 class="text-xl mb-3">Taken timeslots:</h1>
+    <p-listbox [options]="timeslots">
+        <ng-template let-timeslots pTemplate="item">
+            <div class="flex align-items-center">
+                <div>{{timeslots.startTime}} {{ timeslots.endTime }}</div>
+            </div>
+        </ng-template>
+    </p-listbox>
     <h2 class="text-xl mb-3">Reserve Service</h2>
-    
     <form [formGroup]="reservationForm">
-        <div class="field mb-3">
-            <span class="p-float-label">
-                <input 
-                    type="number" 
-                    pInputText 
-                    formControlName="eventId" 
-                    class="w-full"
-                    id="eventId">
-                <label for="eventId">Event ID</label>
-            </span>
-        </div>
+
+
+
+        <p-listbox [options]="events" formControlName="selectedEvent">
+            <ng-template let-events pTemplate="item">
+                <div class="flex align-items-center">
+                    <div>{{events.title}} {{ events.date }}</div>
+                </div>
+            </ng-template>
+        </p-listbox>
+        <br>
 
         <div class="field mb-3">
             <span class="p-float-label">
-                <p-calendar 
-                    formControlName="startTime"
-                    [showTime]="true"
-                    dateFormat="yy-mm-dd"
-                    styleClass="w-full"
+                <p-calendar formControlName="startTime" [showTime]="true" dateFormat="yy-mm-dd" styleClass="w-full"
                     inputId="startTime">
                 </p-calendar>
                 <label for="startTime">Start Time</label>
@@ -29,11 +34,7 @@
 
         <div class="field mb-3">
             <span class="p-float-label">
-                <p-calendar 
-                    formControlName="endTime"
-                    [showTime]="true"
-                    dateFormat="yy-mm-dd" 
-                    styleClass="w-full"
+                <p-calendar formControlName="endTime" [showTime]="true" dateFormat="yy-mm-dd" styleClass="w-full"
                     inputId="endTime">
                 </p-calendar>
                 <label for="endTime">End Time (Optional)</label>
@@ -41,11 +42,7 @@
         </div>
 
         <div class="flex gap-2 mt-4">
-            <p-button 
-                label="Reserve" 
-                styleClass="w-6"
-                severity="primary"
-                (onClick)="submitReservation()">
+            <p-button label="Reserve" styleClass="w-6" severity="primary" (onClick)="submitReservation()">
             </p-button>
         </div>
     </form>

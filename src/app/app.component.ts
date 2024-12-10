@@ -38,7 +38,9 @@ export class AppComponent implements OnInit {
           ];
     
           const currentUrl = event.urlAfterRedirects;
-          const currentFullUrl = window.location.href;
+          const currentFullUrl = typeof window !== 'undefined' 
+          ? window.location.href 
+          : '';
     
           this.showBasicNavigation = 
             !excludedRoutes.includes(currentUrl) && 

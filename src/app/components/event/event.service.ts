@@ -35,6 +35,7 @@ export class EventService {
       .pipe(map((page: PageResponse) => page.content as EventOverviewDTO[]));
   }
   getByEo(id: number | null): Observable<EventOverviewDTO[]> {
+    if(id===-1)return of([]);
     return this.http
       .get<PageResponse>(`${environment.apiUrl}events/eo/${id}`)
       .pipe(map((page: PageResponse) => page.content as EventOverviewDTO[]));
