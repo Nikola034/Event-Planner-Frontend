@@ -27,7 +27,7 @@ export class HomePageComponent implements OnInit {
       if(!this.jwtService.isInviteTokenValid())return;
       this.eventToken = this.jwtService.getEventToken() ?? "";
       this.decodedEventToken=this.jwtService.decodeToken(this.eventToken);
-      const userId=parseInt(this.jwtService.getIdFromToken());
+      const userId=this.jwtService.getIdFromToken();
       this.userService.followEvent(userId, this.decodedEventToken.id).subscribe({
         next: () => {
           this.confirmationService.confirm({

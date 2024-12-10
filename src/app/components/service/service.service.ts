@@ -11,14 +11,16 @@ import { ReservationResponse } from './reservation-response';
 import { CreateRequest } from './create-request';
 import { CreateServiceResponse } from './create-response';
 import { UpdateRequest } from './update-request';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
   private services: Service[] = [];
-  getAll(): Observable<Service[]> {
-    return of(this.services);
+  getAll(): Observable<MerchandiseOverviewDTO[]> {
+    return this.http
+      .get<MerchandiseOverviewDTO[]>(`${environment}services`)
   }
   getById(id: number): Observable<Service | undefined> {
     const event = this.services.find(e => e.id === id);

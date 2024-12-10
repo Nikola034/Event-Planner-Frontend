@@ -1,4 +1,6 @@
-<p-table [value]="eventTypes" class="w-full" [responsiveLayout]="'scroll'">
+<p-table [value]="eventTypes" class="w-full" [responsiveLayout]="'scroll'" [paginator]="true"
+[rows]="5"
+[rowsPerPageOptions]="[3, 5, 10, 20]">
   <ng-template pTemplate="caption">
     <div class="flex align-items-center justify-content-between">
       <h2>Event Types</h2>
@@ -20,7 +22,7 @@
       <td>{{ eventType.description }}</td>
       <td>
         <ul>
-          <li *ngFor="let item of eventType.recommendedServices">{{ item }}</li>
+          <li *ngFor="let item of eventType.recommendedCategories">{{ item.title }}</li>
         </ul>
       </td>
       <td class="text-center">
@@ -37,9 +39,9 @@
         <p-button
           class="mr-2"
           icon="pi pi-pencil"
-          (onClick)="showEditForm()"
+          (click)="showEditForm(eventType.id)"
         ></p-button>
-        <p-button icon="pi pi-times"></p-button>
+        <p-button icon="pi pi-times" (click)="deactivateEventType(eventType.id)"></p-button>
       </td>
     </tr>
   </ng-template>

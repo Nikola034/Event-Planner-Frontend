@@ -5,11 +5,24 @@ import { ButtonModule } from 'primeng/button';
 import { CreateEventTypeFormComponent } from "../create-event-type-form/create-event-type-form.component";
 import { EditEventTypeFormComponent } from '../edit-event-type-form/edit-event-type-form.component';
 import { DialogModule } from 'primeng/dialog';
+import { Router } from '@angular/router';
+import { PaginatorModule } from 'primeng/paginator';
+import { CreateEventTypeResponseDTO } from '../create-event-type-form/dtos/create-event-type-response.dto';
+import { EventTypeService } from '../create-event-type-form/event-type.service';
+import { tap } from 'rxjs';
+
+
+interface PageEvent {
+  first: number;
+  rows: number;
+  page: number;
+  pageCount: number;
+}
 
 @Component({
   selector: 'app-event-types',
   standalone: true,
-  imports: [TableModule, CommonModule, ButtonModule, CreateEventTypeFormComponent, EditEventTypeFormComponent, DialogModule],
+  imports: [TableModule, CommonModule, ButtonModule, CreateEventTypeFormComponent, EditEventTypeFormComponent, DialogModule, PaginatorModule],
   templateUrl: './event-types.component.html',
   styleUrl: './event-types.component.scss'
 })
@@ -18,27 +31,32 @@ export class EventTypesComponent {
   displayAddForm: boolean = false;
   displayEditForm: boolean = false;
 
-  eventTypes = [
-    {
-      title: 'Birthday Party',
-      description: 'A fun-filled birthday celebration',
-      recommendedServices: ['Cake', 'Balloons', 'Catering'],
-      active: true,
-    },
-    {
-      title: 'Wedding',
-      description: 'A beautiful wedding ceremony',
-      recommendedServices: ['Photography', 'Decorations', 'Catering'],
-      active: false,
-    },
-    // Add more data as needed
-  ];
+  public eventTypes: CreateEventTypeResponseDTO[] = [];
+  public displayedEventTypes: CreateEventTypeResponseDTO[] = [];
+
+  public first: number = 0;
+  public rows: number = 3;
+  public totalRecords: number = 0;
+
+  constructor(private router: Router, private eventTypeService: EventTypeService){}
+
+  ngOnInit(){
+    this.loadData()
+  }
+
+  loadData(): void{
+    this.eventTypeService.getAll().pipe(tap(response => {
+      this.eventTypes = response
+      console.log(response)
+    })).subscribe();
+  }
 
   showAddForm() {
     this.displayAddForm = true;
   }
-  showEditForm() {
+  showEditForm(eventTypeId: number) {
     this.displayEditForm = true;
+    localStorage.setItem("eventTypeId", eventTypeId.toString())
   }
 
   onUpdate(eventType: any): void {
@@ -49,5 +67,22 @@ export class EventTypesComponent {
   onDelete(eventType: any): void {
     console.log('Delete clicked for', eventType);
     // Implement your delete logic here
+  }
+
+  updateDisplayedEventTypes() {
+    const end = this.first + this.rows;
+    this.displayedEventTypes = this.eventTypes.slice(this.first, end);
+  }
+
+  deactivateEventType(id: number){
+    this.eventTypeService.deactivate(id).pipe(tap(response => {
+      this.loadData();
+    })).subscribe()
+  }
+
+  onPageChange(event: PageEvent) {
+    this.first = event.first;
+    this.rows = event.rows;
+    this.updateDisplayedEventTypes();
   }
 }

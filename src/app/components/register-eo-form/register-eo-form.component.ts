@@ -62,7 +62,7 @@ export class RegisterEoFormComponent {
     }
     this.jwtService.registerEo(dto).pipe(
       tap(response => {
-          console.log('ohhhh')
+          
       })
     ).subscribe()
   }

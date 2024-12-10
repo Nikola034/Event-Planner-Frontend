@@ -9,6 +9,12 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { SendInvitationComponent } from "../send-invitation/send-invitation.component";
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
+import { CreateEventTypeDTO } from '../create-event-type-form/dtos/create-event-type.dto';
+import { ServiceService } from '../service/service.service';
+import { tap } from 'rxjs';
+import { response } from 'express';
+import { Service } from '../service/service';
+import { ProductService } from '../product/product.service';
 
 @Component({
   selector: 'app-create-event-form',
@@ -20,7 +26,7 @@ import { CommonModule } from '@angular/common';
 export class CreateEventFormComponent {
   addEventTypeForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private serviceService: ServiceService, private productService: ProductService) {
     this.addEventTypeForm = this.fb.group({
     title: [''],
     description: [''],
@@ -30,60 +36,14 @@ export class CreateEventFormComponent {
     public: ['']
   });}
   
-  eventTypes: string[] = [
-    'vanue',
-    'food',
-    'drinks',
-    'decorations',
-    'transportation',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference'
-  ];
-  services: string[] = [
-    'vanue',
-    'food',
-    'drinks',
-    'decorations',
-    'transportation',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference'
-  ];
-  products: string[] = [
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference',
-    'wedding',
-    'funeral',
-    'birthday',
-    'conference'
-  ]
+  eventTypes: CreateEventTypeDTO[] = []
+  services: Service[] = []
+  products: string[] = []
+
+  ngOnInit(){
+      this.serviceService.getAll().pipe(tap(response => {
+        console.log(response)
+      })).subscribe()
+      
+  }
 }

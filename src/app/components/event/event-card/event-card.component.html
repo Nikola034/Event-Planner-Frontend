@@ -40,7 +40,7 @@
         label="Agenda"
         styleClass="p-button-primary text-color mr-2"
         *ngIf="0 === 0"
-        (onClick)="showAgenda()"
+        (onClick)="showAgenda(event.id)"
       ></p-button>
       <p-button
         label="Send Invitations"
@@ -52,7 +52,7 @@
         class="mr-2"
         icon="pi pi-pencil"
         *ngIf="0 === 0"
-        (onClick)="showEditEventForm()"
+        (onClick)="showEditEventForm(event.id)"
       ></p-button>
     </div>
     <div class="flex justify-content-end">
