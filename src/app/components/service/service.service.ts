@@ -12,6 +12,7 @@ import { CreateRequest } from './create-request';
 import { CreateServiceResponse } from './create-response';
 import { UpdateRequest } from './update-request';
 import { environment } from '../../../environments/environment';
+import { TimeslotDTO } from '../my-events/dtos/CreateEventResponse.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,10 @@ export class ServiceService {
 
   reserve(serviceId: number, reservationRequest: ReservationRequest): Observable<any> {
     return this.http.post(`${API_URL}/api/v1/services/${serviceId}/reserve`, reservationRequest);
+  }
+
+  getServiceTimeslots(serviceId: number): Observable<TimeslotDTO[]> {
+    return this.http.get<TimeslotDTO[]>(`${API_URL}/api/v1/services/${serviceId}/timeslots`);
   }
   
   create(createRequest: CreateRequest): Observable<CreateServiceResponse> {
