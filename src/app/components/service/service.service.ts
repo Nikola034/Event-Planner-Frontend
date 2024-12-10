@@ -8,6 +8,9 @@ import { MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto'
 import { API_URL } from '../../../globals';
 import { ReservationRequest } from './reservation-request';
 import { ReservationResponse } from './reservation-response';
+import { CreateRequest } from './create-request';
+import { CreateServiceResponse } from './create-response';
+import { UpdateRequest } from './update-request';
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +48,19 @@ export class ServiceService {
     return this.http.post(`${API_URL}/api/v1/services/${serviceId}/reserve`, reservationRequest);
   }
   
+  create(createRequest: CreateRequest): Observable<CreateServiceResponse> {
+    return this.http.post<CreateServiceResponse>(`${API_URL}/api/v1/services/create`, createRequest);
+  }
 
+  getAllBySpId(serviceProviderId: number): Observable<CreateServiceResponse[]> {
+    return this.http.get<CreateServiceResponse[]>(`${API_URL}/api/v1/services/sp/${serviceProviderId}`);
+  }
+
+  update(serviceId: number, updateRequest: UpdateRequest): Observable<CreateServiceResponse> {
+    return this.http.put<CreateServiceResponse>(`${API_URL}/api/v1/services/update/${serviceId}`, updateRequest);
+  }
+
+  delete(serviceId: number) {
+    return this.http.put(`${API_URL}/api/v1/services/delete/${serviceId}`,null);
+  }
 }
