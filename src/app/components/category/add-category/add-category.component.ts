@@ -2,6 +2,9 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { Category } from '../category';
+import { CategoryDto } from '../category.dto';
+import { CreateCategory } from '../create-request';
+import { CategoryService } from '../category.service';
 
 @Component({
   selector: 'app-add-category',
@@ -12,9 +15,9 @@ import { Category } from '../category';
 })
 export class AddCategoryComponent implements OnInit {
   addCategoryForm!: FormGroup;
-  @Output() categoryCreated = new EventEmitter<Category>();
+  @Output() categoryCreated = new EventEmitter<boolean>();
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private categoryService: CategoryService) {}
   ngOnInit(): void {
     this.addCategoryForm = this.fb.group({
       title: [''],
@@ -23,16 +26,21 @@ export class AddCategoryComponent implements OnInit {
   }
 
   onSubmit() {
-    const createdCategory: Category = {
-      id: this.generateId(),
+    const createdCategory: CreateCategory = {
       title: this.addCategoryForm.value.title,
-      description: this.addCategoryForm.value.description,
-      pending: false
+      description: this.addCategoryForm.value.description
     };
-    this.categoryCreated.emit(createdCategory);
-  }
 
-  generateId() { //temporary helper function that generates category id, this will be removed after connecting frontend with backend
-    return 6;
+    
+    this.categoryService.create(createdCategory).subscribe({
+      next: (response) => {
+        this.categoryCreated.emit(true);
+      },
+      error: (err) => {
+        this.categoryCreated.emit(false);
+      }
+    });
+
+    this.addCategoryForm.reset();
   }
 }
