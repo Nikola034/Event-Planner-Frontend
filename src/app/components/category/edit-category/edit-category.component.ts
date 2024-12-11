@@ -2,6 +2,9 @@ import { Component, Input, OnChanges, EventEmitter, Output, SimpleChanges } from
 import { Category } from '../category';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { UpdateCategory } from '../update-request';
+import { CategoryService } from '../category.service';
+import { CategoryDto } from '../category.dto';
 
 @Component({
   selector: 'app-edit-category',
@@ -11,11 +14,11 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './edit-category.component.scss'
 })
 export class EditCategoryComponent implements OnChanges {
-  @Input() categoryData!: Category;
-  @Output() categoryUpdated = new EventEmitter<Category>();
+  @Input() categoryData!: CategoryDto;
+  @Output() categoryUpdated = new EventEmitter<boolean>();
   editCategoryForm!: FormGroup;
 
-  constructor() {
+  constructor(private categoryService: CategoryService) {
     this.editCategoryForm = new FormGroup({
       title: new FormControl(''),
       description: new FormControl('')
@@ -33,11 +36,20 @@ export class EditCategoryComponent implements OnChanges {
   }
 
   onSubmit() {
-    const updatedCategory: Category = {
-      ...this.categoryData,
+    const updatedCategory: UpdateCategory = {
       title: this.editCategoryForm.value.title,
-      description: this.editCategoryForm.value.description
+      description: this.editCategoryForm.value.description,
+      pending: this.categoryData.pending
     };
-    this.categoryUpdated.emit(updatedCategory);
+    console.log("uslo u funkciju");
+    console.log(this.categoryData.id);
+    this.categoryService.update(this.categoryData.id, updatedCategory).subscribe({
+      next: (response) => {
+        this.categoryUpdated.emit(true);
+      },
+      error: (err) => {
+        this.categoryUpdated.emit(false);
+      }
+    });
   }
 }

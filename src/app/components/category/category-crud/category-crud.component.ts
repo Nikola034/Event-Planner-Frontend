@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Category } from '../category';
 import { Table, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { EditCategoryComponent } from "../edit-category/edit-category.component";
 import { AddCategoryComponent } from "../add-category/add-category.component";
 import { DialogModule } from 'primeng/dialog';
+import { CategoryService } from '../category.service';
+import { CategoryDto } from '../category.dto';
+import { response } from 'express';
 
 @Component({
   selector: 'app-category-crud',
@@ -13,62 +16,110 @@ import { DialogModule } from 'primeng/dialog';
   templateUrl: './category-crud.component.html',
   styleUrl: './category-crud.component.scss'
 })
-export class CategoryCrudComponent {
+export class CategoryCrudComponent implements OnInit {
+  addedCategories: CategoryDto[] = [];
+  pendingCategories: CategoryDto[] = [];
   displayAddForm: boolean = false;
+  selectedCategory!: CategoryDto;
+  displayEditForm: boolean = false;
+  displayError: boolean = false;
+  errorMessage: String = "";
+
+  constructor(private categoryService: CategoryService) {}
+  ngOnInit() {
+    this.categoryService.getAllApproved().subscribe({
+      next: (response) => {
+        this.addedCategories = response;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+
+    this.categoryService.getAllPending().subscribe({
+      next: (response) => {
+        this.pendingCategories = response;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
+  getAllCategories() {
+    this.categoryService.getAllApproved().subscribe({
+      next: (response) => {
+        this.addedCategories = response;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+
+    this.categoryService.getAllPending().subscribe({
+      next: (response) => {
+        this.pendingCategories = response;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
   showAddCategoryForm() {
     this.displayAddForm = true;
   }
 
-  selectedCategory!: Category;
-  displayEditForm: boolean = false;
-  showEditCategoryForm(category: Category) {
+  showEditCategoryForm(category: CategoryDto) {
     this.selectedCategory = category;
     this.displayEditForm = true;
   }
 
-  approveCategorySuggestion(category: Category) {
-    this.pendingCategories = this.pendingCategories.filter(c => c.id !== category.id);
+  approveCategorySuggestion(category: CategoryDto) {
+    this.categoryService.approve(category.id).subscribe({
+      next: (response) => {
+        this.getAllCategories();
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
 
-    if(!this.addedCategories.some(c => c.id === category.id)) {
-      this.addedCategories.push(category);
+  deleteCategory(category: CategoryDto) {
+    this.categoryService.delete(category.id).subscribe({
+      next: (response) => {
+        this.getAllCategories();
+      },
+      error: (err) => {
+        this.displayError = true;
+        this.errorMessage = err.error.message;
+        console.error(err.error.message);
+      }
+    });
+  }
+
+  updateCategory(categoryUpdated: boolean) {
+    if(categoryUpdated) {
+      this.getAllCategories();
     }
-  }
-
-  deleteExistingCategory(category: Category) {
-    this.addedCategories = this.addedCategories.filter(c => c.id !== category.id);
-  }
-
-  deletePendingCategory(category: Category) {
-    this.pendingCategories = this.pendingCategories.filter(c => c.id !== category.id);
-  }
-
-  updateCategory(updatedCategory: Category) {
-    let index = this.addedCategories.findIndex(c => c.id === updatedCategory.id);
-    if(index !== -1) {
-      this.addedCategories[index] = { ...updatedCategory };
-    }
-
-    index = this.pendingCategories.findIndex(c => c.id === updatedCategory.id);
-    if(index !== -1) {
-      this.pendingCategories[index] = { ...updatedCategory };
+    else {
+      this.displayError = true;
+      this.errorMessage = "Failed to update category!";
     }
 
     this.displayEditForm = false;
   }
 
-  createCategory(createdCategory: Category) {
-    this.addedCategories.push(createdCategory);
+  createCategory(categoryCreated: boolean) {
+    if(categoryCreated) {
+      this.getAllCategories();
+    } 
+    else {
+      this.displayError = true;
+      this.errorMessage = "Failed to create category!";
+    } 
+
     this.displayAddForm = false;
   }
-
-  addedCategories: Category[] = [
-    { id: 1, title: 'vanue', description: 'place to celebrate your special day', pending: false },
-    { id: 2, title: 'food', description: 'something to fil your stomach', pending: false },
-    { id: 3, title: 'drinks', description: 'something to fil your stomach', pending: false }
-  ];
-
-  pendingCategories: Category[] = [
-    { id: 4, title: 'decorations', description: 'something to makes your place nicer', pending: true },
-    { id: 5, title: 'transportation', description: 'an easy way to make it to your event', pending: true }
-  ]
 }
