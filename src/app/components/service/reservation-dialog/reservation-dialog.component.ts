@@ -13,6 +13,7 @@ import { JwtService } from '../../auth/jwt.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { TimeslotDTO } from '../../my-events/dtos/CreateEventResponse.dto';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-reservation-dialog',
@@ -24,7 +25,8 @@ import { TimeslotDTO } from '../../my-events/dtos/CreateEventResponse.dto';
     ReactiveFormsModule,
     InputNumberModule,
     ListboxModule,
-    ToastModule
+    ToastModule,
+    CommonModule
   ],
   templateUrl: './reservation-dialog.component.html',
   styleUrl: './reservation-dialog.component.scss',
@@ -84,13 +86,15 @@ export class ReservationDialogComponent implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'Fail', detail: "Event not selected!" });
         return;
       }
+      const timezoneOffset = new Date().getTimezoneOffset() * 60000; // offset in milliseconds
       const reservationData: ReservationRequest = {
         eventId: this.reservationForm.value.selectedEvent.id,
-        startTime: this.reservationForm.value.startTime,
-        endTime: this.reservationForm.value.endTime,
+        startTime: new Date((this.reservationForm.value.startTime).getTime() - timezoneOffset),
+        endTime: this.reservationForm.value.endTime!=null?new Date((this.reservationForm.value.endTime).getTime() - timezoneOffset):null,
         organizerId: this.jwtService.getIdFromToken()
       };
-
+      
+      
 
 
       this.serviceService.reserve(this.serviceId, reservationData)

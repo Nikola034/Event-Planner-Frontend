@@ -5,7 +5,7 @@
     <p-listbox [options]="timeslots">
         <ng-template let-timeslots pTemplate="item">
             <div class="flex align-items-center">
-                <div>{{timeslots.startTime}} {{ timeslots.endTime }}</div>
+                <div>{{timeslots.startTime | date : "dd.M.yyyy. HH:mm"}} - {{ timeslots.endTime | date : "dd.M.yyyy. HH:mm"}}</div>
             </div>
         </ng-template>
     </p-listbox>
@@ -17,7 +17,7 @@
         <p-listbox [options]="events" formControlName="selectedEvent">
             <ng-template let-events pTemplate="item">
                 <div class="flex align-items-center">
-                    <div>{{events.title}} {{ events.date }}</div>
+                    <div>{{events.title}} {{ events.date | date : "dd.M.yyyy. HH:mm"}}</div>
                 </div>
             </ng-template>
         </p-listbox>
