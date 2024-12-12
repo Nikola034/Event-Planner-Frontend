@@ -18,6 +18,7 @@ import { AgendaComponent } from './components/agenda/agenda.component';
 import { CategoryCrudComponent } from './components/category/category-crud/category-crud.component';
 import { ServiceDetailsComponent } from './components/service/service-details/service-details.component';
 import { FollowedEventsComponent } from './components/followed-events/followed-events.component';
+import { MessagingPageComponent } from './components/messaging-page/messaging-page.component';
 
 
 export const routes: Routes = [
@@ -104,6 +105,13 @@ export const routes: Routes = [
                     breadcrumb: 'Followed Events'
                 },
                 component: FollowedEventsComponent
+            },
+            {
+                path: 'messenger',
+                data: {
+                    breadcrumb: 'Messenger'
+                },
+                component: MessagingPageComponent
             }
         ]
     },
