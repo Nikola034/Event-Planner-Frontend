@@ -33,6 +33,9 @@ export class EditServiceFormComponent implements OnChanges {
       specificity: new FormControl(''),
       price: new FormControl(null),
       discount: new FormControl(null),
+      city: new FormControl(''),
+      street: new FormControl(''),
+      houseNumber: new FormControl(null),
       category: new FormControl(null),
       eventTypesIds: new FormControl([]),
       minDuration: new FormControl(null),
@@ -56,6 +59,9 @@ export class EditServiceFormComponent implements OnChanges {
         specificity: data.specificity || '',
         price: data.price || 0,
         discount: data.discount || 0,
+        city: data.address.city || '',
+        street: data.address.street || '',
+        houseNumber: data.address.number || 0,
         category: data.category.title || null,
         eventTypesIds: etIds || [],
         minDuration: data.minDuration || 0,
@@ -104,9 +110,9 @@ export class EditServiceFormComponent implements OnChanges {
 
   onSubmit() {
     const address: Address = {
-      city: 'city',
-      street: 'street',
-      number: 10,
+      city: this.editServiceForm.value.city,
+      street: this.editServiceForm.value.street,
+      number: this.editServiceForm.value.number,
       longitude: 72.5345,
       latitude: 2.4324234
     }

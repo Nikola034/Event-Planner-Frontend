@@ -1,6 +1,6 @@
 import { Component, input, OnInit, Output, EventEmitter } from '@angular/core';
 import { DropdownModule } from 'primeng/dropdown';
-import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ButtonModule } from 'primeng/button';
@@ -8,13 +8,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CreateRequest } from '../create-request';
 import { Address } from '../../address/address';
 import { ServiceService } from '../service.service';
-import { Service } from '../service';
 import { CreateServiceResponse } from '../create-response';
-import { Category } from '../../category/category';
 import { EventType } from '../../event/event-type';
-import { resolve } from 'path';
-import { MerchandisePhotoDTO } from '../../merchandise/merchandise-photo-response-dto';
 import { CreateMerchandisePhotoDTO } from '../../merchandise/merchandise-photos-request-dto';
+import { CategoryService } from '../../category/category.service';
+import { CategoryDto } from '../../category/category.dto';
 
 @Component({
   selector: 'app-add-service-form',
@@ -26,39 +24,7 @@ import { CreateMerchandisePhotoDTO } from '../../merchandise/merchandise-photos-
 export class AddServiceFormComponent implements OnInit {
   addServiceForm!: FormGroup;
   @Output() serviceCreated = new EventEmitter<CreateServiceResponse>();
-  allCategories: Category[] = [
-    {
-      id: 1,
-      title: 'vanue',
-      description: 'category1',
-      pending: false
-    },
-    {
-      id: 2,
-      title: 'food',
-      description: 'category2',
-      pending: false
-    },
-    {
-      id: 3,
-      title: 'drinks',
-      description: 'category3',
-      pending: false
-    },
-    {
-      id: 4,
-      title: 'decorations',
-      description: 'category4',
-      pending: false
-    },
-    {
-      id: 5,
-      title: 'transportation',
-      description: 'category5',
-      pending: false
-    }
-  ];
-
+  allCategories: CategoryDto[] = [];
   allEventTypes: EventType[] = [
     {
       id: 1,
@@ -86,12 +52,26 @@ export class AddServiceFormComponent implements OnInit {
     }
   ];
 
-  constructor(private fb: FormBuilder, private serviceService: ServiceService) {}
+  constructor(private fb: FormBuilder, 
+              private serviceService: ServiceService, 
+              private categoryService: CategoryService) {}
+
   ngOnInit(): void {
+    this.categoryService.getAllApproved().subscribe({
+      next: (response) => {
+        this.allCategories = response;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
     this.addServiceForm = this.fb.group({
       title: [''],
       description: [''],
       specificity: [''],
+      city: [''],
+      street: [''],
+      houseNumber: [null],
       price: [null],
       discount: [null],
       categoryId: [-1],
@@ -149,9 +129,9 @@ export class AddServiceFormComponent implements OnInit {
 
   submit() {
     const address: Address = {
-      city: 'city',
-      street: 'street',
-      number: 10,
+      city: this.addServiceForm.value.city,
+      street: this.addServiceForm.value.street,
+      number: this.addServiceForm.value.houseNumber,
       longitude: 72.5345,
       latitude: 2.4324234
     }
