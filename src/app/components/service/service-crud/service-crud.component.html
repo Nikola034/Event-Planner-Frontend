@@ -15,7 +15,6 @@
             <th>Title</th>
             <th>Description</th>
             <th>Specificity</th>
-            <th>Image</th>
             <th>Base Price</th>
             <th>Discounted Price</th>
             <th>Category</th>
@@ -29,18 +28,19 @@
                 <p-columnFilter
                 type="text" field="service.category.title" placeholder="Filter category" ariaLabel="Filter Category"/>
             </th>
-            <th colspan="3">
+            <th colspan="1">
                 <p-columnFilter
                 type="text" field="service.eventTypes.title" placeholder="Filter event Types" ariaLabel="Filter Event Types"/>
             </th>
-            <th colspan="3">
+            <th colspan="2">
                 <p-columnFilter
                 type="text" field="service.price" placeholder="Filter price" ariaLabel="Filter Price"/>
             </th>
+            <th colspan="2"></th>
             <th colspan="2">
                 <p-columnFilter type="boolean" field="available"/>
             </th>
-            <th></th>
+            <th colspan="2"></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-service>
@@ -48,8 +48,6 @@
             <td>{{service.title}}</td>
             <td>{{service.description}}</td>
             <td>{{service.specificity}}</td>
-            <td></td>
-            <!-- <td><img [src]="service.photos[0].photo" [alt]="service.name" width="100" class="shadow-4"/></td> -->
             <td>{{service.price | currency:'USD'}}</td>
             <td>{{service.price - (service.price*service.discount)/100 | currency:'USD'}}</td>
             <td>{{service.category.title}}</td>
