@@ -1,4 +1,5 @@
 import { Address } from "../address/address";
+import { AddressDTO } from "../auth/register-dtos/address.dto";
 import { Category } from "../category/category";
 import { EventType } from "../event/event-type";
 import { Review } from "./review";
@@ -21,6 +22,6 @@ export interface Merchandise {
     photos: string[];
     eventTypes: EventType[],
     category:Category,
-    address:Address,
+    address:AddressDTO,
     reviews:Review[]
 }

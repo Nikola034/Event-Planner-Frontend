@@ -38,13 +38,52 @@
           />
         </div>
         <div class="field flex justify-content-center">
-          <input
-            formControlName="address"
-            type="text"
-            placeholder="Address*"
-            name="address"
-            class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
-          />
+          <div class="grid">
+            <div class="col-4">
+              <input
+                formControlName="city"
+                type="text"
+                placeholder="City*"
+                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+              />
+            </div>
+            <div class="col-4">
+              <input
+                formControlName="street"
+                type="text"
+                placeholder="Street*"
+                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+              />
+            </div>
+            <div class="col-4">
+              <input
+                formControlName="number"
+                type="number"
+                placeholder="Number*"
+                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="field flex justify-content-center">
+          <div class="grid">
+            <div class="col-6">
+              <input
+                formControlName="latitude"
+                type="number"
+                placeholder="Latitude*"
+                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+              />
+            </div>
+            <div class="col-6">
+              <input
+                formControlName="longitude"
+                type="number"
+                placeholder="Longitude*"
+                class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+              />
+            </div>
+          </div>
         </div>
         <div class="field flex justify-content-center">
           <p-calendar placeholder="Date*" formControlName="date" />
@@ -56,38 +95,63 @@
         <div
           class="flex justify-content-center align-items-center gap-2 mt-3 w-full"
         >
-          <p-multiSelect
-            [options]="eventTypes"
-            placeholder="Event Types*"
-            name="eventTypes"
-            filter="false"
-            styleClass="w-full"
-          />
+        <p-dropdown placeholder="Event Type*" [options]="eventTypes"  [(ngModel)]="selectedEventType" [ngModelOptions]="{ standalone: true }" optionLabel="title"
+        optionValue="id">
+          <ng-template let-eventType pTemplate="item">
+            <div>
+              <strong>{{ eventType.title }}</strong>
+            </div>
+          </ng-template>
+        </p-dropdown>
         </div>
         <div class="field flex justify-content-center w-full mt-7">
           <div class="grid w-full">
             <div class="col-6">
               <p-multiSelect
-                [options]="services"
-                placeholder="Services*"
-                name="services"
-                filter="false"
-                styleClass="w-full"
-              />
+            [options]="services"
+            placeholder="Recommended services*"
+            name="services"
+            styleClass="w-full"
+            [showToggleAll]="false"
+            [filter]="false"
+            [showClear]="false"
+            [(ngModel)]="selectedServices"
+            [ngModelOptions]="{ standalone: true }"
+            optionLabel="title"
+        optionValue="id"
+            >
+            <ng-template let-service pTemplate="item">
+              <div>
+                <strong>{{ service.title }}</strong>
+              </div>
+            </ng-template>
+          </p-multiSelect>
             </div>
             <div class="col-6">
               <p-multiSelect
-                [options]="products"
-                placeholder="Products*"
-                name="products"
-                filter="false"
-                styleClass="w-full"
-              />
+            [options]="products"
+            placeholder="Recommended products*"
+            name="products"
+            styleClass="w-full"
+            [showToggleAll]="false"
+            [filter]="false"
+            [showClear]="false"
+            [(ngModel)]="selectedProducts"
+            [ngModelOptions]="{ standalone: true }"
+            optionLabel="title"
+        optionValue="id"
+            >
+            <ng-template let-product pTemplate="item">
+              <div>
+                <strong>{{ product.title }}</strong>
+              </div>
+            </ng-template>
+          </p-multiSelect>
             </div>
           </div>
         </div>
         <div class="field flex justify-content-center">
-          <p-button>CREATE EVENT</p-button>
+          <p-button (click)="createEvent()">CREATE EVENT</p-button>
         </div>
       </form>
     </div>

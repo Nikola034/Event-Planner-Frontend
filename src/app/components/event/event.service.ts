@@ -40,9 +40,8 @@ export class EventService {
       .pipe(map((page: PageResponse) => page.content as EventOverviewDTO[]));
   }
 
-  getById(id: number): Observable<Event | undefined> {
-    const event = this.events.find((e) => e.id === id);
-    return of(event);
+  getById(id: number | null): Observable<CreateEventResponseDTO> {
+    return this.http.get<CreateEventResponseDTO>(`${environment.apiUrl}events/${id}`)
   }
 
   getTop(): Observable<EventOverviewDTO[]> {
@@ -58,7 +57,7 @@ export class EventService {
     );
   }
   update(
-    id: number | null,
+    id: number | null | undefined,
     dto: UpdateEventDTO
   ): Observable<CreateEventResponseDTO> {
     return this.http.put<CreateEventResponseDTO>(

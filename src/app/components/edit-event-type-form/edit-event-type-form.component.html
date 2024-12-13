@@ -33,7 +33,9 @@
             [filter]="false"
             [showClear]="false"
             [(ngModel)]="selectedCategories"
-            [ngModelOptions]="{ standalone: true }"
+            [ngModelOptions]="{ standalone: true }
+            "
+            optionLabel="title"
             >
             <ng-template let-category pTemplate="item">
               <div>

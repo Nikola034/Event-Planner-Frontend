@@ -20,7 +20,7 @@ export class ServiceService {
   private services: Service[] = [];
   getAll(): Observable<MerchandiseOverviewDTO[]> {
     return this.http
-      .get<MerchandiseOverviewDTO[]>(`${environment}services`)
+      .get<MerchandiseOverviewDTO[]>(`${environment.apiUrl}services`)
   }
   getById(id: number): Observable<Service | undefined> {
     const event = this.services.find(e => e.id === id);
