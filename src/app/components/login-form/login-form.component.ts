@@ -7,14 +7,15 @@ import { DialogModule } from 'primeng/dialog';
 import { JwtService } from '../auth/jwt.service';
 import { LoginDTO } from './login.dto';
 import { AuthResponse } from '../auth/auth-response.model';
-import { catchError, Observable, takeUntil, tap, throwError } from 'rxjs';
+import { catchError, EMPTY, Observable, takeUntil, tap, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EventToken } from '../auth/event-token';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonModule, DialogModule],
+  imports: [ReactiveFormsModule, ButtonModule, DialogModule, DialogModule],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
   encapsulation: ViewEncapsulation.None
@@ -26,7 +27,8 @@ export class LoginFormComponent implements OnInit {
     email: new FormControl(''),
     password: new FormControl(''),
   })
-
+  displayErrorDialog = false;
+  errorMessage = '';
   constructor(private router: Router, private jwtService: JwtService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -62,35 +64,93 @@ export class LoginFormComponent implements OnInit {
   }
 
   login(): void {
+    // Validate form before submission
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
     const login: LoginDTO = {
       email: this.loginForm.get('email')?.value || '',
       password: this.loginForm.get('password')?.value || ''
     };
-    this.jwtService.login(login).pipe(tap(
-      response => {
-        this.jwtService.setTokens(response)
+
+    this.jwtService.login(login).pipe(
+      tap(response => {
+        this.jwtService.setTokens(response);
+
+        // Check if logged in and navigate based on role
         if (this.jwtService.IsLoggedIn()) {
           this.router.navigate(['home']);
-          // if(this.jwtService.IsAu()){
-          //   this.router.navigate([''])
-          // }
-          // if(this.jwtService.IsEo()) 
-          //   this.router.navigate([''])
-          // if(this.jwtService.IsSp()) 
-          //   this.router.navigate([''])
-          // if(this.jwtService.IsAdmin()) 
-          //   this.router.navigate([''])
-          // else
-          //   this.swal.fireSwalError("Invalid role found in token")
+          //this.navigateBasedOnRole();
+        } else {
+          this.showErrorDialog('Unable to validate login');
         }
-        else {
-          //this.swal.fireSwalError("An error occured while reading token")
-        }
+      }),
+      catchError((error: HttpErrorResponse) => {
+        // Handle specific error scenarios
+        this.showErrorDialog(this.getErrorMessage(error));
+        return EMPTY; // Prevents unhandled error propagation
+      })
+    ).subscribe();
+  }
+
+  private navigateBasedOnRole(): void {
+    try {
+      if (this.jwtService.IsAdmin()) {
+        this.router.navigate(['admin']);
+      } else if (this.jwtService.IsEo()) {
+        this.router.navigate(['eo']);
+      } else if (this.jwtService.IsSp()) {
+        this.router.navigate(['sp']);
+      } else if (this.jwtService.IsAu()) {
+        this.router.navigate(['au']);
+      } else {
+        this.showErrorDialog('Invalid user role');
       }
-    ), catchError(
-      (error: HttpErrorResponse): Observable<any> => {
-        return throwError(() => error);
-      },
-    )).subscribe()
+    } catch (error) {
+      this.showErrorDialog('Navigation error occurred');
+    }
+  }
+
+  private getErrorMessage(error: HttpErrorResponse): string {
+    // Check if error response has a body with a message
+    if (error.error instanceof ErrorEvent) {
+      // Client-side error
+      return error.error.message || 'Client-side error occurred';
+    } else {
+      // Server-side error
+      // Try multiple ways to extract the error message
+      if (error.error && error.error.message) {
+        // Directly from error object
+        return error.error.message;
+      }
+  
+      if (error.error && typeof error.error === 'string') {
+        // If error is a string message
+        return error.error;
+      }
+  
+      if (error.error && error.error.errorMessage) {
+        // Alternative error message property
+        return error.error.errorMessage;
+      }
+  
+      // Fallback to status text or a generic message
+      return error.statusText || 'An unexpected error occurred';
+    }
+  }
+
+  private showErrorDialog(message: string): void {
+    this.errorMessage = message;
+    this.displayErrorDialog = true;
+
+    // Optional: Log the error
+    console.error('Login Error:', message);
+  }
+
+  closeErrorDialog(): void {
+    this.displayErrorDialog = false;
+    this.errorMessage = '';
   }
 }
