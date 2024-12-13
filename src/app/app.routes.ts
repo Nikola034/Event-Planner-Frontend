@@ -20,6 +20,9 @@ import { ServiceDetailsComponent } from './components/service/service-details/se
 import { FollowedEventsComponent } from './components/followed-events/followed-events.component';
 import { MessagingPageComponent } from './components/messaging-page/messaging-page.component';
 import { AdminUserReportsComponent } from './components/admin-user-reports/admin-user-reports/admin-user-reports.component';
+import { ProductsCrudComponent } from './components/products-crud/products-crud.component';
+import { UpdateProductComponent } from './components/update-product/update-product.component';
+import { CreateProductComponent } from './components/create-product/create-product.component';
 
 
 export const routes: Routes = [
@@ -49,6 +52,27 @@ export const routes: Routes = [
                     breadcrumb:'My services'
                 },
                 component: ServiceCrudComponent
+            },
+            {
+                path: 'my_products',
+                data:{
+                    breadcrumb:'My products'
+                },
+                component: ProductsCrudComponent
+            },
+            {
+                path: 'edit-product',
+                data:{
+                    breadcrumb: null
+                },
+                component: UpdateProductComponent
+            },
+            {
+                path: 'create-product',
+                data:{
+                    breadcrumb: null
+                },
+                component: CreateProductComponent
             },
             {
                 path: 'my_events',

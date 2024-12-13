@@ -7,6 +7,7 @@ import { API_URL } from '../../../globals';
 import { MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto';
 import { Product } from './product';
 import { environment } from '../../../environments/environment';
+import { ProductOverviewDTO } from '../merchandise/product-overview.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,11 @@ export class ProductService {
     getAll(): Observable<MerchandiseOverviewDTO[]> {
         return this.http
           .get<MerchandiseOverviewDTO[]>(`${environment.apiUrl}products`)
+      }
+
+    getAllBySp(id: number): Observable<ProductOverviewDTO[]> {
+        return this.http
+          .get<ProductOverviewDTO[]>(`${environment.apiUrl}products/sp/${id}`)
       }
 
     search(filters: ProductFilters | null = null, search: string = '',sort:string='price'): Observable<MerchandiseOverviewDTO[]> {

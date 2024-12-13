@@ -1,0 +1,67 @@
+<p-table [value]="products"
+        [tableStyle]="{'min-width': '60rem'}"
+        [paginator]="true"
+        [rows]="5"
+        [rowsPerPageOptions]="[3, 5, 10, 20]"
+        [globalFilterFields]="['Category', 'Event Type', 'Price', 'available']">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            <h2>Products</h2>
+            <p-button icon="pi pi-plus" (onClick)="createProduct()"/>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Specificity</th>
+            <th>Image</th>
+            <th>Base Price</th>
+            <th>Discounted Price</th>
+            <th>Category</th>
+            <th>Event Types</th>
+            <th>Available</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        <tr> <!--Ovaj ovde red-->
+            <th colspan="2">
+                <p-columnFilter
+                type="text" field="product.category.title" placeholder="Filter category" ariaLabel="Filter Category"/>
+            </th>
+            <th colspan="3">
+                <p-columnFilter
+                type="text" field="product.eventTypes.title" placeholder="Filter event Types" ariaLabel="Filter Event Types"/>
+            </th>
+            <th colspan="3">
+                <p-columnFilter
+                type="text" field="product.price" placeholder="Filter price" ariaLabel="Filter Price"/>
+            </th>
+            <th colspan="2">
+                <p-columnFilter type="boolean" field="available"/>
+            </th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+        <tr>
+            <td>{{product.title}}</td>
+            <td>{{product.description}}</td>
+            <td>{{product.specificity}}</td>
+            <td><img [src]="product.merchandisePhotos[0]" [alt]="product.name" width="100" class="shadow-4"/></td>
+            <td>{{product.price | currency:'USD'}}</td>
+            <td>{{product.price - (product.price*product.discount)/100 | currency:'USD'}}</td>
+            <td>{{product.category.title}}</td>
+            <td>
+                <ul>
+                  <li *ngFor="let item of product.eventTypes">{{ item.title }}</li>
+                </ul>
+              </td>
+            <td>
+                <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': product.available, 'text-red-500 pi-times-circle': !product.available }"></i>
+            </td>
+            <td><p-button icon="pi pi-pencil" (onClick)="editProduct(product.id)"></p-button></td>
+            <td><p-button icon="pi pi-trash" (onClick)="deleteProduct(product.id)"></p-button></td>
+        </tr>
+    </ng-template>
+</p-table>

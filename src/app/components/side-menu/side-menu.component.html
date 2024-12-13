@@ -45,6 +45,17 @@
         </ng-template>
       </p-button>
 
+      <p-button
+        styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
+        [text]="true"
+        [routerLink]="'/home/my_products'"
+      >
+        <ng-template pTemplate="content">
+          <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>
+          <span>My products</span>
+        </ng-template>
+      </p-button>
+
       <div class="flex align-items-center divider mt-2 mb-2 pl-2 text-xs">
         <span class="text-color-secondary">Placeholder</span>
       </div>

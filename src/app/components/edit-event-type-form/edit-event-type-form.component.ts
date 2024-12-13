@@ -27,7 +27,7 @@ import { response } from 'express';
     MultiSelectModule,
     RadioButtonModule,
     ButtonModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   templateUrl: './edit-event-type-form.component.html',
   styleUrl: './edit-event-type-form.component.scss',
@@ -48,10 +48,10 @@ export class EditEventTypeFormComponent {
 
   ngOnInit() {
     this.categoryService
-      .getAll()
+      .getAllApproved()
       .pipe(
         tap((response) => {
-          this.categories = response.categories;
+          this.categories = response;
         })
       )
       .subscribe();
@@ -59,10 +59,11 @@ export class EditEventTypeFormComponent {
       let id: number | null = null;
 
       const eventTypeId = localStorage.getItem('eventTypeId');
+      
       if (eventTypeId !== null) {
         id = parseInt(eventTypeId, 10);
       }
-      this.eventTypeService.getById(1).pipe(tap(response => {
+      this.eventTypeService.getById(id).pipe(tap(response => {
         this.editEventTypeForm.patchValue({
           title: response.title,
           description: response.description   
