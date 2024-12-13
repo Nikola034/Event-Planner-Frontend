@@ -90,64 +90,63 @@ export class ReservationDialogComponent implements OnInit {
       const reservationData: ReservationRequest = {
         eventId: this.reservationForm.value.selectedEvent.id,
         startTime: new Date((this.reservationForm.value.startTime).getTime() - timezoneOffset),
-        endTime: this.reservationForm.value.endTime!=null?new Date((this.reservationForm.value.endTime).getTime() - timezoneOffset):null,
+        endTime: this.reservationForm.value.endTime != null ? new Date((this.reservationForm.value.endTime).getTime() - timezoneOffset) : null,
         organizerId: this.jwtService.getIdFromToken()
       };
-      
-      
+
+
 
 
       this.serviceService.reserve(this.serviceId, reservationData)
-  .subscribe({
-    next: (response) => {
-      this.visible = false;
-      this.reservationForm.reset();
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: "Reservation successful!"
-      });
+        .subscribe({
+          next: (response) => {
+            this.reservationForm.reset();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: "Reservation successful!"
+            });
 
-      // Fetch timeslots after successful reservation
-      this.serviceService.getServiceTimeslots(this.serviceId).subscribe({
-        next: (timeslots) => {
-          this.timeslots = timeslots;
-          // Process or display timeslots
-        },
-        error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Failed to load timeslots'
-          });
-          console.error('Timeslots fetch error:', error);
-        }
-      });
-    },
-    error: (error) => {
-      // Existing error handling for reservation
-      if (error.error && error.error.message) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Reservation Error',
-          detail: error.error.message
+            // Fetch timeslots after successful reservation
+            this.serviceService.getServiceTimeslots(this.serviceId).subscribe({
+              next: (timeslots) => {
+                this.timeslots = timeslots;
+                // Process or display timeslots
+              },
+              error: (error) => {
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: 'Failed to load timeslots'
+                });
+                console.error('Timeslots fetch error:', error);
+              }
+            });
+          },
+          error: (error) => {
+            // Existing error handling for reservation
+            if (error.error && error.error.message) {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Reservation Error',
+                detail: error.error.message
+              });
+            } else if (error.message) {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: error.message
+              });
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Failed to make reservation. Please try again.'
+              });
+            }
+            console.error('Reservation error:', error);
+          }
         });
-      } else if (error.message) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: error.message
-        });
-      } else {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to make reservation. Please try again.'
-        });
-      }
-      console.error('Reservation error:', error);
-    }
-  });
     }
   }
 }

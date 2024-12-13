@@ -13,21 +13,33 @@ import { DividerModule } from 'primeng/divider';
 import { MessageDTO } from '../message-dto';
 import { MessengerService } from '../messenger.service';
 import { FormsModule } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
+import { DialogService } from 'primeng/dynamicdialog';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { UserReportDTO } from '../user-report-dto';
+import { UserReportService } from '../user-report.service';
+
 @Component({
   selector: 'app-messenger',
   standalone: true,
-  imports: [ButtonModule, DataViewModule, CommonModule, AvatarModule, ScrollPanelModule, PanelModule, InputTextModule, DividerModule, FormsModule],
+  imports: [ButtonModule, DataViewModule, CommonModule, ToastModule,AvatarModule,InputTextareaModule, ScrollPanelModule, PanelModule, InputTextModule, DialogModule,InputTextModule,DividerModule, FormsModule],
   templateUrl: './messenger.component.html',
-  styleUrl: './messenger.component.scss'
+  styleUrl: './messenger.component.scss',
+  providers: [DialogService,MessageService]
 })
 export class MessengerComponent implements OnInit {
-  constructor(private userService: UserService, public jwtService: JwtService, private messengerService: MessengerService) { }
+  constructor(private userService: UserService, public jwtService: JwtService, private messengerService: MessengerService,private messageService:MessageService,private userReportService:UserReportService) { }
   users: UserOverviewDTO[] = [];
   selectedUser: any = null;
   messages: MessageDTO[] = [];
   messageContent: string = "";
   showMessages:boolean=false;
   @ViewChild('messagePanel') messagePanel!: ScrollPanel;
+  reportDialogVisible: boolean = false;
+  reportReason: string = '';
+  isSubmitting: boolean = false;
 
   onUserSelect(user: any) {
     this.selectedUser = user;
@@ -96,6 +108,76 @@ export class MessengerComponent implements OnInit {
         error: (err) => {
           console.error('Error fetching service providers', err);
         },
+      });
+    }
+  }
+  openReportDialog() {
+    // Reset report reason when opening dialog
+    this.reportReason = '';
+    this.reportDialogVisible = true;
+  }
+
+  cancelReport() {
+    this.reportDialogVisible = false;
+    this.reportReason = '';
+  }
+
+  submitReport() {
+    if (!this.selectedUser) {
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: 'Error', 
+        detail: 'No user selected to report', 
+        life: 3000 
+      });
+      return;
+    }
+
+    if (this.reportReason.trim()) {
+      // Prevent multiple submissions
+      this.isSubmitting = true;
+
+      // Prepare report DTO
+      const reportRequest: UserReportDTO = {
+        reporterId:this.jwtService.getIdFromToken(),
+        reportedUserId: this.selectedUser.id,
+        reason: this.reportReason.trim()
+      };
+
+      // Submit report via service
+      this.userReportService.reportUser(reportRequest).subscribe({
+        next: (response) => {
+          // Success handling
+          this.messageService.add({ 
+            severity: 'success', 
+            summary: 'User Reported', 
+            detail: 'The user has been reported successfully', 
+            life: 3000 
+          });
+          this.reportDialogVisible = false;
+          this.reportReason = '';
+        },
+        error: (error) => {
+          // Error handling
+          this.messageService.add({ 
+            severity: 'error', 
+            summary: 'Report Failed', 
+            detail: error.message || 'Unable to submit report', 
+            life: 3000 
+          });
+        },
+        complete: () => {
+          // Reset submission state
+          this.isSubmitting = false;
+        }
+      });
+    } else {
+      // Show error toast if no reason provided
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: 'Report Failed', 
+        detail: 'Please provide a reason for reporting', 
+        life: 3000 
       });
     }
   }

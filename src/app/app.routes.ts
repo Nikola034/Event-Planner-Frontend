@@ -19,6 +19,7 @@ import { CategoryCrudComponent } from './components/category/category-crud/categ
 import { ServiceDetailsComponent } from './components/service/service-details/service-details.component';
 import { FollowedEventsComponent } from './components/followed-events/followed-events.component';
 import { MessagingPageComponent } from './components/messaging-page/messaging-page.component';
+import { AdminUserReportsComponent } from './components/admin-user-reports/admin-user-reports/admin-user-reports.component';
 
 
 export const routes: Routes = [
@@ -112,6 +113,13 @@ export const routes: Routes = [
                     breadcrumb: 'Messenger'
                 },
                 component: MessagingPageComponent
+            },
+            {
+                path: 'admin-user-reports',
+                data: {
+                    breadcrumb: 'User Reports'
+                },
+                component: AdminUserReportsComponent
             }
         ]
     },

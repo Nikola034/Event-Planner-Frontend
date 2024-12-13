@@ -1,3 +1,4 @@
+<p-toast position="top-right"></p-toast>
 <div class="grid">
     <div class="col-offset-1 col-2 p-0 ">
         <div class="surface-card">
@@ -48,7 +49,7 @@
                         </div>
                     </div>
                     <div class="flex align-items-center gap-2">
-                        <p-button severity="warning" label="Report user"></p-button>
+                        <p-button severity="warning" label="Report user" (click)="openReportDialog()"></p-button>
                         <p-button severity="danger" label="Block user"></p-button>
                     </div>
 
@@ -110,3 +111,36 @@
     </div>
     
 </div>
+<p-dialog 
+      header="Report User" 
+      [(visible)]="reportDialogVisible" 
+      [modal]="true" 
+      [style]="{ width: '450px' }"
+      [breakpoints]="{'960px': '75vw', '640px': '90vw'}"
+    >
+      <div class="flex flex-column gap-3">
+        <label for="reportReason" class="font-semibold">Reason for Reporting</label>
+        <textarea 
+          id="reportReason" 
+          pInputTextarea 
+          [(ngModel)]="reportReason" 
+          [rows]="5" 
+          class="w-full" 
+          placeholder="Please provide details about why you are reporting this user"
+        ></textarea>
+      </div>
+      <ng-template pTemplate="footer">
+        <p-button 
+          label="Cancel" 
+          icon="pi pi-times" 
+          (click)="cancelReport()" 
+          styleClass="p-button-text"
+        ></p-button>
+        <p-button 
+          label="Submit Report" 
+          icon="pi pi-check" 
+          (click)="submitReport()" 
+          styleClass="p-button-primary"
+        ></p-button>
+      </ng-template>
+    </p-dialog>
