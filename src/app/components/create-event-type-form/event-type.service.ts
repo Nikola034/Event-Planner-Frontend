@@ -20,6 +20,9 @@ export class EventTypeService {
       map((page: PageResponse) => page.content as CreateEventTypeResponseDTO[])
   );
   }
+  getAllWp(): Observable<CreateEventTypeResponseDTO[]> {
+    return this.httpClient.get<CreateEventTypeResponseDTO[]>(`${environment.apiUrl}event-types/all-wp`);
+  }
   getById(id: number | null): Observable<CreateEventTypeResponseDTO> {
     return this.httpClient.get<CreateEventTypeResponseDTO>(`${environment.apiUrl}event-types/${id}`);
   }

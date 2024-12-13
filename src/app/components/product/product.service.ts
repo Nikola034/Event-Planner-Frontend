@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../../../globals';
 import { MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto';
 import { Product } from './product';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,10 @@ import { Product } from './product';
 export class ProductService {
     constructor(private http: HttpClient){}
 
-    
+    getAll(): Observable<MerchandiseOverviewDTO[]> {
+        return this.http
+          .get<MerchandiseOverviewDTO[]>(`${environment.apiUrl}products`)
+      }
 
     search(filters: ProductFilters | null = null, search: string = '',sort:string='price'): Observable<MerchandiseOverviewDTO[]> {
         if(!filters?.isActive) return of([]);

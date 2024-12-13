@@ -47,7 +47,6 @@ export class EventTypesComponent {
   loadData(): void{
     this.eventTypeService.getAll().pipe(tap(response => {
       this.eventTypes = response
-      console.log(response)
     })).subscribe();
   }
 
