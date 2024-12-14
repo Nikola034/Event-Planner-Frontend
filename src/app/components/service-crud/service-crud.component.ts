@@ -67,9 +67,9 @@ export class ServiceCrudComponent {
       address: {
         city: "Novi Sad",
         street: "Ulica Modene",
-        number: "10",
-        longitude: "72.5345",
-        latitude: "2.4324234"
+        number: 10,
+        longitude: 72.5345,
+        latitude: 2.4324234
       },
       reviews: [],
       availableTimeslots: 'no available slots'
@@ -109,9 +109,9 @@ export class ServiceCrudComponent {
       address: {
         city: "Novi Sad",
         street: "Ulica Modene",
-        number: "10",
-        longitude: "72.5345",
-        latitude: "2.4324234"
+        number: 10,
+        longitude: 72.5345,
+        latitude: 2.4324234
       },
       reviews: [],
       availableTimeslots: 'no available slots'
@@ -157,9 +157,9 @@ export class ServiceCrudComponent {
       address: {
         city: "Novi Sad",
         street: "Ulica Modene",
-        number: "10",
-        longitude: "72.5345",
-        latitude: "2.4324234"
+        number: 10,
+        longitude: 72.5345,
+        latitude: 2.4324234
       },
       reviews: [],
       availableTimeslots: 'no available slots'
@@ -217,9 +217,9 @@ export class ServiceCrudComponent {
       address: {
         city: "Novi Sad",
         street: "Ulica Modene",
-        number: "10",
-        longitude: "72.5345",
-        latitude: "2.4324234"
+        number: 10,
+        longitude: 72.5345,
+        latitude: 2.4324234
       },
       reviews: [],
       availableTimeslots: 'no available slots'
@@ -259,9 +259,9 @@ export class ServiceCrudComponent {
       address: {
         city: "Novi Sad",
         street: "Ulica Modene",
-        number: "10",
-        longitude: "72.5345",
-        latitude: "2.4324234"
+        number: 10,
+        longitude: 72.5345,
+        latitude: 2.4324234
       },
       reviews: [],
       availableTimeslots: 'no available slots'
@@ -301,9 +301,9 @@ export class ServiceCrudComponent {
       address: {
         city: "Novi Sad",
         street: "Ulica Modene",
-        number: "10",
-        longitude: "72.5345",
-        latitude: "2.4324234"
+        number: 10,
+        longitude: 72.5345,
+        latitude: 2.4324234
       },
       reviews: [],
       availableTimeslots: 'no available slots'
@@ -343,9 +343,9 @@ export class ServiceCrudComponent {
       address: {
         city: "Novi Sad",
         street: "Ulica Modene",
-        number: "10",
-        longitude: "72.5345",
-        latitude: "2.4324234"
+        number: 10,
+        longitude: 72.5345,
+        latitude: 2.4324234
       },
       reviews: [],
       availableTimeslots: 'no available slots'

@@ -1,0 +1,146 @@
+<p-toast position="top-right"></p-toast>
+<div class="grid">
+    <div class="col-offset-1 col-2 p-0 ">
+        <div class="surface-card">
+            <p-scrollPanel [style]="{ height: '700px' }">
+                <p-dataView #dv [value]="users">
+                    <ng-template pTemplate="list" let-user>
+                        <div class="grid grid-nogutter w-full">
+                            <div class="col-12 w-full" *ngFor="let item of users; let first = first">
+                                <p-button [text]="true" styleClass="w-full" (click)="onUserSelect(item)">
+                                    <!-- Profile Picture with PrimeNG Avatar -->
+                                    <div class="relative flex justify-content-center mr-3">
+                                        <p-avatar [image]="item.profilePicture || 'dinja.jpg'" shape="circle"
+                                            size="large" *ngIf="!item.profilePicture"></p-avatar>
+                                    </div>
+                                    <!-- User Details -->
+                                    <div class="flex flex-column justify-content-between flex-1 gap-4">
+                                        <div class="flex flex-row justify-content-between align-items-start gap-2">
+                                            <div>
+                                                <div class="text-lg font-medium text-color mt-2">
+                                                    {{ item.firstName }} {{ item.lastName }}
+                                                </div>
+                                                <span class="font-medium text-secondary text-sm">{{ item.email }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p-button>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-dataView>
+            </p-scrollPanel>
+        </div>
+    </div>
+
+    <div class="col-8 p-0 surface-card border-left-1 surface-border">
+        <div *ngIf="showMessages; else emptyState" class="flex flex-column h-full">
+            <!-- Messenger Header -->
+            <div class="p-3 border-bottom-1 surface-border">
+                <div class="flex align-items-center justify-content-between w-full">
+                    <div class="flex align-items-center">
+                        <p-avatar [image]="selectedUser?.profilePicture || 'dinja.jpg'" shape="circle" size="large"
+                            class="mr-3"></p-avatar>
+                        <div>
+                            <div class="text-lg font-medium">
+                                {{ selectedUser?.firstName }} {{ selectedUser?.lastName }}
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="flex align-items-center gap-2">
+                        <p-button severity="warning" label="Report user" (click)="openReportDialog()"></p-button>
+                        <p-button severity="danger" label="Block user"></p-button>
+                    </div>
+
+                </div>
+            </div>
+
+            <p-scrollPanel #messagePanel [style]="{ height: '520px' }">
+                <div class="flex flex-column mx-2 mt-3">
+                    <!-- Dynamically display messages -->
+                    <ng-container *ngFor="let message of messages">
+                        <div
+                            class="mb-3 flex"
+                            [ngClass]="{
+                                'justify-content-end': message.senderId === jwtService.getIdFromToken(),
+                                'justify-content-start': message.senderId !== jwtService.getIdFromToken()
+                            }"
+                        >
+                            <div
+                                class="p-2 border-round max-w-25rem white-space-normal"
+                                [ngClass]="{
+                                    'bg-primary text-white': message.senderId === jwtService.getIdFromToken(),
+                                    'bg-gray-600 text-white': message.senderId !== jwtService.getIdFromToken()
+                                }"
+                            >
+                                {{ message.content }}
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </p-scrollPanel>
+            
+            <!-- Message Input -->
+            <div class="p-3 border-top-1 surface-border">
+                <div class="flex">
+                    <span class="flex-grow-1 mr-2">
+                        <input 
+                            pInputText 
+                            type="text" 
+                            class="w-full" 
+                            [(ngModel)]="messageContent" 
+                            placeholder="Type a message..." 
+                            (keyup.enter)="sendMessage()"
+                        />
+                    </span>
+                    <p-button 
+                        icon="pi pi-send" 
+                        styleClass="p-button-primary h-full"
+                        (click)="sendMessage()"
+                    ></p-button>
+                </div>
+            </div>
+        </div>
+        <ng-template #emptyState>
+            <div class="flex flex-column justify-content-center align-items-center" style="height: 520px;">
+                <i class="pi pi-comments text-6xl text-500 mb-4"></i>
+                <h2 class="text-500">Select a conversation to start messaging</h2>
+            </div>
+        </ng-template>
+    </div>
+    
+</div>
+<p-dialog 
+      header="Report User" 
+      [(visible)]="reportDialogVisible" 
+      [modal]="true" 
+      [style]="{ width: '450px' }"
+      [breakpoints]="{'960px': '75vw', '640px': '90vw'}"
+    >
+      <div class="flex flex-column gap-3">
+        <label for="reportReason" class="font-semibold">Reason for Reporting</label>
+        <textarea 
+          id="reportReason" 
+          pInputTextarea 
+          [(ngModel)]="reportReason" 
+          [rows]="5" 
+          class="w-full" 
+          placeholder="Please provide details about why you are reporting this user"
+        ></textarea>
+      </div>
+      <ng-template pTemplate="footer">
+        <p-button 
+          label="Cancel" 
+          icon="pi pi-times" 
+          (click)="cancelReport()" 
+          styleClass="p-button-text"
+        ></p-button>
+        <p-button 
+          label="Submit Report" 
+          icon="pi pi-check" 
+          (click)="submitReport()" 
+          styleClass="p-button-primary"
+        ></p-button>
+      </ng-template>
+    </p-dialog>
