@@ -8,6 +8,7 @@ import { MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto'
 import { Product } from './product';
 import { environment } from '../../../environments/environment';
 import { ProductOverviewDTO } from '../merchandise/product-overview.dto';
+import { CreateProductRequestDTO, UpdateProductRequestDTO } from '../create-product/dto/create-product.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,19 @@ export class ProductService {
     getAll(): Observable<MerchandiseOverviewDTO[]> {
         return this.http
           .get<MerchandiseOverviewDTO[]>(`${environment.apiUrl}products`)
+      }
+
+      create(dto: CreateProductRequestDTO): Observable<ProductOverviewDTO> {
+        return this.http
+          .post<ProductOverviewDTO>(`${environment.apiUrl}products`, dto)
+      }
+      update(id: number, dto: UpdateProductRequestDTO): Observable<ProductOverviewDTO> {
+        return this.http
+          .put<ProductOverviewDTO>(`${environment.apiUrl}products/${id}`, dto)
+      }
+      delete(id: number): Observable<boolean> {
+        return this.http
+          .delete<boolean>(`${environment.apiUrl}products/${id}`)
       }
 
     getAllBySp(id: number): Observable<ProductOverviewDTO[]> {

@@ -49,6 +49,6 @@ export class ProductsCrudComponent {
   }
 
   deleteProduct(productId: number): void{
-
+    
   }
 }
