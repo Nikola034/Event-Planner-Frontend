@@ -8,3 +8,9 @@ export interface CategoryDto{
     description: string,
     pending: boolean
 }
+
+export interface CreateCategoryDto{
+    title: string,
+    description: string,
+    pending: boolean
+}

@@ -31,8 +31,8 @@ export class CreateEventTypeFormComponent{
   }
 
   ngOnInit(){
-    this.categoryService.getAll().pipe(tap(response => {
-      this.categories = response.categories
+    this.categoryService.getAllApproved().pipe(tap(response => {
+      this.categories = response
     })).subscribe()
   }
   
