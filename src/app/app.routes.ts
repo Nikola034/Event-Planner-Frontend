@@ -24,6 +24,7 @@ import { AdminUserReportsComponent } from './components/admin-user-reports/admin
 import { ProductsCrudComponent } from './components/products-crud/products-crud.component';
 import { UpdateProductComponent } from './components/update-product/update-product.component';
 import { CreateProductComponent } from './components/create-product/create-product.component';
+import { AdminReviewsComponent } from './components/admin-reviews/admin-reviews.component';
 
 
 export const routes: Routes = [
@@ -152,6 +153,13 @@ export const routes: Routes = [
                     breadcrumb: 'User Reports'
                 },
                 component: AdminUserReportsComponent
+            },
+            {
+                path: 'admin-reviews',
+                data: {
+                    breadcrumb: 'Reviews'
+                },
+                component: AdminReviewsComponent
             }
         ]
     },
