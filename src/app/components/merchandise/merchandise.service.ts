@@ -9,6 +9,7 @@ import { API_URL } from '../../../globals';
 import { PageResponse } from '../page/page-response';
 import { ServiceFilters } from '../service/service-filters';
 import { ProductFilters } from '../product/product-filters';
+import { MerchandiseDetailDTO } from './merchandise-detail-dto';
 @Injectable({
   providedIn: 'root'
 })
@@ -39,6 +40,8 @@ export class MerchandiseService {
       map(([services, products]) => [...services, ...products]));
   }
 
-
+  getMerchandiseDetails(merchandiseId: number): Observable<MerchandiseDetailDTO> {
+    return this.http.get<MerchandiseDetailDTO>(`${API_URL}/api/v1/merchandise/${merchandiseId}`);
+  }
   constructor(private serviceService: ServiceService, private productService: ProductService,private http: HttpClient) { }
 }
