@@ -102,7 +102,7 @@ export const routes: Routes = [
                 component: ServiceDetailsComponent
             },
             {
-                path: 'product/:id',
+                path: 'product/:productId/:eventId',
                 data: {
                     breadcrumb: 'Product'
                 },

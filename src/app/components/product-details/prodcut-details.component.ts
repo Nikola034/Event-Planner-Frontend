@@ -8,21 +8,28 @@ import { CurrencyPipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { GalleriaModule } from 'primeng/galleria';
 import { FieldsetModule } from 'primeng/fieldset';
+import { DialogModule } from 'primeng/dialog';
+import { ProductService } from '../product/product.service';
+import { BuyProductComponent } from "./buy-product/buy-product.component";
 
 @Component({
   selector: 'app-prodcut-details',
   standalone: true,
-  imports: [PaginatorModule, ButtonModule, CurrencyPipe, CommonModule, GalleriaModule, FieldsetModule],
+  imports: [PaginatorModule, ButtonModule, CurrencyPipe, CommonModule, GalleriaModule, FieldsetModule, DialogModule, BuyProductComponent],
   templateUrl: './prodcut-details.component.html',
   styleUrl: './prodcut-details.component.scss'
 })
 export class ProdcutDetailsComponent implements OnInit {
-  serviceId: number = -1;
-    product: MerchandiseDetailDTO | null = null;
-    isStarFilled: boolean = false;
-    images: any[] = [];
-    paginatedReviews: any | undefined;
-    responsiveOptions: any[] = [
+  productId: number = -1;
+  eventId: number = -1;
+  displayEventSearch = false;
+  displayPopupMessage = false;
+  popupMessage = '';
+  product: MerchandiseDetailDTO | null = null;
+  isStarFilled: boolean = false;
+  images: any[] = [];
+  paginatedReviews: any | undefined;
+  responsiveOptions: any[] = [
       {
           breakpoint: '991px',
           numVisible: 4
@@ -37,14 +44,19 @@ export class ProdcutDetailsComponent implements OnInit {
       }
   ];
   
-    constructor(private route: ActivatedRoute, private merchandiseService: MerchandiseService) {}
+    constructor(private route: ActivatedRoute, 
+                private merchandiseService: MerchandiseService, 
+                private productService: ProductService) {}
   
     ngOnInit() {
-      const id = this.route.snapshot.paramMap.get('id');
-      this.serviceId = id ? Number(id) : -1;
+      const productId = this.route.snapshot.paramMap.get('productId');
+      this.productId = productId ? Number(productId) : -1;
+
+      const eventId = this.route.snapshot.paramMap.get('eventId');
+      this.eventId = eventId ? Number(eventId) : -1;
   
-      if(this.serviceId != -1) {
-        this.merchandiseService.getMerchandiseDetails(this.serviceId).subscribe({
+      if(this.productId != -1) {
+        this.merchandiseService.getMerchandiseDetails(this.productId).subscribe({
           next: (response) => {
             this.product = response;
             this.images = this.product.merchandisePhotos;
@@ -57,8 +69,27 @@ export class ProdcutDetailsComponent implements OnInit {
       }
     }
 
-    buyProduct() {}
-  
+    buyProduct() {
+      if(this.eventId != -1) {
+        this.productService.buyProduct(this.productId, this.eventId).subscribe({
+          next: (response) => {
+            console.log('success');
+          },
+          error: (err) => {
+            console.error(err);
+          }
+        });
+      } else {
+        this.displayEventSearch = true;
+      }
+    }
+    
+    productBought(productBought: string) {
+      this.displayEventSearch = false;
+      this.popupMessage = productBought;
+      this.displayPopupMessage = true;
+    }
+
     addToFavorite() {
       //logic for adding service to favorite
       this.isStarFilled = !this.isStarFilled;
