@@ -72,7 +72,7 @@ export class MyEventsComponent {
   }
 
   loadData(): void{
-    this.eventService.getByEo(this.jwtService.getIdFromToken()).subscribe({
+    this.eventService.getByEo(1).subscribe({
       next: (data: EventOverviewDTO[]) => {
         this.events = data;
         this.totalRecords = this.events.length;

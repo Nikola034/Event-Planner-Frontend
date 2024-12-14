@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -15,6 +15,8 @@ import { DialogModule } from 'primeng/dialog';
 import { AddCategoryComponent } from '../category/add-category/add-category.component';
 import { CreateProductRequestDTO } from './dto/create-product.dto';
 import { JwtService } from '../auth/jwt.service';
+import { RecommendCategoryComponent } from '../category/recommend-category/recommend-category.component';
+import { CreateMerchandisePhotoDTO } from '../merchandise/merchandise-photos-request-dto';
 
 @Component({
   selector: 'app-create-product',
@@ -27,7 +29,7 @@ import { JwtService } from '../auth/jwt.service';
     ButtonModule,
     ReactiveFormsModule,
     DialogModule,
-    AddCategoryComponent
+    RecommendCategoryComponent
   ],
   templateUrl: './create-product.component.html',
   styleUrl: './create-product.component.scss',
@@ -39,6 +41,8 @@ export class CreateProductComponent {
 
   selectedCategory: any = null
   selectedEventTypes: CreateEventTypeResponseDTO[] = []
+
+  fbl: FormBuilder = new FormBuilder();
 
   addProductForm = new FormGroup({
     title: new FormControl('', [Validators.required]),
@@ -56,10 +60,11 @@ export class CreateProductComponent {
     duration: new FormControl(null), 
     reservationDeadline: new FormControl(null, [Validators.required, Validators.min(0)]),
     cancellationDeadline: new FormControl(null, [Validators.required, Validators.min(0)]),
-    automaticReservation: new FormControl(false), 
+    automaticReservation: new FormControl(false),
+    merchandisePhotos: this.fbl.array([])
   });
 
-  constructor(private eventTypeService: EventTypeService, private categoryService: CategoryService, private productService: ProductService, private jwtService: JwtService){
+  constructor(private eventTypeService: EventTypeService, private categoryService: CategoryService, private productService: ProductService, private jwtService: JwtService, private fb: FormBuilder){
 
   }
 
@@ -68,27 +73,33 @@ export class CreateProductComponent {
   }
 
   loadData(): void{
-    this.categoryService.getAllApproved().pipe(tap(response => {
-      this.categories = response
+    this.categoryService.getAll().pipe(tap(response => {
+      this.categories = response.categories
     })).subscribe()
     this.eventTypeService.getAllWp().pipe(tap(response => {
       this.eventTypes = response
     })).subscribe()
   }
 
-  uploadFile($event: Event) {
-    throw new Error('Method not implemented.');
+  uploadFile($event: any): void {
+    const files = $event.target.files as File[];
+    if (files && files.length > 0) {
+      Array.from(files).forEach((file: File) => {
+        this.addPhoto(file.name); // Add photo to the FormArray
+      });
+    }
   }
-
+  addPhoto(photoName: string): void {
+    const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
+    photosArray.push(this.fb.group({
+      photo: new FormControl(photoName)
+    }));
+  }
+  getPhotos(): CreateMerchandisePhotoDTO[] {
+    const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
+    return photosArray.value as CreateMerchandisePhotoDTO[];
+  }
   createProduct(): void{
-    let catId: number = -1;
-    let cat: CreateCategoryDto = {title: "", description: "", pending: true}
-    if(this.selectedCategory != null){
-      
-    }
-    else{
-
-    }
     const dto: CreateProductRequestDTO = {
       title: this.addProductForm.controls.title.value,
       description: this.addProductForm.controls.description.value,
@@ -110,14 +121,12 @@ export class CreateProductComponent {
       cancellationDeadline: this.addProductForm.controls.cancellationDeadline.value,
       automaticReservation: this.addProductForm.controls.automaticReservation.value,
       serviceProviderId: 2,//this.jwtService.getIdFromToken(),
-      merchandisePhotos: [{photo: "ahahah"}],
-      eventTypesIds: [1,2],
-      categoryId: catId,
-      category: cat
+      merchandisePhotos: this.getPhotos(),
+      eventTypesIds: this.eventTypes.map(x => x.id),
+      categoryId: this.selectedCategory,
     }
     this.productService.create(dto).pipe(
       tap(response => {
-        console.log(response)
       })
     ).subscribe()
 
@@ -129,7 +138,6 @@ export class CreateProductComponent {
   createCategory(categoryCreated: boolean) {
     if(categoryCreated) {
       this.categoryService.getAll();
-      this.selectedCategory = null
     } 
     else {
       console.log("fail")

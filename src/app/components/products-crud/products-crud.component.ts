@@ -12,6 +12,7 @@ import { MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto'
 import { ProductOverviewDTO } from '../merchandise/product-overview.dto';
 import { ProductService } from '../product/product.service';
 import { tap } from 'rxjs';
+import { response } from 'express';
 
 @Component({
   selector: 'app-products-crud',
@@ -49,6 +50,8 @@ export class ProductsCrudComponent {
   }
 
   deleteProduct(productId: number): void{
-    
+    this.productService.delete(productId).pipe(tap(response => {
+      
+    })).subscribe()
   }
 }
