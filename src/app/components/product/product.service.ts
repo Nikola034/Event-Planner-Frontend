@@ -58,5 +58,7 @@ export class ProductService {
         );
     }
     
-
+    buyProduct(productId: number, eventId: number): Observable<any> {
+        return this.http.post(`${API_URL}/api/v1/products/buy/${productId}`, eventId);
+    }
 }
