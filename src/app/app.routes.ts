@@ -18,6 +18,7 @@ import { AgendaComponent } from './components/agenda/agenda.component';
 import { CategoryCrudComponent } from './components/category/category-crud/category-crud.component';
 import { ServiceDetailsComponent } from './components/service/service-details/service-details.component';
 import { FollowedEventsComponent } from './components/followed-events/followed-events.component';
+import { ProdcutDetailsComponent } from './components/prodcut-details/prodcut-details.component';
 
 
 export const routes: Routes = [
@@ -97,6 +98,13 @@ export const routes: Routes = [
                     breadcrumb: 'Service'
                 },
                 component: ServiceDetailsComponent
+            },
+            {
+                path: 'product/:id',
+                data: {
+                    breadcrumb: 'Product'
+                },
+                component: ProdcutDetailsComponent
             },
             {
                 path: 'followed-events',

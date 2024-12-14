@@ -26,6 +26,9 @@ export class MerchandiseCardComponent{
   seeDetails(){
     if(this.merchandise.type==='Service')
       this.router.navigate(['home','service',this.merchandise.id]);
+    else {
+      this.router.navigate(['home', 'product', this.merchandise.id]);
+    }
   }
 
 }
