@@ -103,27 +103,13 @@ export class AddServiceFormComponent implements OnInit {
       const readers: Promise<void>[] = [];
   
       Array.from(files).forEach((file: File) => {
-        const reader = new FileReader();
-        const promise = new Promise<void>((resolve, reject) => {
-          reader.onload = () => {
-            const str = reader.result as string;
-            const merchandisePhoto: CreateMerchandisePhotoDTO = {
-              photo: str
-            }
-            fileArray.push(merchandisePhoto);
-            resolve();
-          };
-          reader.onerror = reject;
-        });
-        readers.push(promise);
-        reader.readAsDataURL(file);
+        const merchandisePhoto: CreateMerchandisePhotoDTO = {
+          photo: file.name
+        }
+        fileArray.push(merchandisePhoto);
+        
       });
-  
-      Promise.all(readers).then(() => {
-        this.addServiceForm.patchValue({ merchandisePhotos: fileArray });
-      }).catch((error) => {
-        console.error('Error reading files:', error);
-      });
+      this.addServiceForm.patchValue({ merchandisePhotos: fileArray });
     }
   }
 

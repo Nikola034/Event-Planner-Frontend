@@ -62,6 +62,7 @@ export class ServiceCrudComponent implements OnInit {
     this.serviceService.getAllBySpId(updatedService.serviceProviderId).subscribe({
       next: (response) => {
         this.allServices = response;
+        console.log(this.allServices);
       },
       error: (err) => {
         console.error(err);

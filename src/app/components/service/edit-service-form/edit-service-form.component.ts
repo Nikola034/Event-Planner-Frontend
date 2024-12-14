@@ -122,13 +122,12 @@ export class EditServiceFormComponent implements OnChanges {
         address: address,
         serviceProviderId: 2
       }
-      console.log(updatedService.serviceProviderId);
       this.serviceService.update(this.serviceData.id, updatedService).subscribe({
         next: (response) => {
           this.serviceUpdated.emit(response);
         },
         error: (error) => {
-          console.log(error);
+          console.error(error);
         }
       })
     }
@@ -141,27 +140,13 @@ export class EditServiceFormComponent implements OnChanges {
       const readers: Promise<void>[] = [];
   
       Array.from(files).forEach((file: File) => {
-        const reader = new FileReader();
-        const promise = new Promise<void>((resolve, reject) => {
-          reader.onload = () => {
-            const str = reader.result as string;
-            const merchandisePhoto: CreateMerchandisePhotoDTO = {
-              photo: str
-            }
-            fileArray.push(merchandisePhoto);
-            resolve();
-          };
-          reader.onerror = reject;
-        });
-        readers.push(promise);
-        reader.readAsDataURL(file);
+        const merchandisePhoto: CreateMerchandisePhotoDTO = {
+          photo: file.name
+        }
+        fileArray.push(merchandisePhoto);
+        
       });
-  
-      Promise.all(readers).then(() => {
-        this.editServiceForm.patchValue({ merchandisePhotos: fileArray });
-      }).catch((error) => {
-        console.error('Error reading files:', error);
-      });
+      this.editServiceForm.patchValue({ photos: fileArray });
     }
   }
 }
