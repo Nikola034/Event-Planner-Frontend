@@ -15,13 +15,52 @@
             />
           </div>
           <div class="field flex justify-content-center">
-            <input
-              formControlName="address"
-              type="address"
-              placeholder="Address*"
-              name="address"
-              class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
-            />
+            <div class="grid">
+              <div class="col-4">
+                <input
+                  formControlName="city"
+                  type="text"
+                  placeholder="City*"
+                  class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+                />
+              </div>
+              <div class="col-4">
+                <input
+                  formControlName="street"
+                  type="text"
+                  placeholder="Street*"
+                  class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+                />
+              </div>
+              <div class="col-4">
+                <input
+                  formControlName="number"
+                  type="number"
+                  placeholder="Number*"
+                  class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="field flex justify-content-center">
+            <div class="grid">
+              <div class="col-6">
+                <input
+                  formControlName="latitude"
+                  type="number"
+                  placeholder="Latitude*"
+                  class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+                />
+              </div>
+              <div class="col-6">
+                <input
+                  formControlName="longitude"
+                  type="number"
+                  placeholder="Longitude*"
+                  class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+                />
+              </div>
+            </div>
           </div>
           <div class="field flex justify-content-center">
             <textarea
@@ -33,13 +72,23 @@
             ></textarea>
           </div>
           <div class="field flex justify-content-center">
-            <p-calendar placeholder="Start*" formControlName="start" />
+            <input
+              type="time"
+              formControlName="start"
+              placeholder="Start*"
+              class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+            />
           </div>
           <div class="field flex justify-content-center mb-6">
-            <p-calendar placeholder="End*" formControlName="end" />
+            <input
+              type="time"
+              formControlName="end"
+              placeholder="End*"
+              class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+            />
           </div>
           <div class="field flex justify-content-center mt-8">
-            <p-button styleClass="mt-8">ADD ACTIVITY</p-button>
+            <p-button styleClass="mt-8" (onClick)="createActivity()">ADD ACTIVITY</p-button>
           </div>
         </form>
       </div>

@@ -1,23 +1,25 @@
-import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
+import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { ActivityOverviewDTO, CreateActivityDTO } from '../agenda/activity-overview.dto';
 import { EventService } from '../event/event.service';
-import { CreateActivityDTO } from '../agenda/activity-overview.dto';
-import { response } from 'express';
 import { tap } from 'rxjs';
 
 @Component({
-  selector: 'app-create-activity-form',
+  selector: 'app-edit-activity-form',
   standalone: true,
   imports: [DropdownModule, FormsModule, MultiSelectModule, RadioButtonModule, ButtonModule, ReactiveFormsModule, CalendarModule],
-  templateUrl: './create-activity-form.component.html',
-  styleUrl: './create-activity-form.component.scss'
+  templateUrl: './edit-activity-form.component.html',
+  styleUrl: './edit-activity-form.component.scss'
 })
-export class CreateActivityFormComponent {
+export class EditActivityFormComponent {
+  @Input() activity!: ActivityOverviewDTO;
+  @Output() activityDataUpdated = new EventEmitter<boolean>();
+
   addActivityForm = new FormGroup({
     title: new FormControl<string | null>(''),
     description: new FormControl(''),
@@ -34,6 +36,23 @@ export class CreateActivityFormComponent {
     
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['activity'] && changes['activity'].currentValue) {
+      const data = changes['activity'].currentValue;
+      this.addActivityForm.patchValue({
+        title: this.activity.title,
+        description:  this.activity.description, 
+        start: this.activity.startTime,
+        end: this.activity.endTime,
+        city: this.activity.address?.city,
+        street: this.activity.address?.street,
+        number: this.activity.address?.number,
+        latitude: this.activity.address?.latitude,
+        longitude: this.activity.address?.longitude
+      });
+    }
+  }
+
   createActivity(){
     const dto: CreateActivityDTO = {
       title: this.addActivityForm.controls.title.value,
@@ -48,7 +67,7 @@ export class CreateActivityFormComponent {
       longitude: this.addActivityForm.controls.longitude.value,
       }
     }
-    this.eventService.addActivity(history.state.eventId, dto).pipe(tap(response => {
+    this.eventService.updateActivity(this.activity.id, dto).pipe(tap(response => {
       console.log(response)
     })).subscribe()
   }
