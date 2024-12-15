@@ -40,7 +40,7 @@ export class UpdateProductComponent {
   displayAddCategoryForm: boolean = false;
 
   selectedCategory: any = null
-  selectedEventTypes: CreateEventTypeResponseDTO[] = []
+  selectedEventTypes: any[] = []
 
   fbl: FormBuilder = new FormBuilder();
 
@@ -95,6 +95,7 @@ export class UpdateProductComponent {
         cancellationDeadline: response.cancelReservation,
         automaticReservation: response.automaticReservation,
       });
+      this.selectedEventTypes = response.eventTypes.map(x => x.id)
     })).subscribe()
   }
 
@@ -139,7 +140,7 @@ export class UpdateProductComponent {
       automaticReservation: this.addProductForm.controls.automaticReservation.value,
       serviceProviderId: 2,//this.jwtService.getIdFromToken(),
       merchandisePhotos: this.getPhotos(),
-      eventTypesIds: this.eventTypes.map(x => x.id),
+      eventTypesIds: this.selectedEventTypes
     }
     this.productService.update(history.state.productId
       , dto).pipe(

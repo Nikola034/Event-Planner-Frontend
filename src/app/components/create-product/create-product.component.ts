@@ -40,7 +40,7 @@ export class CreateProductComponent {
   displayAddCategoryForm: boolean = false;
 
   selectedCategory: any = null
-  selectedEventTypes: CreateEventTypeResponseDTO[] = []
+  selectedEventTypes: any[] = []
 
   fbl: FormBuilder = new FormBuilder();
 
@@ -100,6 +100,7 @@ export class CreateProductComponent {
     return photosArray.value as CreateMerchandisePhotoDTO[];
   }
   createProduct(): void{
+    console.log(this.selectedEventTypes)
     const dto: CreateProductRequestDTO = {
       title: this.addProductForm.controls.title.value,
       description: this.addProductForm.controls.description.value,
@@ -122,7 +123,7 @@ export class CreateProductComponent {
       automaticReservation: this.addProductForm.controls.automaticReservation.value,
       serviceProviderId: 2,//this.jwtService.getIdFromToken(),
       merchandisePhotos: this.getPhotos(),
-      eventTypesIds: this.eventTypes.map(x => x.id),
+      eventTypesIds: this.selectedEventTypes,
       categoryId: this.selectedCategory,
     }
     this.productService.create(dto).pipe(
