@@ -1,7 +1,7 @@
 <p-table [value]="activities" class="w-full" [responsiveLayout]="'scroll'">
     <ng-template pTemplate="caption">
       <div class="flex align-items-center justify-content-between">
-        <h2>Agenda For Event: Event</h2>
+        <h2>{{"Agenda For Event: " + this.event.title}}</h2>
         <p-button (onClick)="showAddForm()" icon="pi pi-plus" />
       </div>
     </ng-template>
@@ -12,18 +12,22 @@
         <th>Description</th>
         <th>Start</th>
         <th>End</th>
+        <th>Edit</th>
         <th>Delete</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-activity>
       <tr>
         <td>{{ activity.title }}</td>
-        <td>{{ activity.address }}</td>
+        <td>{{ activity.address.city + ", " + activity.address.street + ", " + activity.address.number }}</td>
         <td>{{ activity.description }}</td>
-        <td>{{ activity.start }}</td>
-        <td>{{ activity.end }}</td>
+        <td>{{ activity.startTime }}</td>
+        <td>{{ activity.endTime }}</td>
         <td>
-            <p-button icon="pi pi-trash"></p-button>
+          <p-button icon="pi pi-pencil" (onClick)="showEditForm(activity)"></p-button>
+        </td>
+        <td>
+            <p-button icon="pi pi-trash" (onClick)="onDelete(activity.id)"></p-button>
           </td>
       </tr>
     </ng-template>
@@ -36,4 +40,11 @@
   >
     <app-create-activity-form></app-create-activity-form>
   </p-dialog>
-  
+  <p-dialog
+  header="Edit Activity"
+  [(visible)]="displayEditForm"
+  [modal]="true"
+  styleClass="w-6 h-full"
+>
+  <app-edit-activity-form [activity]="selectedActivity"></app-edit-activity-form>
+</p-dialog>
