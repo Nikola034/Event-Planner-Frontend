@@ -210,7 +210,7 @@ export class MessengerComponent implements OnInit {
         this.messageService.add({ 
           severity: 'success', 
           summary: 'User Blocked', 
-          detail: `${response}`, 
+          detail: `User ${this.selectedUser?.firstName} ${this.selectedUser?.lastName} has been blocked`, 
           life: 3000 
         });
   
