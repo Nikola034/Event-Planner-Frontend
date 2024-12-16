@@ -56,7 +56,9 @@ export class EventService {
   getReport(eventId: number | null | undefined): Observable<EventReportDTO>{
     return this.http.get<EventReportDTO>(`${environment.apiUrl}events/report/${eventId}`)
   }
-
+  getFavorites(userId: number | null | undefined): Observable<EventOverviewDTO[]>{
+    return this.http.get<EventOverviewDTO[]>(`${environment.apiUrl}events/${userId}/favorite`)
+  }
   getTop(): Observable<EventOverviewDTO[]> {
     return this.http
       .get<PageResponse>(`${API_URL}/api/v1/events/top`)

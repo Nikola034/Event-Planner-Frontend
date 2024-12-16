@@ -107,21 +107,3 @@
       </div>
     </div>
   </div>
-
-  <div id="report-content" style="display: none;">
-    <!-- Participant List Section -->
-    <div class="participant-list">
-      <h2>Participants</h2>
-      <ul>
-        <li *ngFor="let participant of participants">
-          {{ participant.firstName }} {{ participant.lastName }} - {{ participant.email }}
-        </li>
-      </ul>
-    </div>
-  
-    <!-- Static Chart Section -->
-    <div class="chart-container">
-      <h2>Reviews Chart</h2>
-      <canvas id="review-chart"></canvas>
-    </div>
-  </div>
