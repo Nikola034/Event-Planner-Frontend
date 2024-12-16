@@ -15,14 +15,20 @@ export class UserService {
 
     return this.httpClient.post<any>(`${API_URL}/api/v1/users/follow-event`, null, { params: params });
   }
-  getServiceProvidersForOrganizerEvents(organizerId: number,role:string): Observable<UserOverviewDTO[]> {
-    if (organizerId === -1) return of([]);
+  getChatUsers(userId: number,role:string): Observable<UserOverviewDTO[]> {
+    if (userId === -1) return of([]);
     if(role==='EO')
-    return this.httpClient.get<UserOverviewDTO[]>(`${API_URL}/api/v1/users/eo/${organizerId}/chat-users`);
+    return this.httpClient.get<UserOverviewDTO[]>(`${API_URL}/api/v1/users/eo/${userId}/chat-users`);
   else if(role==='SP')
-    return this.httpClient.get<UserOverviewDTO[]>(`${API_URL}/api/v1/users/sp/${organizerId}/chat-users`);
+    return this.httpClient.get<UserOverviewDTO[]>(`${API_URL}/api/v1/users/sp/${userId}/chat-users`);
   else
-  return this.httpClient.get<UserOverviewDTO[]>(`${API_URL}/api/v1/users/au/chat-users`);
+  return this.httpClient.get<UserOverviewDTO[]>(`${API_URL}/api/v1/users/au/${userId}/chat-users`);
+  }
+  blockUser(blockerId: number, blockedUserId: number): Observable<any> {
+    return this.httpClient.post<any>(
+      `${API_URL}/api/v1/users/${blockerId}/block/${blockedUserId}`, 
+      null
+    );
   }
 
 }
