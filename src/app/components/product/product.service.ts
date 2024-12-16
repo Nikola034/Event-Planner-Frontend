@@ -21,7 +21,10 @@ export class ProductService {
         return this.http
           .get<MerchandiseOverviewDTO[]>(`${environment.apiUrl}products`)
       }
-
+      getById(id: number): Observable<ProductOverviewDTO> {
+        return this.http
+          .get<ProductOverviewDTO>(`${environment.apiUrl}products/${id}`)
+      }
       create(dto: CreateProductRequestDTO): Observable<ProductOverviewDTO> {
         return this.http
           .post<ProductOverviewDTO>(`${environment.apiUrl}products`, dto)

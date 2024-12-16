@@ -1,4 +1,5 @@
 export interface CreateCategory {
     title: string,
-    description: string
+    description: string,
+    pending: boolean
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -17,6 +17,7 @@ import { EventTypeService } from '../create-event-type-form/event-type.service';
 import { UpdateEventTypeDTO } from '../create-event-type-form/dtos/update-event-type.dto';
 import { parse } from 'path';
 import { response } from 'express';
+import { CreateEventTypeResponseDTO } from '../create-event-type-form/dtos/create-event-type-response.dto';
 
 @Component({
   selector: 'app-edit-event-type-form',
@@ -32,7 +33,9 @@ import { response } from 'express';
   templateUrl: './edit-event-type-form.component.html',
   styleUrl: './edit-event-type-form.component.scss',
 })
-export class EditEventTypeFormComponent {
+export class EditEventTypeFormComponent implements OnChanges{
+  @Input() eventTypeData!: CreateEventTypeResponseDTO;
+  @Output() eventTypeDataUpdated = new EventEmitter<boolean>();
   editEventTypeForm = new FormGroup({
     title: new FormControl({ value: '', disabled: true }),
     description: new FormControl(''),
@@ -55,21 +58,16 @@ export class EditEventTypeFormComponent {
         })
       )
       .subscribe();
+  }
 
-      let id: number | null = null;
-
-      const eventTypeId = localStorage.getItem('eventTypeId');
-      
-      if (eventTypeId !== null) {
-        id = parseInt(eventTypeId, 10);
-      }
-      this.eventTypeService.getById(id).pipe(tap(response => {
-        this.editEventTypeForm.patchValue({
-          title: response.title,
-          description: response.description   
-        });
-        this.selectedCategories = response.recommendedCategories
-      })).subscribe()
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['eventTypeData'] && changes['eventTypeData'].currentValue) {
+      const data = changes['eventTypeData'].currentValue;
+      this.editEventTypeForm.patchValue({
+        title: this.eventTypeData.title,
+        description:  this.eventTypeData.description, 
+      });
+    }
   }
 
   editEventType(): void {
@@ -78,14 +76,8 @@ export class EditEventTypeFormComponent {
       recommendedCategoryIds: this.selectedCategories.map((x) => x.id),
       active: true,
     };
-    let id: number | null = null;
-
-    const eventTypeId = localStorage.getItem('eventTypeId');
-    if (eventTypeId !== null) {
-      id = parseInt(eventTypeId, 10);
-    }
     this.eventTypeService
-      .update(id, dto)
+      .update(this.eventTypeData.id, dto)
       .pipe(
         tap((response) => {
           console.log(response);

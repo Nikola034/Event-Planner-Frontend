@@ -83,7 +83,7 @@ export class CreateEventFormComponent {
       },
       maxParticipants: this.addEventTypeForm.controls.maxParticipants.value,
       isPublic: this.addEventTypeForm.controls.public.value,
-      eventTypeId: this.selectedEventType.id,
+      eventTypeId: this.selectedEventType,
       productIds: this.selectedProducts.map(x => x.id),
       serviceIds: this.selectedServices.map(x => x.id),
       organizerId: this.jwtService.getIdFromToken()

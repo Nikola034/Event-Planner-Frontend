@@ -39,7 +39,7 @@
         <p-button
           class="mr-2"
           icon="pi pi-pencil"
-          (click)="showEditForm(eventType.id)"
+          (click)="showEditForm(eventType)"
         ></p-button>
         <p-button icon="pi pi-times" (click)="deactivateEventType(eventType.id)"></p-button>
       </td>
@@ -60,5 +60,5 @@
   [modal]="true"
   styleClass="w-6 h-full"
 >
-  <app-edit-event-type-form> </app-edit-event-type-form>
+  <app-edit-event-type-form [eventTypeData]="selectedEventType"> </app-edit-event-type-form>
 </p-dialog>

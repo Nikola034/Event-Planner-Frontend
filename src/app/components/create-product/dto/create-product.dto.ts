@@ -21,7 +21,6 @@ export interface CreateProductRequestDTO {
     eventTypesIds: number[] | null | undefined; 
     address: AddressDTO | null | undefined; 
     categoryId: number | null | undefined; 
-    category: CreateCategoryDto | null | undefined; 
   }
   export interface UpdateProductRequestDTO {
     title: string | null | undefined;

@@ -31,6 +31,8 @@ export class EventTypesComponent {
   displayAddForm: boolean = false;
   displayEditForm: boolean = false;
 
+  selectedEventType!: CreateEventTypeResponseDTO
+
   public eventTypes: CreateEventTypeResponseDTO[] = [];
   public displayedEventTypes: CreateEventTypeResponseDTO[] = [];
 
@@ -53,9 +55,9 @@ export class EventTypesComponent {
   showAddForm() {
     this.displayAddForm = true;
   }
-  showEditForm(eventTypeId: number) {
+  showEditForm(et: CreateEventTypeResponseDTO) {
     this.displayEditForm = true;
-    localStorage.setItem("eventTypeId", eventTypeId.toString())
+    this.selectedEventType = et;
   }
 
   onUpdate(eventType: any): void {

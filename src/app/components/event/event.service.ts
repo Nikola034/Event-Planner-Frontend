@@ -13,6 +13,7 @@ import { CreateEventDTO } from '../my-events/dtos/CreateEvent.dto';
 import { CreateEventResponseDTO } from '../my-events/dtos/CreateEventResponse.dto';
 import { UpdateEventDTO } from '../my-events/dtos/UpdateEvent.dto';
 import { InviteResponseDTO } from './invite-response';
+import { ActivityOverviewDTO, CreateActivityDTO } from '../agenda/activity-overview.dto';
 @Injectable({
   providedIn: 'root',
 })
@@ -49,6 +50,24 @@ export class EventService {
       .pipe(map((page: PageResponse) => page.content as EventOverviewDTO[]));
   }
   
+  getAgenda(eventId: number): Observable<ActivityOverviewDTO[]> {
+    return this.http.get<ActivityOverviewDTO[]>(`${environment.apiUrl}events/${eventId}/agenda`)
+
+  }
+  addActivity(eventId: number, dto: CreateActivityDTO): Observable<ActivityOverviewDTO> {
+    return this.http.put<ActivityOverviewDTO>(`${environment.apiUrl}events/${eventId}/agenda`, dto)
+
+  }
+  updateActivity(acitivtyId:number | null | undefined, dto: CreateActivityDTO): Observable<ActivityOverviewDTO> {
+    return this.http.put<ActivityOverviewDTO>(`${environment.apiUrl}events/agenda/${acitivtyId}`, dto)
+
+  }
+  deleteActivity(eventId: number, acitivtyId:number): Observable<ActivityOverviewDTO> {
+    return this.http.delete<ActivityOverviewDTO>(`${environment.apiUrl}events/${eventId}/agenda/${acitivtyId}`)
+
+  }
+
+
   create(dto: CreateEventDTO): Observable<CreateEventResponseDTO> {
     return this.http.post<CreateEventResponseDTO>(
       `${environment.apiUrl}events`,

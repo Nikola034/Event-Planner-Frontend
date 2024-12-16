@@ -6,69 +6,55 @@ import { TableModule } from 'primeng/table';
 import { CreateEventTypeFormComponent } from '../create-event-type-form/create-event-type-form.component';
 import { EditEventTypeFormComponent } from '../edit-event-type-form/edit-event-type-form.component';
 import { CreateActivityFormComponent } from "../create-activity-form/create-activity-form.component";
+import { EditActivityFormComponent } from '../edit-activity-form/edit-activity-form.component';
+import { ActivityOverviewDTO } from './activity-overview.dto';
+import { EventService } from '../event/event.service';
+import { tap } from 'rxjs';
+import { response } from 'express';
+import { CreateEventResponseDTO } from '../my-events/dtos/CreateEventResponse.dto';
 
 @Component({
   selector: 'app-agenda',
   standalone: true,
-  imports: [TableModule, CommonModule, ButtonModule, DialogModule, CreateActivityFormComponent],
+  imports: [TableModule, CommonModule, ButtonModule, DialogModule, CreateActivityFormComponent, EditActivityFormComponent],
   templateUrl: './agenda.component.html',
   styleUrl: './agenda.component.scss'
 })
 export class AgendaComponent {
   displayAddForm: boolean = false;
+  displayEditForm: boolean = false;
+  event!: CreateEventResponseDTO 
 
-  activities = [
-    {
-      title: 'Wedding',
-      address: 'ahahahah',
-      description: 'A beautiful wedding ceremony',
-      start: 'safad',
-      end: 'statadf'
-    },
-    {
-      title: 'Wedding',
-      address: 'ahahahah',
-      description: 'A beautiful wedding ceremony',
-      start: 'safad',
-      end: 'statadf'
-    },
-    {
-      title: 'Wedding',
-      address: 'ahahahah',
-      description: 'A beautiful wedding ceremony',
-      start: 'safad',
-      end: 'statadf'
-    },
-    {
-      title: 'Wedding',
-      address: 'ahahahah',
-      description: 'A beautiful wedding ceremony',
-      start: 'safad',
-      end: 'statadf'
-    },
-    {
-      title: 'Wedding',
-      address: 'ahahahah',
-      description: 'A beautiful wedding ceremony',
-      start: 'safad',
-      end: 'statadf'
-    },
-    {
-      title: 'Wedding',
-      address: 'ahahahah',
-      description: 'A beautiful wedding ceremony',
-      start: 'safad',
-      end: 'statadf'
-    },
-    // Add more data as needed
-  ];
+  activities: ActivityOverviewDTO[] = []
+  selectedActivity!: ActivityOverviewDTO 
+
+  constructor(private eventService: EventService){}
+
+  ngOnInit(){
+    this.loadData();
+  }
+
+  loadData(): void{
+    this.eventService.getById(history.state.eventId).pipe(tap(response => {
+      this.event = response
+    })).subscribe()
+    this.eventService.getAgenda(history.state.eventId).pipe(tap(response => {
+      this.activities = response
+    })).subscribe()
+  }
 
   showAddForm() {
     this.displayAddForm = true;
   }
 
-  onDelete(eventType: any): void {
-    console.log('Delete clicked for', eventType);
-    // Implement your delete logic here
+  showEditForm(a: ActivityOverviewDTO) {
+    this.displayEditForm = true;
+    this.selectedActivity = a;
+  }
+
+  onDelete(activityId: number): void {
+    this.eventService.deleteActivity(history.state.eventId, activityId).pipe(tap(response => {
+      
+    })).subscribe()
   }
 }
