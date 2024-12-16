@@ -41,4 +41,10 @@ export class EventCardComponent{
   showInvitationsForm(){
     this.displayInviteForm = true;
   }
+
+  showDetails(eventId: number){
+    this.router.navigate(['home/event-details'], {
+      state: {eventId: eventId}
+    })
+  }
 }

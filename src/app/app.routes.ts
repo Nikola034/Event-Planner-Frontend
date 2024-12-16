@@ -25,6 +25,7 @@ import { ProductsCrudComponent } from './components/products-crud/products-crud.
 import { UpdateProductComponent } from './components/update-product/update-product.component';
 import { CreateProductComponent } from './components/create-product/create-product.component';
 import { AdminReviewsComponent } from './components/admin-reviews/admin-reviews.component';
+import { EventDetailsComponent } from './components/event-details/event-details.component';
 
 
 export const routes: Routes = [
@@ -103,6 +104,13 @@ export const routes: Routes = [
                     breadcrumb: null
                 },
                 component: EditEventFormComponent
+            },
+            {
+                path: 'event-details',
+                data:{
+                    breadcrumb: null
+                },
+                component: EventDetailsComponent
             },
             {
                 path: 'agenda',

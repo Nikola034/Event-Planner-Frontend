@@ -1,0 +1,29 @@
+.participant-list {
+    ul {
+      list-style: none;
+      padding: 0;
+  
+      li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+  
+        .participant-img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+  
+  .chart-container {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  button {
+    margin-top: 20px;
+  }
+  
