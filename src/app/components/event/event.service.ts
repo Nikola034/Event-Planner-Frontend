@@ -14,6 +14,8 @@ import { CreateEventResponseDTO } from '../my-events/dtos/CreateEventResponse.dt
 import { UpdateEventDTO } from '../my-events/dtos/UpdateEvent.dto';
 import { InviteResponseDTO } from './invite-response';
 import { ActivityOverviewDTO, CreateActivityDTO } from '../agenda/activity-overview.dto';
+import { EventDetailsDTO } from './EventDetailsDTO';
+import { EventReportDTO } from './event-report.dto';
 @Injectable({
   providedIn: 'root',
 })
@@ -40,7 +42,18 @@ export class EventService {
   getById(id: number | null): Observable<CreateEventResponseDTO> {
     return this.http.get<CreateEventResponseDTO>(`${environment.apiUrl}events/${id}`)
   }
-
+  getEventDetails(id: number | null): Observable<EventDetailsDTO> {
+    return this.http.get<EventDetailsDTO>(`${environment.apiUrl}events/${id}/details`)
+  }
+  favorizeEvent(eventId: number | null, userId: number | null): Observable<boolean> {
+    return this.http.post<boolean>(`${environment.apiUrl}events/${eventId}/add-to-favorites/${userId}`, {})
+  }
+  getReport(eventId: number | null | undefined): Observable<EventReportDTO>{
+    return this.http.get<EventReportDTO>(`${environment.apiUrl}events/report/${eventId}`)
+  }
+  getFavorites(userId: number | null | undefined): Observable<EventOverviewDTO[]>{
+    return this.http.get<EventOverviewDTO[]>(`${environment.apiUrl}events/${userId}/favorite`)
+  }
   getTop(): Observable<EventOverviewDTO[]> {
     const params={
       userId:this.jwtService.getIdFromToken()
