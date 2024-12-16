@@ -51,7 +51,7 @@ export class RegisterSpFormComponent {
       email: this.registerForm.controls.email.value,
       password: this.registerForm.controls.password1.value,
       photo: this.selectedPhoto,
-      role: 'EO',
+      role: 'SP',
       address: {
         city: this.registerForm.controls.city.value,
         street: this.registerForm.controls.street.value,

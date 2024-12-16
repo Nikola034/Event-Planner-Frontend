@@ -29,11 +29,6 @@ export class EventService {
   private events: Event[] = [];
   constructor(private http: HttpClient, private jwtService: JwtService) {}
 
-  getAll(): Observable<EventOverviewDTO[]> {
-    return this.http
-      .get<PageResponse>(`${API_URL}/api/v1/events/all`)
-      .pipe(map((page: PageResponse) => page.content as EventOverviewDTO[]));
-  }
   getByEo(id: number | null): Observable<EventOverviewDTO[]> {
     if(id===-1)return of([]);
     return this.http
@@ -46,8 +41,11 @@ export class EventService {
   }
 
   getTop(): Observable<EventOverviewDTO[]> {
+    const params={
+      userId:this.jwtService.getIdFromToken()
+  };
     return this.http
-      .get<PageResponse>(`${API_URL}/api/v1/events/top`)
+      .get<PageResponse>(`${API_URL}/api/v1/events/top`,{params})
       .pipe(map((page: PageResponse) => page.content as EventOverviewDTO[]));
   }
   
@@ -85,6 +83,7 @@ export class EventService {
           if(!filters?.isActive) return of([]);
           
           const params = {
+            userId:this.jwtService.getIdFromToken(),
               startDate: this.formatDate(filters?.startDate),
               endDate: this.formatDate(filters?.endDate),
               type: filters?.type || '',

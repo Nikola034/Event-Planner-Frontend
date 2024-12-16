@@ -13,6 +13,7 @@ import { CreateServiceResponse } from './create-response';
 import { UpdateRequest } from './update-request';
 import { environment } from '../../../environments/environment';
 import { TimeslotDTO } from '../my-events/dtos/CreateEventResponse.dto';
+import { JwtService } from '../auth/jwt.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,10 +28,11 @@ export class ServiceService {
     const event = this.services.find(e => e.id === id);
     return of(event);
   }
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private jwtService:JwtService) { }
   search(filters: ServiceFilters | null = null, search: string = '',sort:string='price'): Observable<MerchandiseOverviewDTO[]> {
     if(!filters?.isActive) return of([]);
     const params = {
+      userId:this.jwtService.getIdFromToken(),
       priceMin: filters?.priceMin || '',
       priceMax: filters?.priceMax || '',
       category: filters?.category || '',

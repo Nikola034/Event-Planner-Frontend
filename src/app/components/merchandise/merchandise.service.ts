@@ -10,6 +10,7 @@ import { PageResponse } from '../page/page-response';
 import { ServiceFilters } from '../service/service-filters';
 import { ProductFilters } from '../product/product-filters';
 import { MerchandiseDetailDTO } from './merchandise-detail-dto';
+import { JwtService } from '../auth/jwt.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -21,15 +22,15 @@ export class MerchandiseService {
     'price',
     'discount'
   ];
-  getAll(): Observable<MerchandiseOverviewDTO[]> {
-    return this.http.get<PageResponse>(`${API_URL}/api/v1/merchandise/all`).pipe(
-      map((page: PageResponse) => page.content as MerchandiseOverviewDTO[])
-    );
-  }
+
 
 
   getTop(): Observable<MerchandiseOverviewDTO[]> {
-    return this.http.get<MerchandiseOverviewDTO[]>(`${API_URL}/api/v1/merchandise/top`);
+    let userId=this.jwtService.getIdFromToken();
+    const params={
+        userId:userId
+    };
+    return this.http.get<MerchandiseOverviewDTO[]>(`${API_URL}/api/v1/merchandise/top`,{params});
   }
 
   search(serviceFilters: ServiceFilters | null = null,productFilters: ProductFilters | null = null, search: string = '',sort:string='price'): Observable<MerchandiseOverviewDTO[]> {
@@ -43,5 +44,5 @@ export class MerchandiseService {
   getMerchandiseDetails(merchandiseId: number): Observable<MerchandiseDetailDTO> {
     return this.http.get<MerchandiseDetailDTO>(`${API_URL}/api/v1/merchandise/${merchandiseId}`);
   }
-  constructor(private serviceService: ServiceService, private productService: ProductService,private http: HttpClient) { }
+  constructor(private serviceService: ServiceService, private productService: ProductService,private http: HttpClient,private jwtService:JwtService) { }
 }
