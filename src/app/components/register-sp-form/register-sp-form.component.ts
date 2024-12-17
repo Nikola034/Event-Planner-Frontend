@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
-import {FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import {FormGroup, FormControl, ReactiveFormsModule, FormArray, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -9,6 +9,8 @@ import { ToastModule } from 'primeng/toast';
 import { RegisterSpDto } from '../auth/register-dtos/RegisterSp.dto';
 import { tap } from 'rxjs';
 import { JwtService } from '../auth/jwt.service';
+import { PhotoService } from '../photos/photo.service';
+import { CreateBusinessPhotoDTO, CreateMerchandisePhotoDTO } from '../merchandise/merchandise-photos-request-dto';
 @Component({
   selector: 'app-register-sp-form',
   standalone: true,
@@ -20,6 +22,12 @@ import { JwtService } from '../auth/jwt.service';
 export class RegisterSpFormComponent {
   selectedPhoto: string | undefined;
   selectedPhotos: string[] | undefined;
+
+  photosToShow: string[] = [];
+
+  photosToAdd: number[] = [];
+  fbl: FormBuilder = new FormBuilder();
+
 
   registerForm = new FormGroup({
     name: new FormControl(''),
@@ -35,9 +43,10 @@ export class RegisterSpFormComponent {
     password2: new FormControl(''),
     company: new FormControl(''),
     description: new FormControl(''),
+    businessPhotos: this.fbl.array([])
   })
   
-  constructor(private router: Router, private jwtService: JwtService){}
+  constructor(private router: Router, private jwtService: JwtService, private photoService: PhotoService){}
 
   createAccount(): void{
     if(this.registerForm.controls.password1.value != this.registerForm.controls.password2.value){
@@ -70,7 +79,52 @@ export class RegisterSpFormComponent {
     ).subscribe()
   }
 
-  uploadFile($event: any) {
-    console.log($event.target.files[0]); // outputs the first file
+  uploadFile($event: any): void {
+    const files = $event.target.files as File[];
+    if (files && files.length > 0) {
+        const file = files[0]; 
+
+        const photosArray = this.registerForm.get('businessPhotos') as FormArray;
+
+        // Check if the file name already exists in the array
+        const existingPhoto = photosArray.value.find((photo: { photo: string }) => photo.photo === file.name);
+        
+        if (!existingPhoto) {
+            this.addPhoto(file.name); 
+            this.photoService.uploadBusinessPhoto(file).pipe(tap(response => {
+                this.photosToAdd.push(response)
+            })).subscribe();
+        } else {
+            console.log('File already exists, skipping upload.');
+        }
+    }
+}
+   
+  getPhotoUrl(photo: string): string{
+    return this.photoService.getPhotoUrl(photo);
+  }
+
+  addPhoto(photoName: string): void {
+    const photosArray = this.registerForm.get('businessPhotos') as FormArray;
+    photosArray.push(this.fbl.group({
+      photo: new FormControl(photoName)
+    }));
+    this.updatePhotosToShow();
+  }
+
+  updatePhotosToShow(): void {
+    const photosArray = this.registerForm.get('businessPhotos') as FormArray;
+    this.photosToShow = photosArray.value.map((photo: { photo: string }) => photo.photo);
+  }
+
+  removePhoto(index: number): void {
+    const photosArray = this.registerForm.get('businessPhotos') as FormArray;
+    photosArray.removeAt(index);
+    this.updatePhotosToShow();
+  }
+
+  getPhotos(): CreateBusinessPhotoDTO[] {
+    const photosArray = this.registerForm.get('businessPhotos') as FormArray;
+    return photosArray.value as CreateBusinessPhotoDTO[];
   }
 }

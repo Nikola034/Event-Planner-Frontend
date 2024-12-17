@@ -11,11 +11,13 @@ import { catchError, EMPTY, Observable, takeUntil, tap, throwError } from 'rxjs'
 import { HttpErrorResponse } from '@angular/common/http';
 import { EventToken } from '../auth/event-token';
 import { MessageService } from 'primeng/api';
+import { CommonModule } from '@angular/common';
+import { PhotoService } from '../photos/photo.service';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonModule, DialogModule, DialogModule],
+  imports: [ReactiveFormsModule, ButtonModule, DialogModule, DialogModule, CommonModule],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
   encapsulation: ViewEncapsulation.None
