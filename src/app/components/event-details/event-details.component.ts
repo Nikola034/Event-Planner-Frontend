@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { EventDetailsDTO } from '../event/EventDetailsDTO';
 import { EventService } from '../event/event.service';
-import { switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, switchMap, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
@@ -12,6 +12,7 @@ import { response } from 'express';
 import { ChartModule } from 'primeng/chart';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-event-details',
@@ -27,6 +28,7 @@ export class EventDetailsComponent {
   participants: any[] = [];
   reviewChartData: any;
   reviewChartOptions: any;
+  errorMessage:string='';
 
   constructor(
     private eventService: EventService,
@@ -50,11 +52,45 @@ export class EventDetailsComponent {
               this.isFavorited = response.some(x => x.id == this.eventDetails.id)
             })
           )
-        })
+        }),
+        catchError((error: HttpErrorResponse) => {
+                // Handle specific error scenarios
+                this.errorMessage= this.getErrorMessage(error);
+                return EMPTY; // Prevents unhandled error propagation
+              })
       )
       .subscribe();
     
   }
+
+  private getErrorMessage(error: HttpErrorResponse): string {
+      // Check if error response has a body with a message
+      if (error.error instanceof ErrorEvent) {
+        // Client-side error
+        return error.error.message || 'Client-side error occurred';
+      } else {
+        // Server-side error
+        // Try multiple ways to extract the error message
+        if (error.error && error.error.message) {
+          // Directly from error object
+          return error.error.message;
+        }
+    
+        if (error.error && typeof error.error === 'string') {
+          // If error is a string message
+          return error.error;
+        }
+    
+        if (error.error && error.error.errorMessage) {
+          // Alternative error message property
+          return error.error.errorMessage;
+        }
+    
+        // Fallback to status text or a generic message
+        return error.statusText || 'An unexpected error occurred';
+      }
+    }
+
 
   toggleFavorite(): void {
     this.isFavorited = !this.isFavorited;

@@ -1,3 +1,8 @@
+<div *ngIf="errorMessage" class="error-container">
+  <div class="error-message">
+    {{ errorMessage }}
+  </div>
+</div>
 <div *ngIf="eventDetails">
 <div class="event-details-container surface-100 p-4 border-round-md shadow-2">
     <!-- Event Title -->

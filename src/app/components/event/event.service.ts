@@ -43,7 +43,8 @@ export class EventService {
     return this.http.get<CreateEventResponseDTO>(`${environment.apiUrl}events/${id}`)
   }
   getEventDetails(id: number | null): Observable<EventDetailsDTO> {
-    return this.http.get<EventDetailsDTO>(`${environment.apiUrl}events/${id}/details`)
+    let userId=this.jwtService.getIdFromToken();
+    return this.http.get<EventDetailsDTO>(`${environment.apiUrl}events/${id}/details?userId=${userId}`)
   }
   favorizeEvent(eventId: number | null, userId: number | null): Observable<boolean> {
     return this.http.post<boolean>(`${environment.apiUrl}events/${eventId}/add-to-favorites/${userId}`, {})
@@ -53,7 +54,6 @@ export class EventService {
   }
   getFavorites(): Observable<EventOverviewDTO[]>{
     let userId=this.jwtService.getIdFromToken();
-    console.log(`${environment.apiUrl}events/${userId}/favorite`);
     return this.http.get<EventOverviewDTO[]>(`${environment.apiUrl}events/${userId}/favorite`);
   }
   getTop(): Observable<EventOverviewDTO[]> {
