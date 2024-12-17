@@ -21,6 +21,35 @@ export class PhotoService {
     return `${environment.apiUrl}photos/${filename}`;
   }
 
+  deleteMercPhoto(id: number){
+    return this.http.delete<number>(`${environment.apiUrl}photos/merchandise/${id}`);
+  }
+  deleteBusinessPhoto(id: number){
+    return this.http.delete<number>(`${environment.apiUrl}photos/business/${id}`);
+  }
+
+  // uploadUserPhoto(file: File): Observable<string> {
+  //   const formData = new FormData();
+  //   formData.append('file', file);
+  //   formData.append('user', JSON.stringify(user)); // Pass the user object as a string
+
+  //   return this.http.post<string>(`${this.apiUrl}/user/upload`, formData);
+  // }
+
+  uploadBusinessPhoto(file: File): Observable<number> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post<number>(`${environment.apiUrl}photos/business`, formData);
+  }
+
+  uploadMerchandisePhoto(file: File): Observable<number> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post<number>(`${environment.apiUrl}photos/merchandise`, formData);
+  }
+
   // Ovako ce se pozivati iz svakog ts-a
   // photoUrls: string[] = []
   // filenames: string[] = ['nutria.jpg']

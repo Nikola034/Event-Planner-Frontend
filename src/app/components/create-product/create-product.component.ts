@@ -17,6 +17,8 @@ import { CreateProductRequestDTO } from './dto/create-product.dto';
 import { JwtService } from '../auth/jwt.service';
 import { RecommendCategoryComponent } from '../category/recommend-category/recommend-category.component';
 import { CreateMerchandisePhotoDTO } from '../merchandise/merchandise-photos-request-dto';
+import { CommonModule } from '@angular/common';
+import { PhotoService } from '../photos/photo.service';
 
 @Component({
   selector: 'app-create-product',
@@ -28,19 +30,22 @@ import { CreateMerchandisePhotoDTO } from '../merchandise/merchandise-photos-req
     RadioButtonModule,
     ButtonModule,
     ReactiveFormsModule,
+    CommonModule,
     DialogModule,
     RecommendCategoryComponent
   ],
   templateUrl: './create-product.component.html',
-  styleUrl: './create-product.component.scss',
+  styleUrls: ['./create-product.component.scss'],
 })
 export class CreateProductComponent {
-  categories: CategoryDto[] = []
-  eventTypes: CreateEventTypeResponseDTO[] = []
+  categories: CategoryDto[] = [];
+  eventTypes: CreateEventTypeResponseDTO[] = [];
+  selectedCategory: any = null;
+  selectedEventTypes: any[] = [];
   displayAddCategoryForm: boolean = false;
+  photosToShow: string[] = [];
 
-  selectedCategory: any = null
-  selectedEventTypes: any[] = []
+  photosToAdd: number[] = [];
 
   fbl: FormBuilder = new FormBuilder();
 
@@ -64,43 +69,73 @@ export class CreateProductComponent {
     merchandisePhotos: this.fbl.array([])
   });
 
-  constructor(private eventTypeService: EventTypeService, private categoryService: CategoryService, private productService: ProductService, private jwtService: JwtService, private fb: FormBuilder){
+  constructor(private eventTypeService: EventTypeService, private categoryService: CategoryService, private productService: ProductService, private jwtService: JwtService,
+    private photoService: PhotoService
+  ) {}
 
-  }
-
-  ngOnInit(){
+  ngOnInit() {
     this.loadData();
   }
 
-  loadData(): void{
+  loadData(): void {
     this.categoryService.getAll().pipe(tap(response => {
-      this.categories = response.categories
-    })).subscribe()
+      this.categories = response.categories;
+    })).subscribe();
     this.eventTypeService.getAllWp().pipe(tap(response => {
-      this.eventTypes = response
-    })).subscribe()
+      this.eventTypes = response;
+    })).subscribe();
   }
 
   uploadFile($event: any): void {
     const files = $event.target.files as File[];
     if (files && files.length > 0) {
-      Array.from(files).forEach((file: File) => {
-        this.addPhoto(file.name); // Add photo to the FormArray
-      });
+        const file = files[0]; 
+
+        const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
+
+        // Check if the file name already exists in the array
+        const existingPhoto = photosArray.value.find((photo: { photo: string }) => photo.photo === file.name);
+        
+        if (!existingPhoto) {
+            this.addPhoto(file.name); 
+            this.photoService.uploadMerchandisePhoto(file).pipe(tap(response => {
+                this.photosToAdd.push(response)
+            })).subscribe();
+        } else {
+            console.log('File already exists, skipping upload.');
+        }
     }
+}
+
+  getPhotoUrl(photo: string): string{
+    return this.photoService.getPhotoUrl(photo);
   }
+
   addPhoto(photoName: string): void {
     const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
-    photosArray.push(this.fb.group({
+    photosArray.push(this.fbl.group({
       photo: new FormControl(photoName)
     }));
+    this.updatePhotosToShow();
   }
+
+  updatePhotosToShow(): void {
+    const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
+    this.photosToShow = photosArray.value.map((photo: { photo: string }) => photo.photo);
+  }
+
+  removePhoto(index: number): void {
+    const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
+    photosArray.removeAt(index);
+    this.updatePhotosToShow();
+  }
+
   getPhotos(): CreateMerchandisePhotoDTO[] {
     const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
     return photosArray.value as CreateMerchandisePhotoDTO[];
   }
-  createProduct(): void{
-    console.log(this.selectedEventTypes)
+
+  createProduct(): void {
     const dto: CreateProductRequestDTO = {
       title: this.addProductForm.controls.title.value,
       description: this.addProductForm.controls.description.value,
@@ -121,29 +156,28 @@ export class CreateProductComponent {
       reservationDeadline: this.addProductForm.controls.reservationDeadline.value,
       cancellationDeadline: this.addProductForm.controls.cancellationDeadline.value,
       automaticReservation: this.addProductForm.controls.automaticReservation.value,
-      serviceProviderId: 2,//this.jwtService.getIdFromToken(),
+      serviceProviderId: 2, //this.jwtService.getIdFromToken(),
       merchandisePhotos: this.getPhotos(),
       eventTypesIds: this.selectedEventTypes,
       categoryId: this.selectedCategory,
-    }
+    };
     this.productService.create(dto).pipe(
       tap(response => {
+        // handle response if needed
       })
-    ).subscribe()
-
+    ).subscribe();
   }
 
   showAddCategoryForm() {
     this.displayAddCategoryForm = true;
   }
-  createCategory(categoryCreated: boolean) {
-    if(categoryCreated) {
-      this.categoryService.getAll();
-    } 
-    else {
-      console.log("fail")
-    } 
 
+  createCategory(categoryCreated: boolean) {
+    if (categoryCreated) {
+      this.categoryService.getAll();
+    } else {
+      console.log("fail");
+    }
     this.displayAddCategoryForm = false;
   }
 }
