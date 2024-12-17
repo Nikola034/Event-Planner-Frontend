@@ -125,12 +125,21 @@
             </div>
             <div class="field flex justify-content-center">
                 <p-button
-                (click)="uploader1.click()"
-                styleClass="w-full border-noround border-1 border-primary"
-                label="ADD SERVICE PHOTOS"
-              ></p-button>
-              <input hidden type="file" #uploader1 (change)="uploadFile($event)" />
-            </div>
+                  (click)="uploader1.click()"
+                  styleClass="w-full border-noround border-1 border-primary"
+                  label="ADD SERVICE PHOTOS"
+                ></p-button>
+                <input hidden type="file" #uploader1 (change)="uploadFile($event)" />
+              
+                <div *ngIf="photosToShow.length > 0" class="mt-4">
+                  <div *ngFor="let photo of photosToShow; let i = index" class="border surface-50 p-2 rounded m-1">
+                    <img class="h-4rem w-rem" [src]="photo" alt="Loading...">
+                    <button type="button" class="p-button p-button-secondary" (click)="removePhoto(i)">Remove</button>
+                  </div>
+                </div>
+              </div>
+              
+              
             <p-button class="field flex justify-content-center" (onClick)="createProduct()">Submit</p-button>
         </form>
         </div>

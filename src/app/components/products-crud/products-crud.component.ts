@@ -13,6 +13,7 @@ import { ProductOverviewDTO } from '../merchandise/product-overview.dto';
 import { ProductService } from '../product/product.service';
 import { tap } from 'rxjs';
 import { response } from 'express';
+import { PhotoService } from '../photos/photo.service';
 
 @Component({
   selector: 'app-products-crud',
@@ -26,7 +27,7 @@ export class ProductsCrudComponent {
 
   products: ProductOverviewDTO[] = []
 
-  constructor(private productService: ProductService, private router: Router){}
+  constructor(private productService: ProductService, private router: Router, private photoService: PhotoService){}
 
   ngOnInit(){
     this.loadData()
@@ -53,5 +54,9 @@ export class ProductsCrudComponent {
     this.productService.delete(productId).pipe(tap(response => {
       
     })).subscribe()
+  }
+
+  getPhotoUrl(photo: string): string{
+    return this.photoService.getPhotoUrl(photo)
   }
 }
