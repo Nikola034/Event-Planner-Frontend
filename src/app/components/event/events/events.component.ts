@@ -59,7 +59,7 @@ export class EventsComponent implements OnInit {
   public filterSidebarVisible = false;
   searchValue: string = '';
   filterValues: EventFilters | null = null;
-  eventSort:string='date';
+  eventSort: string = 'date';
   // Pagination properties
   public first: number = 0;
   public rows: number = 3;
@@ -104,17 +104,34 @@ export class EventsComponent implements OnInit {
       }
       case "followed":
       case "Followed":
-        if (typeof window !== 'undefined' && window.localStorage){
-        this.eventService.getFollowed().subscribe({
-          next: (data: EventOverviewDTO[]) => {
-            this.events = data;
-            this.totalRecords = this.events.length;
-            this.updateDisplayedEvents();
+        {
+          if (typeof window !== 'undefined' && window.localStorage) {
+            this.eventService.getFollowed().subscribe({
+              next: (data: EventOverviewDTO[]) => {
+                this.events = data;
+                this.totalRecords = this.events.length;
+                this.updateDisplayedEvents();
+              }
+            });
           }
-        });
-      }
-        break;
+          break;
+        }
+        case "favorite":
+          case "Favorite":
+            {
+              if (typeof window !== 'undefined' && window.localStorage) {
+                this.eventService.getFavorites().subscribe({
+                  next: (data: EventOverviewDTO[]) => {
+                    this.events = data;
+                    this.totalRecords = this.events.length;
+                    this.updateDisplayedEvents();
+                  }
+                });
+              }
+              break;
+            }
     }
+
   }
 
   updateDisplayedEvents() {
@@ -124,7 +141,7 @@ export class EventsComponent implements OnInit {
 
 
   triggerEventSearch() {
-    this.eventService.search(this.filterValues, this.searchValue,this.eventSort).subscribe({
+    this.eventService.search(this.filterValues, this.searchValue, this.eventSort).subscribe({
       next: (data: EventOverviewDTO[]) => {
         this.events = data;
         this.totalRecords = this.events.length;

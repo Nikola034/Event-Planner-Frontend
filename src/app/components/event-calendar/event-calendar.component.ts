@@ -32,7 +32,7 @@ export class EventCalendarComponent implements OnInit {
     // Only run on browser
     switch (this.eventType) {
       case "followed":
-      case "Followed":
+      case "Followed": {
         if (isPlatformBrowser(this.platformId)) {
           this.eventService.getFollowed().subscribe({
             next: (data: EventOverviewDTO[]) => {
@@ -41,6 +41,20 @@ export class EventCalendarComponent implements OnInit {
             }
           });
         }
+        break;
+      }
+      case "favorite":
+      case "Favorite": {
+        if (isPlatformBrowser(this.platformId)) {
+          this.eventService.getFavorites().subscribe({
+            next: (data: EventOverviewDTO[]) => {
+              this.events = data;
+              this.calendarEvents = this.convertToCalendarEvents(data);
+            }
+          });
+        }
+        break;
+      }
     }
   }
 
