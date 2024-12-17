@@ -51,8 +51,10 @@ export class EventService {
   getReport(eventId: number | null | undefined): Observable<EventReportDTO>{
     return this.http.get<EventReportDTO>(`${environment.apiUrl}events/report/${eventId}`)
   }
-  getFavorites(userId: number | null | undefined): Observable<EventOverviewDTO[]>{
-    return this.http.get<EventOverviewDTO[]>(`${environment.apiUrl}events/${userId}/favorite`)
+  getFavorites(): Observable<EventOverviewDTO[]>{
+    let userId=this.jwtService.getIdFromToken();
+    console.log(`${environment.apiUrl}events/${userId}/favorite`);
+    return this.http.get<EventOverviewDTO[]>(`${environment.apiUrl}events/${userId}/favorite`);
   }
   getTop(): Observable<EventOverviewDTO[]> {
     const params={
@@ -104,6 +106,7 @@ export class EventService {
     };
     return this.http.get<EventOverviewDTO[]>(`${API_URL}/api/v1/events/followed`,{params});
 }
+
 
   private formatDate = (date: Date | null | undefined) => {
     if (!date) return '';

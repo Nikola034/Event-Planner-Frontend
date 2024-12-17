@@ -1,8 +1,9 @@
+<div *ngIf="eventDetails">
 <div class="event-details-container surface-100 p-4 border-round-md shadow-2">
     <!-- Event Title -->
     <div class="event-header text-center text-xl font-bold mb-3">
       <h2>
-        {{ eventDetails?.title + " (" + eventDetails?.eventType?.title + ")" }}
+        {{ eventDetails!.title + " (" + eventDetails!.eventType!.title + ")" }}
         <i
           class="pi pi-star text-3xl"
           [class.pi-star]="!isFavorited"
@@ -22,10 +23,10 @@
         <span>Privacy:</span>
         <span
           class="font-bold"
-          [class.text-success]="eventDetails?.isPublic"
-          [class.text-danger]="!eventDetails?.isPublic"
+          [class.text-success]="eventDetails!.isPublic"
+          [class.text-danger]="!eventDetails!.isPublic"
         >
-          {{ eventDetails?.isPublic ? 'Public' : 'Private' }}
+          {{ eventDetails!.isPublic ? 'Public' : 'Private' }}
         </span>
       </div>
     </div>
@@ -35,7 +36,7 @@
       <div class="col-12 text-md">
         <i class="pi pi-calendar mr-2 text-5xl"></i>
         <span class="mr-3">Date:</span>
-        <span class="font-bold">{{ eventDetails?.date | date: "dd.MM.YYYY." }}</span>
+        <span class="font-bold">{{ eventDetails!.date | date: "dd.MM.YYYY." }}</span>
       </div>
     </div>
   
@@ -45,8 +46,8 @@
         <i class="pi pi-map-marker mr-2 text-5xl"></i>
         <span class="mr-3">Address:</span>
         <span class="font-bold">
-          {{ eventDetails?.address?.street }}, {{ eventDetails?.address?.city }},
-          {{ eventDetails?.address?.number }}
+          {{ eventDetails!.address!.street }}, {{ eventDetails!.address!.city }},
+          {{ eventDetails!.address!.number }}
         </span>
       </div>
     </div>
@@ -55,7 +56,7 @@
     <div class="grid mb-3">
       <div class="col-12">
         <span class="font-medium mt-2">Description:</span>
-        <p class="m-0">{{ eventDetails?.description }}</p>
+        <p class="m-0">{{ eventDetails!.description }}</p>
       </div>
     </div>
   
@@ -64,7 +65,7 @@
       <div class="col-12 text-md">
         <i class="pi pi-users mr-2 text-5xl"></i>
         <span class="mr-3">Max Participants:</span>
-        <span class="font-bold">{{ eventDetails?.maxParticipants }}</span>
+        <span class="font-bold">{{ eventDetails!.maxParticipants }}</span>
       </div>
     </div>
   
@@ -72,8 +73,8 @@
     <div class="grid mb-3">
       <div class="col-12">
         <h3 class="text-md font-medium mb-2">Organizer:</h3>
-        <span class="font-bold">{{ eventDetails?.organizer?.name + " " + eventDetails?.organizer?.surname }}</span>
-        <p class="m-0">Contact: {{ eventDetails?.organizer?.email }}</p>
+        <span class="font-bold">{{ eventDetails!.organizer!.name + " " + eventDetails!.organizer!.surname }}</span>
+        <p class="m-0">Contact: {{ eventDetails!.organizer!.email }}</p>
       </div>
     </div>
   
@@ -107,3 +108,5 @@
       </div>
     </div>
   </div>
+
+</div>

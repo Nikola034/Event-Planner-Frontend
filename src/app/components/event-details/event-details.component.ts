@@ -45,7 +45,7 @@ export class EventDetailsComponent {
         switchMap((details) => {
           this.eventDetails = details;
 
-          return this.eventService.getFavorites(2).pipe(
+          return this.eventService.getFavorites().pipe(
             tap(response => {
               this.isFavorited = response.some(x => x.id == this.eventDetails.id)
             })
@@ -61,7 +61,7 @@ export class EventDetailsComponent {
     this.eventService
       .favorizeEvent(
         this.eventDetails.id,
-        2 /*this.jwtService.getIdFromToken()*/
+         this.jwtService.getIdFromToken()
       )
       .pipe(tap((response) => {}))
       .subscribe();

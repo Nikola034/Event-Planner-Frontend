@@ -26,6 +26,7 @@ import { UpdateProductComponent } from './components/update-product/update-produ
 import { CreateProductComponent } from './components/create-product/create-product.component';
 import { AdminReviewsComponent } from './components/admin-reviews/admin-reviews.component';
 import { EventDetailsComponent } from './components/event-details/event-details.component';
+import { FavoriteEventsComponent } from './components/favorite-events/favorite-events.component';
 
 
 export const routes: Routes = [
@@ -168,6 +169,13 @@ export const routes: Routes = [
                     breadcrumb: 'Reviews'
                 },
                 component: AdminReviewsComponent
+            },
+            {
+                path: 'favorite-events',
+                data: {
+                    breadcrumb: 'Favorite Events'
+                },
+                component: FavoriteEventsComponent
             }
         ]
     },
