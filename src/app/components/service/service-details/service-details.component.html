@@ -39,13 +39,7 @@
         </p-galleria>
     </div>
     <!-- map container, further implementation needed -->
-    <div class="flex align-items-center ml-8 mr-8 mt-5 justify-content-center rounded" 
-        style=" max-width: calc(100% - 2rem);
-                height: 200px;
-                background-color: #aeaeae;
-                border-radius: 10px;">
-        <i class="pi pi-map-marker" style="font-size: 3em;"></i>
-    </div>
+    <app-map [showServices]="true"></app-map>
     <div class="flex align-items-end justify-content-center fixed" 
          style="bottom: 0px; right: 5.5rem; border-radius: 0px; z-index: 1000; cursor: pointer;">
     <p-button class="foating-button"><i>You need more info? Chat with us</i></p-button></div>

@@ -12,11 +12,13 @@ import { GalleriaModule} from 'primeng/galleria';
 import { FieldsetModule } from 'primeng/fieldset';
 import { PaginatorModule } from 'primeng/paginator';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MapComponent } from '../../map/map.component';
+import { MapService } from '../../map/map.service';
 
 @Component({
   selector: 'app-service-details',
   standalone: true,
-  imports: [PaginatorModule, ButtonModule,ReservationDialogComponent,FloatLabelModule,InputTextModule, CurrencyPipe, CommonModule, GalleriaModule, FieldsetModule],
+  imports: [PaginatorModule,MapComponent, ButtonModule,ReservationDialogComponent,FloatLabelModule,InputTextModule, CurrencyPipe, CommonModule, GalleriaModule, FieldsetModule],
   templateUrl: './service-details.component.html',
   styleUrl: './service-details.component.scss'
 })
@@ -44,7 +46,7 @@ export class ServiceDetailsComponent implements OnInit {
     }
 ];
 
-  constructor(private route: ActivatedRoute, private merchandiseService: MerchandiseService) {}
+  constructor(private route: ActivatedRoute, private merchandiseService: MerchandiseService,private mapService:MapService) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -56,6 +58,7 @@ export class ServiceDetailsComponent implements OnInit {
           this.service = response;
           this.images = this.service.merchandisePhotos;
           this.paginatedReviews = this.service.reviews.slice(0,5);
+          this.mapService.updateMerchandiseAddresses(response);
         },
         error: (err) => {
           this.errorMessage= this.getErrorMessage(err);
