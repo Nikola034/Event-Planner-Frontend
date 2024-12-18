@@ -4,7 +4,7 @@ import { EventService } from '../event/event.service';
 import { catchError, EMPTY, switchMap, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgModel } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { JwtService } from '../auth/jwt.service';
@@ -24,6 +24,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class EventDetailsComponent {
   eventDetails!: EventDetailsDTO;
   isFavorited: boolean = false;
+  eventId!: number
 
   participants: any[] = [];
   reviewChartData: any;
@@ -33,7 +34,8 @@ export class EventDetailsComponent {
   constructor(
     private eventService: EventService,
     private router: Router,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -41,8 +43,11 @@ export class EventDetailsComponent {
   }
 
   loadData() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.eventId = id ? Number(id) : -1;
+
     this.eventService
-      .getEventDetails(history.state.eventId)
+      .getEventDetails(this.eventId)
       .pipe(
         switchMap((details) => {
           this.eventDetails = details;
