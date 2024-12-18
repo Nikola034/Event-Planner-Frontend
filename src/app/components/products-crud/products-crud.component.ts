@@ -45,9 +45,7 @@ export class ProductsCrudComponent {
     this.router.navigate(['home/create-product'])
   }
   editProduct(productId: number): void{
-    this.router.navigate(['home/edit-product'], {
-      state: {productId: productId} 
-    })
+    this.router.navigate(['home/edit-product', productId])
   }
 
   deleteProduct(productId: number): void{

@@ -10,7 +10,7 @@ import { RegisterSpDto } from '../auth/register-dtos/RegisterSp.dto';
 import { tap } from 'rxjs';
 import { JwtService } from '../auth/jwt.service';
 import { PhotoService } from '../photos/photo.service';
-import { CreateBusinessPhotoDTO, CreateMerchandisePhotoDTO } from '../merchandise/merchandise-photos-request-dto';
+import { CreateBusinessPhotoDTO, CreateMerchandisePhotoDTO, PhotoToAdd } from '../merchandise/merchandise-photos-request-dto';
 @Component({
   selector: 'app-register-sp-form',
   standalone: true,
@@ -25,7 +25,7 @@ export class RegisterSpFormComponent {
 
   photosToShow: string[] = [];
 
-  photosToAdd: number[] = [];
+  photosToAdd: PhotoToAdd[] = [];
   fbl: FormBuilder = new FormBuilder();
 
 
@@ -43,7 +43,7 @@ export class RegisterSpFormComponent {
     password2: new FormControl(''),
     company: new FormControl(''),
     description: new FormControl(''),
-    businessPhotos: this.fbl.array([])
+    companyPhotos: this.fbl.array([])
   })
   
   constructor(private router: Router, private jwtService: JwtService, private photoService: PhotoService){}
@@ -70,7 +70,7 @@ export class RegisterSpFormComponent {
       },
       company: this.registerForm.controls.company.value,
       description: this.registerForm.controls.description.value,
-      photos: ['s','s']
+      photos: this.photosToAdd.map(x => x.id)
     }
     this.jwtService.registerSp(dto).pipe(
       tap(response => {
@@ -84,7 +84,7 @@ export class RegisterSpFormComponent {
     if (files && files.length > 0) {
         const file = files[0]; 
 
-        const photosArray = this.registerForm.get('businessPhotos') as FormArray;
+        const photosArray = this.registerForm.get('companyPhotos') as FormArray;
 
         // Check if the file name already exists in the array
         const existingPhoto = photosArray.value.find((photo: { photo: string }) => photo.photo === file.name);
@@ -92,20 +92,23 @@ export class RegisterSpFormComponent {
         if (!existingPhoto) {
             this.addPhoto(file.name); 
             this.photoService.uploadBusinessPhoto(file).pipe(tap(response => {
-                this.photosToAdd.push(response)
+                this.photosToAdd.push({
+                  id: response,
+                  photo: file.name
+                })
             })).subscribe();
         } else {
             console.log('File already exists, skipping upload.');
         }
     }
 }
-   
+
   getPhotoUrl(photo: string): string{
     return this.photoService.getPhotoUrl(photo);
   }
 
   addPhoto(photoName: string): void {
-    const photosArray = this.registerForm.get('businessPhotos') as FormArray;
+    const photosArray = this.registerForm.get('companyPhotos') as FormArray;
     photosArray.push(this.fbl.group({
       photo: new FormControl(photoName)
     }));
@@ -113,18 +116,55 @@ export class RegisterSpFormComponent {
   }
 
   updatePhotosToShow(): void {
-    const photosArray = this.registerForm.get('businessPhotos') as FormArray;
+    const photosArray = this.registerForm.get('companyPhotos') as FormArray;
     this.photosToShow = photosArray.value.map((photo: { photo: string }) => photo.photo);
   }
 
   removePhoto(index: number): void {
-    const photosArray = this.registerForm.get('businessPhotos') as FormArray;
-    photosArray.removeAt(index);
-    this.updatePhotosToShow();
+    const photosArray = this.registerForm.get('companyPhotos') as FormArray;
+  
+    // Get the photo name from the form array
+    const photoUrl = photosArray.at(index).value.photo;
+    const photoName = photoUrl.split('/').pop() // extract just the filename without the extension
+  
+    // Find the ID of the photo
+    const photoId = this.photosToAdd.find(photo => {
+      const storedPhotoName = photo.photo.split('/').pop()
+      console.log(storedPhotoName)
+      return storedPhotoName === photoName;
+    })?.id;
+  
+    if (photoId) {
+      this.photoService.deleteBusinessPhoto(photoId, -1, false).pipe(
+        tap(response => {
+          // Success handling here
+        })
+      ).subscribe();
+  
+      // Remove the corresponding photo from photosToAdd
+      const photoIndex = this.photosToAdd.findIndex(photo => {
+        const storedPhotoName = photo.photo.split('/').pop()
+        return storedPhotoName === photoName;
+      });
+      if (photoIndex !== -1) {
+        this.photosToAdd.splice(photoIndex, 1);
+      }
+      console.log(this.photosToAdd)
+      // Remove the photo from the FormArray
+      photosArray.removeAt(index);
+  
+      // Update the list of photos to show
+      this.updatePhotosToShow();
+    } else {
+      console.log('Photo not found in photosToAdd array');
+    }
   }
+  
+  
 
-  getPhotos(): CreateBusinessPhotoDTO[] {
-    const photosArray = this.registerForm.get('businessPhotos') as FormArray;
-    return photosArray.value as CreateBusinessPhotoDTO[];
+
+  getPhotos(): CreateMerchandisePhotoDTO[] {
+    const photosArray = this.registerForm.get('companyPhotos') as FormArray;
+    return photosArray.value as CreateMerchandisePhotoDTO[];
   }
 }

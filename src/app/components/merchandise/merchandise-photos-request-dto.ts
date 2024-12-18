@@ -5,3 +5,8 @@ export interface CreateMerchandisePhotoDTO {
 export interface CreateBusinessPhotoDTO {
     photo: string
 }
+
+export interface PhotoToAdd{
+    id: number, 
+    photo: string
+}
