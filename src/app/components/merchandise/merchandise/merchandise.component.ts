@@ -116,6 +116,18 @@ export class MerchandiseComponent {
         });
         break;
       }
+      case 'Favorite':
+      case 'favorite':
+        {
+          this.merchandiseService.getFavorites().subscribe({
+            next: (data: MerchandiseOverviewDTO[]) => {
+              this.merchandise = data;
+              this.totalRecords = this.merchandise.length;
+              this.updateDisplayedEvents();
+            }
+          });
+          break;
+        }
     }
   }
 

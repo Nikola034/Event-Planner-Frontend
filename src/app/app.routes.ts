@@ -27,6 +27,7 @@ import { CreateProductComponent } from './components/create-product/create-produ
 import { AdminReviewsComponent } from './components/admin-reviews/admin-reviews.component';
 import { EventDetailsComponent } from './components/event-details/event-details.component';
 import { FavoriteEventsComponent } from './components/favorite-events/favorite-events.component';
+import { FavoriteMerchandiseComponent } from './components/favorite-merchandise/favorite-merchandise.component';
 
 
 export const routes: Routes = [
@@ -176,6 +177,13 @@ export const routes: Routes = [
                     breadcrumb: 'Favorite Events'
                 },
                 component: FavoriteEventsComponent
+            },
+            {
+                path: 'favorite-merchandise',
+                data: {
+                    breadcrumb: 'Favorite Services/Products'
+                },
+                component: FavoriteMerchandiseComponent
             }
         ]
     },

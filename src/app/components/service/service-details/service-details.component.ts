@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { GalleriaModule} from 'primeng/galleria';
 import { FieldsetModule } from 'primeng/fieldset';
 import { PaginatorModule } from 'primeng/paginator';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-service-details',
@@ -27,6 +28,7 @@ export class ServiceDetailsComponent implements OnInit {
   isStarFilled: boolean = false;
   images: any[] = [];
   paginatedReviews: any | undefined;
+  errorMessage: string = '';
   responsiveOptions: any[] = [
     {
         breakpoint: '991px',
@@ -56,11 +58,40 @@ export class ServiceDetailsComponent implements OnInit {
           this.paginatedReviews = this.service.reviews.slice(0,5);
         },
         error: (err) => {
-          console.error(err);
+          this.errorMessage= this.getErrorMessage(err);
         }
       });
     }
   }
+  private getErrorMessage(error: HttpErrorResponse): string {
+      // Check if error response has a body with a message
+      if (error.error instanceof ErrorEvent) {
+        // Client-side error
+        return error.error.message || 'Client-side error occurred';
+      } else {
+        // Server-side error
+        // Try multiple ways to extract the error message
+        if (error.error && error.error.message) {
+          // Directly from error object
+          return error.error.message;
+        }
+    
+        if (error.error && typeof error.error === 'string') {
+          // If error is a string message
+          return error.error;
+        }
+    
+        if (error.error && error.error.errorMessage) {
+          // Alternative error message property
+          return error.error.errorMessage;
+        }
+    
+        // Fallback to status text or a generic message
+        return error.statusText || 'An unexpected error occurred';
+      }
+    }
+
+
   openReservationDialog() {
     this.reservationDialog.openDialog();
   }

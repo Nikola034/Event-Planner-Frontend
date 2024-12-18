@@ -42,7 +42,13 @@ export class MerchandiseService {
   }
 
   getMerchandiseDetails(merchandiseId: number): Observable<MerchandiseDetailDTO> {
-    return this.http.get<MerchandiseDetailDTO>(`${API_URL}/api/v1/merchandise/${merchandiseId}`);
-  }
+    let userId=this.jwtService.getIdFromToken();
+    return this.http.get<MerchandiseDetailDTO>(`${API_URL}/api/v1/merchandise/${merchandiseId}?userId=${userId}`) 
+   }
+
+  getFavorites(): Observable<MerchandiseOverviewDTO[]>{
+      let userId=this.jwtService.getIdFromToken();
+      return this.http.get<MerchandiseOverviewDTO[]>(`${API_URL}/api/v1/merchandise/${userId}/favorite`);
+    }
   constructor(private serviceService: ServiceService, private productService: ProductService,private http: HttpClient,private jwtService:JwtService) { }
 }

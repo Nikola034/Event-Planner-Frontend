@@ -1,3 +1,8 @@
+<div *ngIf="errorMessage" class="error-container">
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+  </div>
 <div *ngIf="service">
     <div class="flex justify-content-between align-items-center p-8 pb-0 mt-8">
         <div class="flex align-items-center">
