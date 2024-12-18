@@ -3,6 +3,8 @@ import { API_URL } from '../../../globals';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { UserOverviewDTO } from './user-overview-dto';
 import { Observable, of } from 'rxjs';
+import { RegisterSpResponseDto } from '../auth/register-dtos/RegisterSpResponse.dto';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +31,10 @@ export class UserService {
       `${API_URL}/api/v1/users/${blockerId}/block/${blockedUserId}`, 
       null
     );
+  }
+
+  getSpById(id: number | undefined | null): Observable<RegisterSpResponseDto>{
+    return this.httpClient.get<RegisterSpResponseDto>(`${environment.apiUrl}users/sp/${id}`);
   }
 
 }

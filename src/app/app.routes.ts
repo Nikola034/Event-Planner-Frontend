@@ -194,5 +194,5 @@ export const routes: Routes = [
     { path: 'register-sp', component: RegisterSpFormComponent},
     { path: 'edit-au', component: EditAuFormComponent},
     { path: 'edit-eo', component: EditEoFormComponent},
-    { path: 'edit-sp', component: EditSpFormComponent}
+    { path: 'edit-sp/:id', component: EditSpFormComponent}
 ];

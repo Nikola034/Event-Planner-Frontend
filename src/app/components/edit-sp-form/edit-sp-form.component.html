@@ -129,20 +129,20 @@
             (click)="changePassword()"
           ></p-button>
         </div>
-        <div class="field flex justify-content-left photo w-full">
+        <div class="field flex justify-content-center">
           <p-button
-            (click)="uploader2.click()"
+            (click)="uploader1.click()"
             styleClass="w-full border-noround border-1 border-primary"
-            label="ADD PHOTOS (OPTIONAL)"
+            label="EDIT COMPANY PHOTOS"
           ></p-button>
-          <input hidden type="file" #uploader2 (change)="uploadFile($event)" />
-          <img
-            *ngIf="selectedPhoto"
-            [src]="selectedPhoto"
-            src="dinja.jpg"
-            alt="Profile Photo"
-            class="ml-2 border-round w-4rem h-3rem"
-          />
+          <input hidden type="file" #uploader1 (change)="uploadFile($event)" />
+        
+          <div *ngIf="photosToShow.length > 0" class="mt-4">
+            <div *ngFor="let photo of photosToShow; let i = index" class="border surface-50 p-2 rounded m-1">
+              <img class="h-4rem w-rem" [src]="photo" alt="Loading...">
+              <button type="button" class="p-button p-button-secondary" (click)="removePhoto(i)">Remove</button>
+            </div>
+          </div>
         </div>
         <div class="field justify-content-center h-3rem w-full submit">
           <p-button
