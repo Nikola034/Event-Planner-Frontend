@@ -22,6 +22,7 @@ import { EventOverviewDTO } from '../event-overview-dto';
 import { EventFilters } from '../event-filters';
 import { SearchService } from '../../search-page/search.service';
 import { combineLatest, debounceTime, distinctUntilChanged } from 'rxjs';
+import { MapService } from '../../map/map.service';
 
 interface PageEvent {
   first: number;
@@ -66,7 +67,7 @@ export class EventsComponent implements OnInit {
   public totalRecords: number = 0;
   @Input() panelTitle: string = '';
   @Input() panelType: string = '';
-  constructor(private eventService: EventService, private searchService: SearchService) { }
+  constructor(private eventService: EventService, private searchService: SearchService,private mapService:MapService) { }
 
   async ngOnInit() {
     switch (this.panelType) {
@@ -77,6 +78,7 @@ export class EventsComponent implements OnInit {
             next: (data: EventOverviewDTO[]) => {
               this.events = data;
               this.totalRecords = this.events.length;
+              this.mapService.updateEventAddresses(data);
               this.updateDisplayedEvents();
             }
           });
@@ -96,7 +98,6 @@ export class EventsComponent implements OnInit {
             this.searchValue = searchValue;
             this.filterValues = eventFilters;
             this.eventSort = eventSort;
-
             this.triggerEventSearch();
           }
         });
@@ -110,6 +111,7 @@ export class EventsComponent implements OnInit {
               next: (data: EventOverviewDTO[]) => {
                 this.events = data;
                 this.totalRecords = this.events.length;
+                this.mapService.updateEventAddresses(data);
                 this.updateDisplayedEvents();
               }
             });
@@ -124,6 +126,7 @@ export class EventsComponent implements OnInit {
                   next: (data: EventOverviewDTO[]) => {
                     this.events = data;
                     this.totalRecords = this.events.length;
+                    this.mapService.updateEventAddresses(data);
                     this.updateDisplayedEvents();
                   }
                 });
@@ -145,6 +148,7 @@ export class EventsComponent implements OnInit {
       next: (data: EventOverviewDTO[]) => {
         this.events = data;
         this.totalRecords = this.events.length;
+        this.mapService.updateEventAddresses(data);
         this.updateDisplayedEvents();
       }
     });

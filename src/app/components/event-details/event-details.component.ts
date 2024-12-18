@@ -13,11 +13,13 @@ import { ChartModule } from 'primeng/chart';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MapComponent } from '../map/map.component';
+import { MapService } from '../map/map.service';
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [CommonModule, ButtonModule, ChartModule],
+  imports: [CommonModule, ButtonModule, ChartModule,MapComponent],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',
 })
@@ -35,7 +37,8 @@ export class EventDetailsComponent {
     private eventService: EventService,
     private router: Router,
     private jwtService: JwtService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private mapService:MapService
   ) {}
 
   ngOnInit() {
@@ -51,10 +54,11 @@ export class EventDetailsComponent {
       .pipe(
         switchMap((details) => {
           this.eventDetails = details;
-
+          this.mapService.updateEventAddresses(details);
           return this.eventService.getFavorites().pipe(
             tap(response => {
-              this.isFavorited = response.some(x => x.id == this.eventDetails.id)
+              this.isFavorited = response.some(x => x.id == this.eventDetails.id);
+              
             })
           )
         }),

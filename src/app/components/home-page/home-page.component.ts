@@ -9,11 +9,12 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { UserService } from '../user/user.service';
+import { MapComponent } from "../map/map.component";
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [EventsComponent, MerchandiseComponent, RouterModule, ButtonModule,ToastModule,ConfirmDialogModule],
+  imports: [EventsComponent, MerchandiseComponent, RouterModule, ButtonModule, ToastModule, ConfirmDialogModule, MapComponent],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
   providers: [MessageService,ConfirmationService]
