@@ -33,9 +33,7 @@ export class EventCardComponent{
   }
 
   showEditEventForm(eventId: number){
-    this.router.navigate(['home/edit-event'], {
-      state: {eventId: eventId} 
-    })
+    this.router.navigate(['home/edit-event', eventId])
   }
 
   showInvitationsForm(){

@@ -13,10 +13,13 @@ import { RecommendCategoryComponent } from '../category/recommend-category/recom
 import { CreateEventTypeResponseDTO } from '../create-event-type-form/dtos/create-event-type-response.dto';
 import { EventTypeService } from '../create-event-type-form/event-type.service';
 import { CreateProductRequestDTO, UpdateProductRequestDTO } from '../create-product/dto/create-product.dto';
-import { CreateMerchandisePhotoDTO } from '../merchandise/merchandise-photos-request-dto';
+import { CreateMerchandisePhotoDTO, PhotoToAdd } from '../merchandise/merchandise-photos-request-dto';
 import { ProductService } from '../product/product.service';
 import { MerchandiseService } from '../merchandise/merchandise.service';
 import { response } from 'express';
+import { PhotoService } from '../photos/photo.service';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-update-product',
@@ -29,7 +32,8 @@ import { response } from 'express';
     ButtonModule,
     ReactiveFormsModule,
     DialogModule,
-    RecommendCategoryComponent
+    RecommendCategoryComponent,
+    CommonModule
   ],
   templateUrl: './update-product.component.html',
   styleUrl: './update-product.component.scss'
@@ -39,10 +43,17 @@ export class UpdateProductComponent {
   eventTypes: CreateEventTypeResponseDTO[] = []
   displayAddCategoryForm: boolean = false;
 
+
+  photosToShow: string[] = [];
+
+  photosToAdd: PhotoToAdd[] = [];
+
   selectedCategory: any = null
   selectedEventTypes: any[] = []
 
   fbl: FormBuilder = new FormBuilder();
+
+  productId!: number
 
   addProductForm = new FormGroup({
     title: new FormControl('', [Validators.required]),
@@ -63,7 +74,8 @@ export class UpdateProductComponent {
     merchandisePhotos: this.fbl.array([])
   });
 
-  constructor(private eventTypeService: EventTypeService, private categoryService: CategoryService, private productService: ProductService, private jwtService: JwtService, private fb: FormBuilder
+  constructor(private route: ActivatedRoute, private eventTypeService: EventTypeService, private categoryService: CategoryService, private productService: ProductService, private jwtService: JwtService, 
+    private fb: FormBuilder, private photoService: PhotoService
   ){
 
   }
@@ -72,51 +84,148 @@ export class UpdateProductComponent {
     this.loadData();
   }
 
-  loadData(): void{
+  loadData(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.productId = id ? Number(id) : -1;
+
     this.categoryService.getAll().pipe(tap(response => {
-      this.categories = response.categories
-    })).subscribe()
+      this.categories = response.categories;
+    })).subscribe();
+  
     this.eventTypeService.getAllWp().pipe(tap(response => {
-      this.eventTypes = response
-    })).subscribe()
-    this.productService.getById(history.state.productId).pipe(tap(response => {
+      this.eventTypes = response;
+    })).subscribe();
+  
+    this.productService.getById(this.productId).pipe(tap(response => {
+      const product = response;
       this.addProductForm.patchValue({
-        title: response.title,
-        description: response.description,
-        specificity: response.specificity,
-        price: response.price,
-        discount: response.discount,
-        city: response.address?.city,
-        street: response.address?.street,
-        number: response.address?.number,
-        minDuration: response.minDuration,
-        maxDuration: response.maxDuration,
-        reservationDeadline: response.reservationDeadline,
-        cancellationDeadline: response.cancelReservation,
-        automaticReservation: response.automaticReservation,
+        title: product.title,
+        description: product.description,
+        specificity: product.specificity,
+        price: product.price,
+        discount: product.discount,
+        city: product.address?.city,
+        street: product.address?.street,
+        number: product.address?.number,
+        minDuration: product.minDuration,
+        maxDuration: product.maxDuration,
+        reservationDeadline: product.reservationDeadline,
+        cancellationDeadline: product.cancelReservation,
+        automaticReservation: product.automaticReservation,
       });
-      this.selectedEventTypes = response.eventTypes.map(x => x.id)
-    })).subscribe()
+  
+      this.selectedEventTypes = product.eventTypes.map(x => x.id);
+  
+      // Populate merchandise photos
+      const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
+      product.merchandisePhotos.forEach(photo => {
+        photosArray.push(this.fbl.group({
+          photo: new FormControl(this.getPhotoUrl(photo.photo)),
+        }));
+  
+        // Add to photosToAdd array to keep track of uploaded photos
+        this.photosToAdd.push({
+          id: photo.id,
+          photo: photo.photo,
+        });
+      });
+  
+      // Update photos to show in the UI
+      this.updatePhotosToShow();
+    })).subscribe();
   }
+  
 
   uploadFile($event: any): void {
     const files = $event.target.files as File[];
     if (files && files.length > 0) {
-      Array.from(files).forEach((file: File) => {
-        this.addPhoto(file.name); 
-      });
+        const file = files[0]; 
+
+        const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
+
+        // Check if the file name already exists in the array
+        const existingPhoto = photosArray.value.find((photo: { photo: string }) => photo.photo === file.name);
+        
+        if (!existingPhoto) {
+            this.addPhoto(file.name); 
+            this.photoService.uploadMerchandisePhoto(file).pipe(tap(response => {
+                this.photosToAdd.push({
+                  id: response,
+                  photo: file.name
+                })
+            })).subscribe();
+        } else {
+            console.log('File already exists, skipping upload.');
+        }
     }
+}
+
+  getPhotoUrl(photo: string): string{
+    return this.photoService.getPhotoUrl(photo);
   }
+
   addPhoto(photoName: string): void {
     const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
-    photosArray.push(this.fb.group({
+    photosArray.push(this.fbl.group({
       photo: new FormControl(photoName)
     }));
+    this.updatePhotosToShow();
   }
+
+  updatePhotosToShow(): void {
+    const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
+    this.photosToShow = photosArray.value.map((photo: { photo: string }) => photo.photo);
+  }
+
+  removePhoto(index: number): void {
+    const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
+  
+    // Get the photo name from the form array
+    const photoUrl = photosArray.at(index).value.photo;
+    const photoName = photoUrl.split('/').pop() // extract just the filename without the extension
+  
+    // Find the ID of the photo
+    const photoId = this.photosToAdd.find(photo => {
+      const storedPhotoName = photo.photo.split('/').pop()
+      console.log(storedPhotoName)
+      return storedPhotoName === photoName;
+    })?.id;
+  
+    if (photoId) {
+      this.photoService.deleteMercPhoto(photoId, this.productId, true).pipe(
+        tap(response => {
+          // Success handling here
+        })
+      ).subscribe();
+  
+      // Remove the corresponding photo from photosToAdd
+      const photoIndex = this.photosToAdd.findIndex(photo => {
+        const storedPhotoName = photo.photo.split('/').pop()
+        return storedPhotoName === photoName;
+      });
+      if (photoIndex !== -1) {
+        this.photosToAdd.splice(photoIndex, 1);
+      }
+      console.log(this.photosToAdd)
+      // Remove the photo from the FormArray
+      photosArray.removeAt(index);
+  
+      // Update the list of photos to show
+      this.updatePhotosToShow();
+    } else {
+      console.log('Photo not found in photosToAdd array');
+    }
+  }
+  
+  
+
+
   getPhotos(): CreateMerchandisePhotoDTO[] {
     const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
     return photosArray.value as CreateMerchandisePhotoDTO[];
   }
+
+
   createProduct(): void{
     const dto: UpdateProductRequestDTO = {
       title: this.addProductForm.controls.title.value,
@@ -139,10 +248,10 @@ export class UpdateProductComponent {
       cancellationDeadline: this.addProductForm.controls.cancellationDeadline.value,
       automaticReservation: this.addProductForm.controls.automaticReservation.value,
       serviceProviderId: 2,//this.jwtService.getIdFromToken(),
-      merchandisePhotos: this.getPhotos(),
+      merchandisePhotos: this.photosToAdd.map(x => x.id),
       eventTypesIds: this.selectedEventTypes
     }
-    this.productService.update(history.state.productId
+    this.productService.update(this.productId
       , dto).pipe(
       tap(response => {
       })

@@ -16,7 +16,7 @@ import { AddCategoryComponent } from '../category/add-category/add-category.comp
 import { CreateProductRequestDTO } from './dto/create-product.dto';
 import { JwtService } from '../auth/jwt.service';
 import { RecommendCategoryComponent } from '../category/recommend-category/recommend-category.component';
-import { CreateMerchandisePhotoDTO } from '../merchandise/merchandise-photos-request-dto';
+import { CreateMerchandisePhotoDTO, PhotoToAdd } from '../merchandise/merchandise-photos-request-dto';
 import { CommonModule } from '@angular/common';
 import { PhotoService } from '../photos/photo.service';
 
@@ -37,6 +37,7 @@ import { PhotoService } from '../photos/photo.service';
   templateUrl: './create-product.component.html',
   styleUrls: ['./create-product.component.scss'],
 })
+
 export class CreateProductComponent {
   categories: CategoryDto[] = [];
   eventTypes: CreateEventTypeResponseDTO[] = [];
@@ -45,7 +46,7 @@ export class CreateProductComponent {
   displayAddCategoryForm: boolean = false;
   photosToShow: string[] = [];
 
-  photosToAdd: number[] = [];
+  photosToAdd: PhotoToAdd[] = [];
 
   fbl: FormBuilder = new FormBuilder();
 
@@ -99,7 +100,10 @@ export class CreateProductComponent {
         if (!existingPhoto) {
             this.addPhoto(file.name); 
             this.photoService.uploadMerchandisePhoto(file).pipe(tap(response => {
-                this.photosToAdd.push(response)
+                this.photosToAdd.push({
+                  id: response,
+                  photo: file.name
+                })
             })).subscribe();
         } else {
             console.log('File already exists, skipping upload.');
@@ -125,10 +129,31 @@ export class CreateProductComponent {
   }
 
   removePhoto(index: number): void {
-    const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
-    photosArray.removeAt(index);
-    this.updatePhotosToShow();
+  const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
+
+  // Get the photo name from the form array
+  const photoName = photosArray.at(index).value.photo;
+
+  this.photoService.deleteMercPhoto(this.photosToAdd.find(photo => photo.photo === photoName)?.id, -1, false).pipe(
+    tap(response => {
+
+    })
+  ).subscribe();
+
+  // Remove the corresponding photo from photosToAdd by matching the photo name
+  const photoIndex = this.photosToAdd.findIndex(photo => photo.photo === photoName);
+  if (photoIndex !== -1) {
+    this.photosToAdd.splice(photoIndex, 1);
   }
+
+
+  // Remove the photo from the FormArray
+  photosArray.removeAt(photoIndex);
+
+  // Update the list of photos to show
+  this.updatePhotosToShow();
+}
+
 
   getPhotos(): CreateMerchandisePhotoDTO[] {
     const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
@@ -157,7 +182,7 @@ export class CreateProductComponent {
       cancellationDeadline: this.addProductForm.controls.cancellationDeadline.value,
       automaticReservation: this.addProductForm.controls.automaticReservation.value,
       serviceProviderId: 2, //this.jwtService.getIdFromToken(),
-      merchandisePhotos: this.getPhotos(),
+      merchandisePhotos: this.photosToAdd.map(x => x.id),
       eventTypesIds: this.selectedEventTypes,
       categoryId: this.selectedCategory,
     };

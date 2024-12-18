@@ -17,7 +17,7 @@ export interface CreateProductRequestDTO {
     automaticReservation: boolean | null | undefined;
   
     serviceProviderId: number | null | undefined;
-    merchandisePhotos: CreateMerchandisePhotoDTO[] | null | undefined; 
+    merchandisePhotos: number[] | null | undefined; 
     eventTypesIds: number[] | null | undefined; 
     address: AddressDTO | null | undefined; 
     categoryId: number | null | undefined; 
@@ -37,7 +37,7 @@ export interface CreateProductRequestDTO {
     automaticReservation: boolean | null | undefined;
   
     serviceProviderId: number | null | undefined;
-    merchandisePhotos: CreateMerchandisePhotoDTO[] | null | undefined; 
+    merchandisePhotos: number[] | null | undefined; 
     eventTypesIds: number[] | null | undefined; 
     address: AddressDTO | null | undefined; 
   }
