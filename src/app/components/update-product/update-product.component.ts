@@ -182,11 +182,14 @@ export class UpdateProductComponent {
   
     // Get the photo name from the form array
     const photoUrl = photosArray.at(index).value.photo;
-    
-    const photoName = photoUrl.split('/').pop()?.split('.').shift(); // extract just the filename without the extension
+    const photoName = photoUrl.split('/').pop() // extract just the filename without the extension
   
     // Find the ID of the photo
-    const photoId = this.photosToAdd.find(photo => photo.photo === photoName)?.id;
+    const photoId = this.photosToAdd.find(photo => {
+      const storedPhotoName = photo.photo.split('/').pop()
+      console.log(storedPhotoName)
+      return storedPhotoName === photoName;
+    })?.id;
   
     if (photoId) {
       this.photoService.deleteMercPhoto(photoId, this.productId, true).pipe(
@@ -195,12 +198,15 @@ export class UpdateProductComponent {
         })
       ).subscribe();
   
-      // Remove the corresponding photo from photosToAdd by matching the photo name
-      const photoIndex = this.photosToAdd.findIndex(photo => photo.photo === photoName);
+      // Remove the corresponding photo from photosToAdd
+      const photoIndex = this.photosToAdd.findIndex(photo => {
+        const storedPhotoName = photo.photo.split('/').pop()
+        return storedPhotoName === photoName;
+      });
       if (photoIndex !== -1) {
         this.photosToAdd.splice(photoIndex, 1);
       }
-  
+      console.log(this.photosToAdd)
       // Remove the photo from the FormArray
       photosArray.removeAt(index);
   
@@ -210,6 +216,7 @@ export class UpdateProductComponent {
       console.log('Photo not found in photosToAdd array');
     }
   }
+  
   
 
 
