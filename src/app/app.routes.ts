@@ -66,7 +66,7 @@ export const routes: Routes = [
                 component: ProductsCrudComponent
             },
             {
-                path: 'edit-product',
+                path: 'edit-product/:id',
                 data:{
                     breadcrumb: null
                 },
@@ -101,7 +101,7 @@ export const routes: Routes = [
                 component: CreateEventFormComponent
             },
             {
-                path: 'edit-event',
+                path: 'edit-event/:id',
                 data:{
                     breadcrumb: null
                 },

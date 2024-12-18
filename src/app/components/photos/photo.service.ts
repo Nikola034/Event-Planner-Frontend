@@ -21,11 +21,11 @@ export class PhotoService {
     return `${environment.apiUrl}photos/${filename}`;
   }
 
-  deleteMercPhoto(id: number){
-    return this.http.delete<number>(`${environment.apiUrl}photos/merchandise/${id}`);
+  deleteMercPhoto(id: number | undefined, mercId: number | undefined, edit: boolean){
+    return this.http.delete<number>(`${environment.apiUrl}photos/${mercId}/merchandise/${id}?edit=${edit}`);
   }
-  deleteBusinessPhoto(id: number){
-    return this.http.delete<number>(`${environment.apiUrl}photos/business/${id}`);
+  deleteBusinessPhoto(id: number, spId: number | undefined, edit: boolean){
+    return this.http.delete<number>(`${environment.apiUrl}photos/${spId}/business/${id}?edit=${edit}`);
   }
 
   // uploadUserPhoto(file: File): Observable<string> {

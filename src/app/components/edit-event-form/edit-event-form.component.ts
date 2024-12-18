@@ -19,6 +19,7 @@ import { EventOverviewDTO } from '../event/event-overview-dto';
 import { CreateEventResponseDTO, GetProductByIdResponseDTO, GetServiceByIdResponseDTO } from '../my-events/dtos/CreateEventResponse.dto';
 import { response } from 'express';
 import { formatDate } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-edit-event-form',
@@ -41,10 +42,12 @@ export class EditEventFormComponent {
   })
 
   constructor(private fb: FormBuilder, private jwtService: JwtService, private serviceService: ServiceService, 
-    private productService: ProductService, private eventTypeService: EventTypeService, private eventService: EventService) {
+    private productService: ProductService, private eventTypeService: EventTypeService, private eventService: EventService, private route: ActivatedRoute) {
     }
 
   event: CreateEventResponseDTO | undefined
+  
+    eventId!: number
 
   eventTypes: CreateEventTypeResponseDTO[] = []
   selectedEventType: number | null | undefined = null
@@ -56,6 +59,9 @@ export class EditEventFormComponent {
   selectedProducts: (number | null | undefined)[] = []
 
   ngOnInit(){
+    const id = this.route.snapshot.paramMap.get('id');
+    this.eventId = id ? Number(id) : -1;
+
     this.serviceService.getAll().pipe(tap(response => {
       this.services = response
     })).subscribe()
@@ -65,7 +71,7 @@ export class EditEventFormComponent {
     this.eventTypeService.getAllWp().pipe(tap(response => {
       this.eventTypes = response
     })).subscribe()
-    this.eventService.getById(history.state.eventId).pipe(tap(response => {
+    this.eventService.getById(this.eventId).pipe(tap(response => {
       this.event = response
       let d = this.formatDate(response.date.toString())
       this.addEventTypeForm.patchValue({
@@ -104,7 +110,7 @@ editEvent(): void{
     serviceIds: this.selectedServices,
     isPublic: this.event?.isPublic
   }
-  this.eventService.update(this.event?.id, dto).pipe(tap(response => {
+  this.eventService.update(this.eventId, dto).pipe(tap(response => {
     
   })).subscribe()
 } 
