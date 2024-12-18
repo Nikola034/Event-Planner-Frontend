@@ -108,7 +108,7 @@ export const routes: Routes = [
                 component: EditEventFormComponent
             },
             {
-                path: 'event-details',
+                path: 'event-details/:id',
                 data:{
                     breadcrumb: null
                 },

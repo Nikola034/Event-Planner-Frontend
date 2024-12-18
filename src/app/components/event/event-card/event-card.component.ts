@@ -43,8 +43,6 @@ export class EventCardComponent{
   }
 
   showDetails(eventId: number){
-    this.router.navigate(['home/event-details'], {
-      state: {eventId: eventId}
-    })
+    this.router.navigate(['home/event-details', eventId])
   }
 }
