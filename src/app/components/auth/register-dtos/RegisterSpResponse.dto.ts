@@ -17,5 +17,10 @@ export interface RegisterSpResponseDto {
 
     company: string,
     description: string,
-    photos: string[]
+    photos: BusinnesPhotoDTO[]
+}
+
+export interface BusinnesPhotoDTO{
+    id: number,
+    photo: string
 }

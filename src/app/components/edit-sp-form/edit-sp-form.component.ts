@@ -69,7 +69,7 @@ export class EditSpFormComponent {
     this.spId = id ? Number(id) : -1;
 
     // Assuming you have a service method that fetches the response
-  this.userService.getSpById(1).pipe(tap(response => {
+  this.userService.getSpById(152).pipe(tap(response => {
     this.registerForm.patchValue({
       company: response.company,
       description: response.description,
@@ -80,15 +80,26 @@ export class EditSpFormComponent {
       number: response.address?.number,
       latitude: response.address?.latitude,
       longitude: response.address?.longitude,
-      phone: "adf",
+      phone: response.phoneNumber,
       email: response.email,
     });
 
-    // If 'photos' is an array in the response and should update a FormArray
+    // Populate merchandise photos
     const photosArray = this.registerForm.get('photos') as FormArray;
-    response.photos.forEach((photo: string) => {
-      photosArray.push(new FormControl(photo));
+    response.photos.forEach(photo => {
+      photosArray.push(this.fbl.group({
+        photo: new FormControl(this.getPhotoUrl(photo.photo)),
+      }));
+
+      // Add to photosToAdd array to keep track of uploaded photos
+      this.photosToAdd.push({
+        id: photo.id,
+        photo: photo.photo,
+      });
     });
+
+    // Update photos to show in the UI
+    this.updatePhotosToShow();
   })).subscribe()
   }
 
@@ -108,7 +119,7 @@ export class EditSpFormComponent {
       description: this.registerForm.controls.description.value,
       photos: this.photosToAdd.map(x => x.id)
     }
-    this.jwtService.updateSp(2, dto).pipe(
+    this.jwtService.updateSp(152, dto).pipe(
       tap(response => {
           
       })
