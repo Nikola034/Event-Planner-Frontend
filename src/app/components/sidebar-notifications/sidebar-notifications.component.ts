@@ -17,7 +17,6 @@ export class SidebarNotificationsComponent {
   activeTab: number = 0;
   unreadNotifications: NotificationDTO[] = [];
   readNotifications: NotificationDTO[] = [];
-  userId: number = 1; // This should be obtained from your auth service
 
   constructor(private notificationService: NotificationService) { }
 
@@ -26,12 +25,12 @@ export class SidebarNotificationsComponent {
   }
 
   loadNotifications() {
-    this.notificationService.getUnreadNotifications(this.userId)
+    this.notificationService.getUnreadNotifications()
       .subscribe(notifications => {
         this.unreadNotifications = notifications;
       });
 
-    this.notificationService.getReadNotifications(this.userId)
+    this.notificationService.getReadNotifications()
       .subscribe(notifications => {
         this.readNotifications = notifications;
       });
