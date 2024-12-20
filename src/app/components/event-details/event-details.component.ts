@@ -15,13 +15,17 @@ import html2canvas from 'html2canvas';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MapComponent } from '../map/map.component';
 import { MapService } from '../map/map.service';
+import { UserService } from '../user/user.service';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [CommonModule, ButtonModule, ChartModule,MapComponent],
+  imports: [CommonModule, ButtonModule, ChartModule,MapComponent,ConfirmDialogModule],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',
+  providers:[ConfirmationService]
 })
 export class EventDetailsComponent {
   eventDetails!: EventDetailsDTO;
@@ -38,7 +42,9 @@ export class EventDetailsComponent {
     private router: Router,
     private jwtService: JwtService,
     private route: ActivatedRoute,
-    private mapService:MapService
+    private mapService:MapService,
+    private userService:UserService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit() {
@@ -70,6 +76,20 @@ export class EventDetailsComponent {
       )
       .subscribe();
     
+  }
+
+  followEvent():void{
+    this.userService.followEvent(this.eventDetails.id).subscribe({
+      next: () => {
+        this.confirmationService.confirm({
+          message: 'You now follow the event: ' + this.eventDetails.title,
+          header: 'Follow event'
+        });
+      },
+      error: (error) => {
+        console.error('Error following event:', error);
+      }
+    });
   }
 
   private getErrorMessage(error: HttpErrorResponse): string {

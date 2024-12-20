@@ -29,7 +29,7 @@ export class HomePageComponent implements OnInit {
       this.eventToken = this.jwtService.getEventToken() ?? "";
       this.decodedEventToken=this.jwtService.decodeToken(this.eventToken);
       const userId=this.jwtService.getIdFromToken();
-      this.userService.followEvent(userId, this.decodedEventToken.id).subscribe({
+      this.userService.followEvent(this.decodedEventToken.id).subscribe({
         next: () => {
           this.confirmationService.confirm({
             message: 'You now follow the event: ' + this.decodedEventToken.title,

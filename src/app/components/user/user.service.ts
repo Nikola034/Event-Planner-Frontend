@@ -2,17 +2,20 @@ import { Injectable } from '@angular/core';
 import { API_URL } from '../../../globals';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { UserOverviewDTO } from './user-overview-dto';
-import { Observable, of } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { RegisterSpResponseDto } from '../auth/register-dtos/RegisterSpResponse.dto';
 import { environment } from '../../../environments/environment';
+import { JwtService } from '../auth/jwt.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private httpClient: HttpClient) { }
-  followEvent(userId: number, eventId: number) {
+  constructor(private httpClient: HttpClient,private jwtService:JwtService) { }
+  followEvent(eventId: number) {
+    const userId=this.jwtService.getIdFromToken();
+    if(userId===-1)return EMPTY;
     const params = new HttpParams().set('userId', userId).set("eventId", eventId);
 
     return this.httpClient.post<any>(`${API_URL}/api/v1/users/follow-event`, null, { params: params });

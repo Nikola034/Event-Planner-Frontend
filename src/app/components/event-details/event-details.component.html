@@ -28,10 +28,10 @@
         <span>Privacy:</span>
         <span
           class="font-bold"
-          [class.text-success]="eventDetails!.isPublic"
-          [class.text-danger]="!eventDetails!.isPublic"
+          [class.text-success]="eventDetails!.public"
+          [class.text-danger]="!eventDetails!.public"
         >
-          {{ eventDetails!.isPublic ? 'Public' : 'Private' }}
+          {{ eventDetails!.public ? 'Public' : 'Private' }}
         </span>
       </div>
     </div>
@@ -87,21 +87,29 @@
 
     <!-- Buttons -->
     <div class="grid">
-      <div class="col-6 text-center">
+      <div class="col-4 text-center">
         <p-button
           label="View Agenda"
           class="p-button-primary w-full"
           (onClick)="viewAgenda()"
         ></p-button>
       </div>
-      <div class="col-6 text-center">
+      <div class="col-4 text-center">
         <p-button
           label="Generate PDF"
           class="p-button-secondary w-full"
           (onClick)="generateReport()"
         ></p-button>
       </div>
+      <div class="col-4 text-center" *ngIf="eventDetails.public">
+        <p-button
+          label="Follow event"
+          class="p-button-primary w-full"
+          (onClick)="followEvent()"
+        ></p-button>
+      </div>
     </div>
   </div>
 
 </div>
+<p-confirmDialog rejectVisible="false" acceptLabel="Ok"/>
