@@ -8,10 +8,10 @@
                         styleClass="mb-3">
                     <div class="flex justify-content-between align-items-start">
                         <div class="notification-content">
-                            <p>{{notification.content}}</p>
-                            <!-- <small class="text-500">
-                                {{notification.timestamp | date:'short'}}
-                            </small> -->
+                            <p style="white-space: pre-line;">{{notification.content}}</p>
+                            <small class="text-500">
+                                {{notification.date | date:'dd/MM/yyyy HH:mm'}}
+                            </small>
                         </div>
                         <p-button
                                 icon="pi pi-times" 
@@ -32,10 +32,10 @@
                 <p-card *ngFor="let notification of readNotifications" 
                         styleClass="mb-3">
                     <div class="notification-content">
-                        <p>{{notification.content}}</p>
-                        <!-- <small class="text-500">
-                            {{notification.timestamp | date:'short'}}
-                        </small> -->
+                        <p style="white-space: pre-line;">{{notification.content}}</p>
+                        <small class="text-500">
+                            {{notification.date | date:'dd/MM/yyyy HH:mm'}}
+                        </small>
                     </div>
                 </p-card>
                 <div *ngIf="readNotifications.length === 0" 
