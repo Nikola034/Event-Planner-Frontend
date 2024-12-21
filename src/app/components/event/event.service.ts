@@ -73,6 +73,10 @@ export class EventService {
     return this.http.put<ActivityOverviewDTO>(`${environment.apiUrl}events/${eventId}/agenda`, dto)
 
   }
+  getActivity(acitivtyId:number | null | undefined): Observable<ActivityOverviewDTO> {
+    return this.http.get<ActivityOverviewDTO>(`${environment.apiUrl}events/activities/${acitivtyId}`)
+
+  }
   updateActivity(acitivtyId:number | null | undefined, dto: CreateActivityDTO): Observable<ActivityOverviewDTO> {
     return this.http.put<ActivityOverviewDTO>(`${environment.apiUrl}events/agenda/${acitivtyId}`, dto)
 

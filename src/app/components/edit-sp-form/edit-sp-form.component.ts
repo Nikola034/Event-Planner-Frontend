@@ -26,6 +26,7 @@ import { AddressDTO } from '../auth/register-dtos/address.dto';
 export class EditSpFormComponent {
   selectedPhoto: string | undefined;
   selectedPhotos: string[] | undefined;
+  selectedProfilePhoto: string | null = null;
 
   photosToShow: string[] = [];
 
@@ -51,7 +52,6 @@ export class EditSpFormComponent {
     photos: this.fbl.array([])
   })
   constructor(private route: ActivatedRoute, private router: Router, private jwtService: JwtService, private userService: UserService, private photoService: PhotoService){}
-
   ngOnInit(){
     this.loadData();
   }
@@ -69,7 +69,7 @@ export class EditSpFormComponent {
     this.spId = id ? Number(id) : -1;
 
     // Assuming you have a service method that fetches the response
-  this.userService.getSpById(152).pipe(tap(response => {
+  this.userService.getSpById(this.spId).pipe(tap(response => {
     this.registerForm.patchValue({
       company: response.company,
       description: response.description,
@@ -98,6 +98,8 @@ export class EditSpFormComponent {
       });
     });
 
+    this.selectedProfilePhoto = response.photo
+
     // Update photos to show in the UI
     this.updatePhotosToShow();
   })).subscribe()
@@ -108,7 +110,7 @@ export class EditSpFormComponent {
       name: this.registerForm.controls.name.value,
       surname: this.registerForm.controls.surname.value,
       phoneNumber: this.registerForm.controls.phone.value,
-      photo: this.selectedPhoto,
+      photo: this.selectedProfilePhoto,
       address: {
         city: this.registerForm.controls.city.value,
         street: this.registerForm.controls.street.value,
@@ -119,7 +121,7 @@ export class EditSpFormComponent {
       description: this.registerForm.controls.description.value,
       photos: this.photosToAdd.map(x => x.id)
     }
-    this.jwtService.updateSp(152, dto).pipe(
+    this.jwtService.updateSp(this.spId, dto).pipe(
       tap(response => {
           
       })
@@ -127,9 +129,28 @@ export class EditSpFormComponent {
   }
 
   changePassword(): void{
-    this.router.navigate(['change-password']);
+    this.router.navigate(['change-password', this.spId]);
+  }
+  uploadProfilePhoto(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.photoService.uploadUserPhoto(file, this.spId).pipe(
+        tap(response => {
+          this.selectedProfilePhoto = file.name; // Assuming the server returns the file name
+        })
+      ).subscribe();
+    }
   }
 
+  removeProfilePhoto(): void {
+    if (this.selectedProfilePhoto) {
+      this.photoService.deleteUserPhoto(this.spId).pipe(
+        tap(() => {
+          this.selectedProfilePhoto = null;
+        })
+      ).subscribe();
+    }
+  }
   uploadFile($event: any): void {
     const files = $event.target.files as File[];
     if (files && files.length > 0) {

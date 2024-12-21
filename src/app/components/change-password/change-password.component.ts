@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { JwtService } from '../auth/jwt.service';
 import { ChangePasswordDto } from '../auth/update-dtos/register-dtos/ChangePassword.dto';
@@ -20,9 +20,14 @@ export class ChangePasswordComponent {
     new2: new FormControl('')
   })
   
-  constructor(private router: Router, private jwtService: JwtService){}
+  userId!: number
+
+  constructor(private router: Router, private jwtService: JwtService, private route: ActivatedRoute){}
 
   changePassword(): void{
+    const id = this.route.snapshot.paramMap.get('id');
+      this.userId = id ? Number(id) : -1;
+
     if(this.registerForm.controls.new1.value != this.registerForm.controls.new2.value){
       //nisu iste 
       return;
@@ -32,7 +37,7 @@ export class ChangePasswordComponent {
       newPassword1: this.registerForm.controls.new1.value,
       newPassword2: this.registerForm.controls.new2.value
     }
-    this.jwtService.changePassword(1, dto).pipe(tap(response => {
+    this.jwtService.changePassword(this.userId, dto).pipe(tap(response => {
 
     })).subscribe();
   }

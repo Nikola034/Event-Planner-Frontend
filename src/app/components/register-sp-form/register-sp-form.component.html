@@ -38,8 +38,14 @@
             styleClass="w-full border-noround border-1 border-primary hover:bg-primary"
             label="CHOOSE PROFILE PHOTO"
           ></p-button>
-          <input hidden type="file" #uploader (change)="uploadFile($event)" />
+          <input hidden type="file" #uploader (change)="uploadProfilePhoto($event)" />
+        
+          <div *ngIf="selectedProfilePhoto" class="mt-4">
+            <img class="h-4rem w-4rem" [src]="getPhotoUrl(selectedProfilePhoto)" alt="Profile Photo" />
+            <button type="button" class="p-button p-button-secondary mt-2" (click)="removeProfilePhoto()">Remove</button>
+          </div>
         </div>
+        
         <div class="field flex justify-content-center">
           <input
             formControlName="company"
