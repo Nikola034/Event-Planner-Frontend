@@ -11,6 +11,7 @@ import { response } from 'express';
 import { tap } from 'rxjs';
 import { MapComponent } from '../map/map.component';
 import { AddressDTO } from '../auth/register-dtos/address.dto';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-create-activity-form',
@@ -27,15 +28,18 @@ export class CreateActivityFormComponent {
     end: new FormControl<Date | null>(new Date()),
     city: new FormControl(''),
     street: new FormControl(''), 
-    number: new FormControl<string | null | undefined>(""), 
+    number: new FormControl<string | null | undefined>(''), 
     latitude: new FormControl<number | null | undefined>(1), 
     longitude: new FormControl<number | null | undefined>(1), 
   });
-  constructor(private fb: FormBuilder, private eventService: EventService) {
+  constructor(private fb: FormBuilder, private eventService: EventService, private route: ActivatedRoute) {
     
   }
 
   createActivity(){
+    const id = this.route.snapshot.paramMap.get('id');
+    const eventId = id ? Number(id) : -1;
+
     const dto: CreateActivityDTO = {
       title: this.addActivityForm.controls.title.value,
       description: this.addActivityForm.controls.description.value,
@@ -49,7 +53,7 @@ export class CreateActivityFormComponent {
       longitude: this.addActivityForm.controls.longitude.value,
       }
     }
-    this.eventService.addActivity(history.state.eventId, dto).pipe(tap(response => {
+    this.eventService.addActivity(eventId, dto).pipe(tap(response => {
       console.log(response)
     })).subscribe()
   }

@@ -36,6 +36,14 @@ export class AppComponent implements OnInit {
             '/edit-eo', 
             '/edit-au'
           ];
+
+          // Add patterns to handle dynamic routes
+        const dynamicExcludedPatterns = [
+          /^\/edit-au\/\d+$/, // Matches /edit-au/:id
+          /^\/edit-eo\/\d+$/, // Matches /edit-eo/:id
+          /^\/edit-sp\/\d+$/,
+          /^\/change-password\/\d+$/  // Matches /edit-sp/:id
+        ];
     
           const currentUrl = event.urlAfterRedirects;
           const currentFullUrl = typeof window !== 'undefined' 
@@ -44,8 +52,10 @@ export class AppComponent implements OnInit {
     
           this.showBasicNavigation = 
             !excludedRoutes.includes(currentUrl) && 
-            !currentFullUrl.includes('inviteToken=');
-        }
+            !dynamicExcludedPatterns.some(pattern => pattern.test(currentUrl)) &&
+            !currentFullUrl.includes('inviteToken=') && 
+            !currentFullUrl.includes('undefined=')         
+          }
       })
     ).subscribe();
   }

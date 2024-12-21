@@ -21,6 +21,9 @@ export class PhotoService {
     return `${environment.apiUrl}photos/${filename}`;
   }
 
+  deleteUserPhoto(id: number){
+    return this.http.delete<number>(`${environment.apiUrl}photos/user/${id}`);
+  }
   deleteMercPhoto(id: number | undefined, mercId: number | undefined, edit: boolean){
     return this.http.delete<number>(`${environment.apiUrl}photos/${mercId}/merchandise/${id}?edit=${edit}`);
   }
@@ -28,13 +31,12 @@ export class PhotoService {
     return this.http.delete<number>(`${environment.apiUrl}photos/${spId}/business/${id}?edit=${edit}`);
   }
 
-  // uploadUserPhoto(file: File): Observable<string> {
-  //   const formData = new FormData();
-  //   formData.append('file', file);
-  //   formData.append('user', JSON.stringify(user)); // Pass the user object as a string
+  uploadUserPhoto(file: File, id: number): Observable<number> {
+    const formData = new FormData();
+    formData.append('file', file);
 
-  //   return this.http.post<string>(`${this.apiUrl}/user/upload`, formData);
-  // }
+    return this.http.post<number>(`${environment.apiUrl}photos/user/${id}`, formData);
+  }
 
   uploadBusinessPhoto(file: File): Observable<number> {
     const formData = new FormData();

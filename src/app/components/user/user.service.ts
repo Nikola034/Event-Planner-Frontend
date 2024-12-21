@@ -6,6 +6,7 @@ import { EMPTY, Observable, of } from 'rxjs';
 import { RegisterSpResponseDto } from '../auth/register-dtos/RegisterSpResponse.dto';
 import { environment } from '../../../environments/environment';
 import { JwtService } from '../auth/jwt.service';
+import { RegisterEoResponseDto } from '../auth/register-dtos/RegisterEoResponse.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -39,5 +40,7 @@ export class UserService {
   getSpById(id: number | undefined | null): Observable<RegisterSpResponseDto>{
     return this.httpClient.get<RegisterSpResponseDto>(`${environment.apiUrl}users/sp/${id}`);
   }
-
+  getEoById(id: number | undefined | null): Observable<RegisterEoResponseDto>{
+    return this.httpClient.get<RegisterEoResponseDto>(`${environment.apiUrl}users/eo/${id}`);
+  }
 }

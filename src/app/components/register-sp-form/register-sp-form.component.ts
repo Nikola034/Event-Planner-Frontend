@@ -24,7 +24,7 @@ import { AddressDTO } from '../auth/register-dtos/address.dto';
 export class RegisterSpFormComponent {
   selectedPhoto: string | undefined;
   selectedPhotos: string[] | undefined;
-
+  selectedProfilePhoto: string | null = null;
   photosToShow: string[] = [];
 
   photosToAdd: PhotoToAdd[] = [];
@@ -72,8 +72,8 @@ export class RegisterSpFormComponent {
       phoneNumber: this.registerForm.controls.phone.value,
       email: this.registerForm.controls.email.value,
       password: this.registerForm.controls.password1.value,
-      photo: this.selectedPhoto,
       role: 'SP',
+      photo: this.selectedProfilePhoto,
       address: {
         city: this.registerForm.controls.city.value,
         street: this.registerForm.controls.street.value,
@@ -173,7 +173,26 @@ export class RegisterSpFormComponent {
     }
   }
   
-  
+  uploadProfilePhoto(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.photoService.uploadUserPhoto(file, -1).pipe(
+        tap(response => {
+          this.selectedProfilePhoto = file.name; // Assuming the server returns the file name
+        })
+      ).subscribe();
+    }
+  }
+
+  removeProfilePhoto(): void {
+    if (this.selectedProfilePhoto) {
+      this.photoService.deleteUserPhoto(-1).pipe(
+        tap(() => {
+          this.selectedProfilePhoto = null;
+        })
+      ).subscribe();
+    }
+  }
 
 
   getPhotos(): CreateMerchandisePhotoDTO[] {

@@ -28,6 +28,9 @@ import { AdminReviewsComponent } from './components/admin-reviews/admin-reviews.
 import { EventDetailsComponent } from './components/event-details/event-details.component';
 import { FavoriteEventsComponent } from './components/favorite-events/favorite-events.component';
 import { FavoriteMerchandiseComponent } from './components/favorite-merchandise/favorite-merchandise.component';
+import { AddActivityFormComponent } from './components/add-activity-form/add-activity-form.component';
+import { EditActivityFormComponent } from './components/edit-activity-form/edit-activity-form.component';
+import { CreateActivityFormComponent } from './components/create-activity-form/create-activity-form.component';
 
 
 export const routes: Routes = [
@@ -184,15 +187,30 @@ export const routes: Routes = [
                     breadcrumb: 'Agenda'
                 },
                 component: AgendaComponent
+            },
+            {
+                path: 'agenda/:id/add',
+                data: {
+                    breadcrumb: 'Agenda'
+                },
+                component: CreateActivityFormComponent
+            },
+            {
+                path: 'agenda/edit/:activityId',
+                data: {
+                    breadcrumb: 'Agenda'
+                },
+                component: EditActivityFormComponent
             }
         ]
     },
     { path: '', component: LoginFormComponent},
-    { path: 'change-password', component: ChangePasswordComponent},
+    { path: 'change-password/:id', component: ChangePasswordComponent},
     { path: 'register-au', component: FastRegisterComponent},
     { path: 'register-eo', component: RegisterEoFormComponent},
     { path: 'register-sp', component: RegisterSpFormComponent},
-    { path: 'edit-au', component: EditAuFormComponent},
-    { path: 'edit-eo', component: EditEoFormComponent},
-    { path: 'edit-sp/:id', component: EditSpFormComponent}
+    { path: 'edit-au/:id', component: EditAuFormComponent},
+    { path: 'edit-eo/:id', component: EditEoFormComponent},
+    { path: 'edit-sp/:id', component: EditSpFormComponent},
+    
 ];

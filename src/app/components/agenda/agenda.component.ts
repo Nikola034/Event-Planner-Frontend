@@ -12,7 +12,7 @@ import { EventService } from '../event/event.service';
 import { tap } from 'rxjs';
 import { response } from 'express';
 import { CreateEventResponseDTO } from '../my-events/dtos/CreateEventResponse.dto';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-agenda',
@@ -30,7 +30,7 @@ export class AgendaComponent {
   selectedActivity!: ActivityOverviewDTO ;
   eventId!:number;
 
-  constructor(private eventService: EventService,private route:ActivatedRoute){}
+  constructor(private eventService: EventService,private route:ActivatedRoute, private router: Router){}
 
   ngOnInit(){
     this.loadData();
@@ -49,12 +49,11 @@ export class AgendaComponent {
   }
 
   showAddForm() {
-    this.displayAddForm = true;
+    this.router.navigate(['home/agenda', this.eventId, 'add'])
   }
 
   showEditForm(a: ActivityOverviewDTO) {
-    this.displayEditForm = true;
-    this.selectedActivity = a;
+    this.router.navigate(['home/agenda/edit', a.id])
   }
 
   onDelete(activityId: number): void {
