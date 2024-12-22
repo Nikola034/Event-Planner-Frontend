@@ -15,11 +15,12 @@ import { tap } from 'rxjs';
 import { response } from 'express';
 import { PhotoService } from '../photos/photo.service';
 import { JwtService } from '../auth/jwt.service';
+import { ServicesCalendarComponent } from "../services-calendar/services-calendar.component";
 
 @Component({
   selector: 'app-products-crud',
   standalone: true,
-  imports: [ButtonModule, DropdownModule, RouterModule, TableModule, CurrencyPipe, DialogModule, EditServiceFormComponent, AddServiceFormComponent, CommonModule],
+  imports: [ButtonModule, DropdownModule, RouterModule, TableModule, CurrencyPipe, DialogModule, EditServiceFormComponent, AddServiceFormComponent, CommonModule, ServicesCalendarComponent],
   templateUrl: './products-crud.component.html',
   styleUrl: './products-crud.component.scss'
 })

@@ -14,6 +14,7 @@ import { UpdateRequest } from './update-request';
 import { environment } from '../../../environments/environment';
 import { TimeslotDTO } from '../my-events/dtos/CreateEventResponse.dto';
 import { JwtService } from '../auth/jwt.service';
+import { CalendarTimeSlotDTO } from './calendar-timeslot.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -67,6 +68,9 @@ export class ServiceService {
 
   getAllBySpId(serviceProviderId: number): Observable<CreateServiceResponse[]> {
     return this.http.get<CreateServiceResponse[]>(`${API_URL}/api/v1/services/sp/${serviceProviderId}`);
+  }
+  getCalendarTimeslots(serviceProviderId: number): Observable<CalendarTimeSlotDTO[]> {
+    return this.http.get<CalendarTimeSlotDTO[]>(`${environment.apiUrl}services/timeslots/${serviceProviderId}`);
   }
 
   update(serviceId: number, updateRequest: UpdateRequest): Observable<CreateServiceResponse> {
