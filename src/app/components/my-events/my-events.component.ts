@@ -15,7 +15,6 @@ import { TableModule } from 'primeng/table';
 import { EventCardComponent } from '../event/event-card/event-card.component';
 import { EventService } from '../event/event.service';
 import { MerchandiseService } from '../merchandise/merchandise.service';
-import { Event } from '../event/event';
 import { Router } from '@angular/router';
 import { EventOverviewDTO } from '../event/event-overview-dto';
 import { JwtService } from '../auth/jwt.service';

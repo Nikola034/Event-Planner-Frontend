@@ -42,7 +42,7 @@ export class CreateEventFormComponent {
     latitude: new FormControl<number | null>(1),
     longitude: new FormControl<number | null>(1),
     maxParticipants: new FormControl<number | null>(-1),
-    public: new FormControl(),
+    public: new FormControl<boolean|null>(false)
   })
 
   constructor(private fb: FormBuilder, private jwtService: JwtService, private serviceService: ServiceService, 

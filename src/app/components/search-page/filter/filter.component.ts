@@ -19,7 +19,6 @@ import { SearchService } from '../search.service';
 })
 export class FiltersComponent {
   filterForm: FormGroup;
-  @Output() filterValuesEmmiter = new EventEmitter<FilterFormValues>();
 
   constructor(private fb: FormBuilder,private searchService:SearchService) {
     this.filterForm = this.fb.group({

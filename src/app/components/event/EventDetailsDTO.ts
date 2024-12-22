@@ -11,6 +11,6 @@ export interface EventDetailsDTO{
   description: string;
   maxParticipants: number;
   eventType: CreateEventTypeResponseDTO;
-  public: boolean;
+  isPublic: boolean;
   organizer: EventOrganizerDTO;
 }

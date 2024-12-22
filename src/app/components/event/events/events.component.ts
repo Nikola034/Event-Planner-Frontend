@@ -2,7 +2,6 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
-import { Event } from '../event';
 import { EventService } from '../event.service';
 import { CommonModule } from '@angular/common';
 import { EventCardComponent } from '../event-card/event-card.component';
@@ -86,6 +85,7 @@ export class EventsComponent implements OnInit {
         }
       case "Search":
       case "search": {
+        if (typeof window !== 'undefined' && window.localStorage) {
         combineLatest([
           this.searchService.search$,
           this.searchService.eventFilters$,
@@ -101,6 +101,7 @@ export class EventsComponent implements OnInit {
             this.triggerEventSearch();
           }
         });
+      }
         break;
       }
       case "followed":

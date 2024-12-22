@@ -45,6 +45,11 @@ export class HeaderComponent {
         this.themeService.changeTheme();
     }
     ngOnInit() {
+        this.searchService.search$.subscribe({
+            next:(data:string)=>{
+                this.searchText=data;
+            }
+        });
       this.items = [
         {
             label: this.username,

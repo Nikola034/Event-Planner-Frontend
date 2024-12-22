@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Event } from './event';
+
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -29,7 +29,6 @@ export class EventService {
     'type',
   ];
 
-  private events: Event[] = [];
   constructor(private http: HttpClient, private jwtService: JwtService) {}
 
   getByEo(id: number | null): Observable<EventOverviewDTO[]> {

@@ -28,10 +28,10 @@
         <span>Privacy:</span>
         <span
           class="font-bold"
-          [class.text-success]="eventDetails!.public"
-          [class.text-danger]="!eventDetails!.public"
+          [class.text-success]="eventDetails!.isPublic"
+          [class.text-danger]="!eventDetails!.isPublic"
         >
-          {{ eventDetails!.public ? 'Public' : 'Private' }}
+          {{ eventDetails!.isPublic ? 'Public' : 'Private' }}
         </span>
       </div>
     </div>
@@ -101,7 +101,7 @@
           (onClick)="generateReport()"
         ></p-button>
       </div>
-      <div class="col-4 text-center" *ngIf="eventDetails.public">
+      <div class="col-4 text-center" *ngIf="eventDetails.isPublic">
         <p-button
           label="Follow event"
           class="p-button-primary w-full"
