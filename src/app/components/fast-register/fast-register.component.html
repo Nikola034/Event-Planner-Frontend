@@ -19,6 +19,8 @@
             type="text"
             placeholder="E-Mail*"
             class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
+            pAutoFocus 
+            [autofocus]="true" 
           />
         </div>
         <div class="field justify-content-center h-3rem w-full submit">
@@ -39,3 +41,25 @@
     </div>
   </div>
 </div>
+<p-dialog 
+      [(visible)]="displayErrorDialog" 
+      [modal]="true" 
+      [closable]="true"
+      header="Login Error" 
+      [style]="{width: '350px'}"
+    >
+      <ng-template pTemplate="content">
+        <div class="flex flex-column align-items-center">
+          <i class="pi pi-exclamation-triangle" style="font-size: 2rem; color: var(--red-500)"></i>
+          <p class="mt-3">{{ errorMessage }}</p>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button 
+          pButton 
+          label="OK" 
+          class="p-button-text" 
+          (click)="closeErrorDialog()"
+        ></button>
+      </ng-template>
+    </p-dialog>
