@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -24,6 +24,7 @@ import { ReviewService } from '../review-service.service';
 @Component({
   selector: 'app-reviews-table',
   templateUrl: './reviews-table.component.html',
+  styleUrl:'./reviews-table.component.scss',
   standalone: true,
   imports: [
     CommonModule,
@@ -38,7 +39,8 @@ import { ReviewService } from '../review-service.service';
     ConfirmDialogModule,
     TooltipModule
   ],
-  providers: [MessageService, ConfirmationService]
+  providers: [MessageService, ConfirmationService],
+  encapsulation:ViewEncapsulation.None
 })
 export class ReviewsTableComponent implements OnInit {
   reviews: ReviewOverviewDTO[] = [];

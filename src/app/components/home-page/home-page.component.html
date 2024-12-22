@@ -1,5 +1,6 @@
 
-<p-button label="See All" icon="pi pi-th-large" styleClass="text-xl"  routerLinkActive="active" [routerLink]="'/home/search'"></p-button>
+<p-button label="See All" icon="pi pi-th-large" styleClass="text-xl"  routerLinkActive="active" [routerLink]="'/home/search'" (onClick)="resetSearchParameters()"></p-button>
+
 <!-- <a [routerLink]="'/search'" routerLinkActive="active">See all</a> -->
 <div class="mb-4">
 <app-events [panelTitle]="'Top Events'" [panelType]="'top'"></app-events>
@@ -7,3 +8,4 @@
 <app-merchandise [panelTitle]="'Top Services/Products'" [panelType]="'top'"></app-merchandise>
 </div>
 <p-confirmDialog rejectVisible="false" acceptLabel="Ok"/>
+<app-map [showEvents]="true" [showProducts]="true" [showServices]="true"></app-map>

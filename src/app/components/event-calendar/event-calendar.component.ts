@@ -6,6 +6,8 @@ import { EventOverviewDTO } from '../event/event-overview-dto';
 import { EventService } from '../event/event.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { addMonths, subMonths } from 'date-fns';
+import { JwtDecodeOptions } from 'jwt-decode';
+import { JwtService } from '../auth/jwt.service';
 @Component({
   selector: 'app-event-calendar',
   standalone: true,
@@ -25,6 +27,7 @@ export class EventCalendarComponent implements OnInit {
 
   constructor(
     private eventService: EventService,
+    private jwtService: JwtService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
@@ -32,7 +35,7 @@ export class EventCalendarComponent implements OnInit {
     // Only run on browser
     switch (this.eventType) {
       case "followed":
-      case "Followed":
+      case "Followed": {
         if (isPlatformBrowser(this.platformId)) {
           this.eventService.getFollowed().subscribe({
             next: (data: EventOverviewDTO[]) => {
@@ -41,6 +44,32 @@ export class EventCalendarComponent implements OnInit {
             }
           });
         }
+        break;
+      }
+      case "favorite":
+      case "Favorite": {
+        if (isPlatformBrowser(this.platformId)) {
+          this.eventService.getFavorites().subscribe({
+            next: (data: EventOverviewDTO[]) => {
+              this.events = data;
+              this.calendarEvents = this.convertToCalendarEvents(data);
+            }
+          });
+        }
+        break;
+      }
+      case "my":
+      case "My": {
+        if (isPlatformBrowser(this.platformId)) {
+          this.eventService.getByEo(this.jwtService.getIdFromToken()).subscribe({
+            next: (data: EventOverviewDTO[]) => {
+              this.events = data;
+              this.calendarEvents = this.convertToCalendarEvents(data);
+            }
+          });
+        }
+        break;
+      }
     }
   }
 
@@ -55,7 +84,7 @@ export class EventCalendarComponent implements OnInit {
         type: event.type,
         address: event.address,
         description: event.description,
-        isPublic: event.public
+        isPublic: event.isPublic
       }
     }));
   }

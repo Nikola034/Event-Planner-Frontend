@@ -43,6 +43,7 @@ export class MessengerComponent implements OnInit {
   reportDialogVisible: boolean = false;
   reportReason: string = '';
   isSubmitting: boolean = false;
+  blockConfirmationDialogVisible: boolean = false;
 
   onUserSelect(user: any) {
     this.selectedUser = user;
@@ -92,7 +93,7 @@ export class MessengerComponent implements OnInit {
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && window.localStorage) {
-      this.userService.getServiceProvidersForOrganizerEvents(this.jwtService.getIdFromToken(), this.jwtService.getRoleFromToken()).subscribe({
+      this.userService.getChatUsers(this.jwtService.getIdFromToken(), this.jwtService.getRoleFromToken()).subscribe({
         next: (response) => {
           this.users = response;
         },
@@ -190,6 +191,68 @@ export class MessengerComponent implements OnInit {
         life: 3000 
       });
     }
+  }
+  blockUser() {
+    if (!this.selectedUser) {
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: 'Error', 
+        detail: 'No user selected to block', 
+        life: 3000 
+      });
+      return;
+    }
+  
+    // Open the confirmation dialog instead of directly blocking
+    this.blockConfirmationDialogVisible = true;
+  }
+  
+  // Add a new method to confirm blocking
+  confirmBlockUser() {
+    if (!this.selectedUser) return;
+  
+    const currentUserId = this.jwtService.getIdFromToken();
+    const userToBlockId = this.selectedUser.id;
+  
+    this.userService.blockUser(currentUserId, userToBlockId).subscribe({
+      next: (response) => {
+        // Show success toast
+        this.messageService.add({ 
+          severity: 'success', 
+          summary: 'User Blocked', 
+          detail: `User ${this.selectedUser?.firstName} ${this.selectedUser?.lastName} has been blocked`, 
+          life: 3000 
+        });
+  
+        // Reset the selected user and hide messages
+        this.selectedUser = null;
+        this.showMessages = false;
+        this.messages = [];
+  
+        // Refresh the user list to remove blocked user
+        this.ngOnInit();
+  
+        // Close the confirmation dialog
+        this.blockConfirmationDialogVisible = false;
+      },
+      error: (error) => {
+        // Show error toast if blocking fails
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: 'Block Failed', 
+          detail: error.message || 'Unable to block user', 
+          life: 3000 
+        });
+  
+        // Close the confirmation dialog
+        this.blockConfirmationDialogVisible = false;
+      }
+    });
+  }
+  
+  // Add a method to cancel blocking
+  cancelBlockUser() {
+    this.blockConfirmationDialogVisible = false;
   }
 
 

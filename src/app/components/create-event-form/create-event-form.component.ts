@@ -15,17 +15,20 @@ import { tap } from 'rxjs';
 import { response } from 'express';
 import { Service } from '../service/service';
 import { ProductService } from '../product/product.service';
-import { MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto';
+import { GetAllByCaterogiesDTO, MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto';
 import { EventTypeService } from '../create-event-type-form/event-type.service';
 import { CreateEventTypeResponseDTO } from '../create-event-type-form/dtos/create-event-type-response.dto';
 import { CreateEventDTO } from '../my-events/dtos/CreateEvent.dto';
 import { JwtService } from '../auth/jwt.service';
 import { EventService } from '../event/event.service';
+import { MapComponent } from '../map/map.component';
+import { AddressDTO } from '../auth/register-dtos/address.dto';
+import { constrainedMemory } from 'process';
 
 @Component({
   selector: 'app-create-event-form',
   standalone: true,
-  imports: [CommonModule, DropdownModule, FormsModule, MultiSelectModule, RadioButtonModule, ButtonModule, ReactiveFormsModule, CalendarModule, CheckboxModule, SendInvitationComponent, DialogModule],
+  imports: [CommonModule, DropdownModule, FormsModule,MapComponent, MultiSelectModule, RadioButtonModule, ButtonModule, ReactiveFormsModule, CalendarModule, CheckboxModule, DialogModule],
   templateUrl: './create-event-form.component.html',
   styleUrl: './create-event-form.component.scss'
 })
@@ -36,11 +39,11 @@ export class CreateEventFormComponent {
     date: new FormControl<Date | null>(new Date()),
     city: new FormControl(''),
     street: new FormControl(''),
-    number: new FormControl<number | null>(1),
+    number: new FormControl<string | null>(""),
     latitude: new FormControl<number | null>(1),
     longitude: new FormControl<number | null>(1),
     maxParticipants: new FormControl<number | null>(-1),
-    public: new FormControl(),
+    public: new FormControl<boolean|null>(false)
   })
 
   constructor(private fb: FormBuilder, private jwtService: JwtService, private serviceService: ServiceService, 
@@ -55,13 +58,39 @@ export class CreateEventFormComponent {
   selectedServices: any[] = []
   selectedProducts: any[] = []
 
+    onAddressSelected(address: AddressDTO) {
+        this.addEventTypeForm.patchValue({
+          city: address.city,
+          street: address.street,
+          number: address.number,
+          latitude:address.latitude,
+          longitude:address.longitude
+        });
+      }
+    
+      onChange($event: any) {
+        if(this.eventTypes.find(x => x.id == $event.value)?.title == 'all'){
+          this.serviceService.getAll().pipe(tap(response => {
+            this.services = response
+          })).subscribe()
+          this.productService.getAll().pipe(tap(response => {
+            this.products = response
+          })).subscribe()
+        }
+        else{
+          const dto: GetAllByCaterogiesDTO = {
+            categories: this.eventTypes.find(x => x.id == $event.value)?.recommendedCategories.map(x => x.id)
+          }
+          this.serviceService.getAllByCategories(dto).pipe(tap(response => {
+            this.services = response
+          })).subscribe()
+          this.productService.getAllByCategories(dto).pipe(tap(response => {
+            this.products = response
+          })).subscribe()
+        }
+      }
+
   ngOnInit(){
-      this.serviceService.getAll().pipe(tap(response => {
-        this.services = response
-      })).subscribe()
-      this.productService.getAll().pipe(tap(response => {
-        this.products = response
-      })).subscribe()
       this.eventTypeService.getAllWp().pipe(tap(response => {
         this.eventTypes = response
       })).subscribe()
@@ -84,8 +113,8 @@ export class CreateEventFormComponent {
       maxParticipants: this.addEventTypeForm.controls.maxParticipants.value,
       isPublic: this.addEventTypeForm.controls.public.value,
       eventTypeId: this.selectedEventType,
-      productIds: this.selectedProducts.map(x => x.id),
-      serviceIds: this.selectedServices.map(x => x.id),
+      productIds: this.selectedProducts,
+      serviceIds: this.selectedServices,
       organizerId: this.jwtService.getIdFromToken()
     }
     this.eventService.create(dto).pipe(tap(response => {

@@ -23,5 +23,6 @@ export interface MerchandiseDetailDTO {
     category: CategoryDto,
     eventTypes: EventType,
     rating: number,
-    serviceProviderId: number
+    serviceProviderId: number,
+    type:string
 }

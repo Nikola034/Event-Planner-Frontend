@@ -45,7 +45,7 @@
       <p-button
         label="Send Invitations"
         styleClass="p-button-primary text-color mr-2 ml-2"
-        *ngIf="0 === 0 && !event.public"
+        *ngIf="0 === 0 && !event.isPublic"
         (onClick)="showInvitationsForm()"
       ></p-button>
       <p-button
@@ -59,6 +59,7 @@
       <p-button
         label="See details"
         styleClass="p-button-secondary text-color"
+        (onClick)="showDetails(event.id)"
       ></p-button>
     </div>
   </ng-template>

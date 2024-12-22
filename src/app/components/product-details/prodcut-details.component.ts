@@ -13,11 +13,13 @@ import { ProductService } from '../product/product.service';
 import { BuyProductComponent } from "./buy-product/buy-product.component";
 import { Router } from '@angular/router';
 import { JwtService } from '../auth/jwt.service';
+import { MapComponent } from '../map/map.component';
+import { MapService } from '../map/map.service';
 
 @Component({
   selector: 'app-prodcut-details',
   standalone: true,
-  imports: [PaginatorModule, ButtonModule, CurrencyPipe, CommonModule, GalleriaModule, FieldsetModule, DialogModule, BuyProductComponent],
+  imports: [PaginatorModule, ButtonModule, CurrencyPipe, CommonModule, GalleriaModule, FieldsetModule,MapComponent, DialogModule, BuyProductComponent],
   templateUrl: './prodcut-details.component.html',
   styleUrl: './prodcut-details.component.scss'
 })
@@ -49,7 +51,8 @@ export class ProdcutDetailsComponent implements OnInit {
     constructor(private route: ActivatedRoute,
                 private router: Router, 
                 private merchandiseService: MerchandiseService, 
-                private productService: ProductService) {}
+                private productService: ProductService,
+              private mapService:MapService) {}
   
     ngOnInit() {
       const productId = this.route.snapshot.paramMap.get('productId');
@@ -64,6 +67,7 @@ export class ProdcutDetailsComponent implements OnInit {
             this.product = response;
             this.images = this.product.merchandisePhotos;
             this.paginatedReviews = this.product.reviews.slice(0,5);
+            this.mapService.updateMerchandiseAddresses(response);
           },
           error: (err) => {
             console.error(err);

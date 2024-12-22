@@ -38,8 +38,14 @@
             styleClass="w-full border-noround border-1 border-primary hover:bg-primary"
             label="CHOOSE PROFILE PHOTO"
           ></p-button>
-          <input hidden type="file" #uploader (change)="uploadFile($event)" />
+          <input hidden type="file" #uploader (change)="uploadProfilePhoto($event)" />
+        
+          <div *ngIf="selectedProfilePhoto" class="mt-4">
+            <img class="h-4rem w-4rem" [src]="getPhotoUrl(selectedProfilePhoto)" alt="Profile Photo" />
+            <button type="button" class="p-button p-button-secondary mt-2" (click)="removeProfilePhoto()">Remove</button>
+          </div>
         </div>
+        
         <div class="field flex justify-content-center">
           <input
             formControlName="company"
@@ -48,6 +54,11 @@
             class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
           />
         </div>
+        <div class="field mb-8">
+          <span>Choose address</span>
+          <app-map [showSearch]="true" [showLegend]="false" (addressSelected)="onAddressSelected($event)">
+          </app-map>
+      </div>
         <div class="field flex justify-content-center">
           <div class="grid">
             <div class="col-4">
@@ -141,20 +152,20 @@
             </div>
           </div>
         </div>
-        <div class="field flex justify-content-left photo w-full">
+        <div class="field flex justify-content-center">
           <p-button
-            (click)="uploader2.click()"
+            (click)="uploader1.click()"
             styleClass="w-full border-noround border-1 border-primary"
-            label="ADD PHOTOS (OPTIONAL)"
+            label="ADD COMPANY PHOTOS"
           ></p-button>
-          <input hidden type="file" #uploader2 (change)="uploadFile($event)" />
-          <img
-            *ngIf="selectedPhoto"
-            [src]="selectedPhoto"
-            src="dinja.jpg"
-            alt="Profile Photo"
-            class="ml-2 border-round w-4rem h-3rem"
-          />
+          <input hidden type="file" #uploader1 (change)="uploadFile($event)" />
+        
+          <div *ngIf="photosToShow.length > 0" class="mt-4">
+            <div *ngFor="let photo of photosToShow; let i = index" class="border surface-50 p-2 rounded m-1">
+              <img class="h-4rem w-rem" [src]="photo" alt="Loading...">
+              <button type="button" class="p-button p-button-secondary" (click)="removePhoto(i)">Remove</button>
+            </div>
+          </div>
         </div>
         <div class="field justify-content-center h-3rem w-full submit">
           <p-button

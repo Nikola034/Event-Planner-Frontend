@@ -13,5 +13,5 @@ export interface RegisterSpDto {
 
     company: string | null | undefined,
     description: string | null | undefined,
-    photos: string[] | null | undefined
+    photos: number[] | null | undefined
 }

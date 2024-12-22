@@ -37,6 +37,15 @@
             class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
           />
         </div>
+        <div class="field mb-8">
+          <span>Choose address</span>
+          <app-map 
+              [showSearch]="true" 
+              [showLegend]="false" 
+              (addressSelected)="onAddressSelected($event)" 
+              >
+          </app-map>
+      </div>
         <div class="field flex justify-content-center">
           <div class="grid">
             <div class="col-4">
@@ -58,7 +67,7 @@
             <div class="col-4">
               <input
                 formControlName="number"
-                type="number"
+                type="text"
                 placeholder="Number*"
                 class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50"
               />
@@ -89,14 +98,14 @@
           <p-calendar placeholder="Date*" formControlName="date" />
         </div>
         <div class="flex justify-content-center align-items-center gap-2">
-          <p-checkbox formControlName="public" value="yes" inputId="public"/>
+          <p-checkbox formControlName="public" [binary]="true" inputId="public"/>
           <label for="public">Public</label>
         </div>
         <div
           class="flex justify-content-center align-items-center gap-2 mt-3 w-full"
         >
         <p-dropdown placeholder="Event Type*" [options]="eventTypes"  [(ngModel)]="selectedEventType" [ngModelOptions]="{ standalone: true }" optionLabel="title"
-        optionValue="id">
+        optionValue="id" (onChange)="onChange($event)">
           <ng-template let-eventType pTemplate="item">
             <div>
               <strong>{{ eventType.title }}</strong>

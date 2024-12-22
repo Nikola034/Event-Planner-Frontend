@@ -19,11 +19,14 @@ import { EventOverviewDTO } from '../event/event-overview-dto';
 import { CreateEventResponseDTO, GetProductByIdResponseDTO, GetServiceByIdResponseDTO } from '../my-events/dtos/CreateEventResponse.dto';
 import { response } from 'express';
 import { formatDate } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { MapComponent } from '../map/map.component';
+import { AddressDTO } from '../auth/register-dtos/address.dto';
 
 @Component({
   selector: 'app-edit-event-form',
   standalone: true,
-  imports: [DropdownModule, FormsModule, MultiSelectModule, RadioButtonModule, ButtonModule, ReactiveFormsModule, CalendarModule, CheckboxModule ],
+  imports: [DropdownModule, FormsModule, MultiSelectModule,MapComponent, RadioButtonModule, ButtonModule, ReactiveFormsModule, CalendarModule, CheckboxModule ],
   templateUrl: './edit-event-form.component.html',
   styleUrl: './edit-event-form.component.scss'
 })
@@ -34,17 +37,28 @@ export class EditEventFormComponent {
     date: new FormControl<Date | null>(new Date()),
     city: new FormControl(''),
     street: new FormControl(''),
-    number: new FormControl<number | null>(1),
+    number: new FormControl<string | null>(""),
     latitude: new FormControl<number | null>(1),
     longitude: new FormControl<number | null>(1),
     maxParticipants: new FormControl<number | null>(-1)  
   })
+  onAddressSelected(address: AddressDTO) {
+    this.addEventTypeForm.patchValue({
+      city: address.city,
+      street: address.street,
+      number: address.number,
+      latitude:address.latitude,
+      longitude:address.longitude
+    });
+  }
 
   constructor(private fb: FormBuilder, private jwtService: JwtService, private serviceService: ServiceService, 
-    private productService: ProductService, private eventTypeService: EventTypeService, private eventService: EventService) {
+    private productService: ProductService, private eventTypeService: EventTypeService, private eventService: EventService, private route: ActivatedRoute) {
     }
 
   event: CreateEventResponseDTO | undefined
+  
+    eventId!: number
 
   eventTypes: CreateEventTypeResponseDTO[] = []
   selectedEventType: number | null | undefined = null
@@ -56,6 +70,9 @@ export class EditEventFormComponent {
   selectedProducts: (number | null | undefined)[] = []
 
   ngOnInit(){
+    const id = this.route.snapshot.paramMap.get('id');
+    this.eventId = id ? Number(id) : -1;
+
     this.serviceService.getAll().pipe(tap(response => {
       this.services = response
     })).subscribe()
@@ -65,7 +82,7 @@ export class EditEventFormComponent {
     this.eventTypeService.getAllWp().pipe(tap(response => {
       this.eventTypes = response
     })).subscribe()
-    this.eventService.getById(history.state.eventId).pipe(tap(response => {
+    this.eventService.getById(this.eventId).pipe(tap(response => {
       this.event = response
       let d = this.formatDate(response.date.toString())
       this.addEventTypeForm.patchValue({
@@ -104,7 +121,7 @@ editEvent(): void{
     serviceIds: this.selectedServices,
     isPublic: this.event?.isPublic
   }
-  this.eventService.update(this.event?.id, dto).pipe(tap(response => {
+  this.eventService.update(this.eventId, dto).pipe(tap(response => {
     
   })).subscribe()
 } 

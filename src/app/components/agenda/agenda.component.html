@@ -1,8 +1,11 @@
-<p-table [value]="activities" class="w-full" [responsiveLayout]="'scroll'">
+<p-table [value]="activities" class="w-full" [responsiveLayout]="'scroll'" *ngIf="event">
     <ng-template pTemplate="caption">
       <div class="flex align-items-center justify-content-between">
         <h2>{{"Agenda For Event: " + this.event.title}}</h2>
-        <p-button (onClick)="showAddForm()" icon="pi pi-plus" />
+        <div>
+          <p-button (onClick)="generatePdfReport()" styleClass="mr-4" label="PDF Report" icon="pi pi-file" />
+          <p-button (onClick)="showAddForm()" icon="pi pi-plus" />
+        </div>
       </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -32,19 +35,3 @@
       </tr>
     </ng-template>
   </p-table>
-  <p-dialog
-    header="Create Activity"
-    [(visible)]="displayAddForm"
-    [modal]="true"
-    styleClass="w-6 h-full"
-  >
-    <app-create-activity-form></app-create-activity-form>
-  </p-dialog>
-  <p-dialog
-  header="Edit Activity"
-  [(visible)]="displayEditForm"
-  [modal]="true"
-  styleClass="w-6 h-full"
->
-  <app-edit-activity-form [activity]="selectedActivity"></app-edit-activity-form>
-</p-dialog>

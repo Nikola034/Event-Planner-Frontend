@@ -11,11 +11,16 @@ import { CommonModule } from '@angular/common';
 import { GalleriaModule} from 'primeng/galleria';
 import { FieldsetModule } from 'primeng/fieldset';
 import { PaginatorModule } from 'primeng/paginator';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MapComponent } from '../../map/map.component';
+import { MapService } from '../../map/map.service';
+import { JwtService } from '../../auth/jwt.service';
+import { catchError, EMPTY, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-service-details',
   standalone: true,
-  imports: [PaginatorModule, ButtonModule,ReservationDialogComponent,FloatLabelModule,InputTextModule, CurrencyPipe, CommonModule, GalleriaModule, FieldsetModule],
+  imports: [PaginatorModule,MapComponent, ButtonModule,ReservationDialogComponent,FloatLabelModule,InputTextModule, CurrencyPipe, CommonModule, GalleriaModule, FieldsetModule],
   templateUrl: './service-details.component.html',
   styleUrl: './service-details.component.scss'
 })
@@ -24,9 +29,10 @@ export class ServiceDetailsComponent implements OnInit {
   reservationDialog!: ReservationDialogComponent;
   serviceId: number = -1;
   service: MerchandiseDetailDTO | null = null;
-  isStarFilled: boolean = false;
-  images: any[] = [];
+  isFavorited: boolean = false;
+  images: any[] | undefined = [];
   paginatedReviews: any | undefined;
+  errorMessage: string = '';
   responsiveOptions: any[] = [
     {
         breakpoint: '991px',
@@ -42,32 +48,79 @@ export class ServiceDetailsComponent implements OnInit {
     }
 ];
 
-  constructor(private route: ActivatedRoute, private merchandiseService: MerchandiseService, private router: Router) {}
+  constructor(private route: ActivatedRoute, private merchandiseService: MerchandiseService,private mapService:MapService, private jwtService: JwtService, private router: Router) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     this.serviceId = id ? Number(id) : -1;
 
     if(this.serviceId != -1) {
-      this.merchandiseService.getMerchandiseDetails(this.serviceId).subscribe({
-        next: (response) => {
-          this.service = response;
-          this.images = this.service.merchandisePhotos;
-          this.paginatedReviews = this.service.reviews.slice(0,5);
-        },
-        error: (err) => {
-          console.error(err);
-        }
-      });
+      this.merchandiseService
+  .getMerchandiseDetails(this.serviceId)
+  .pipe(
+    switchMap((response) => {
+      this.service = response;
+      this.images = this.service?.merchandisePhotos;
+      this.paginatedReviews = this.service?.reviews.slice(0, 5);
+      this.mapService.updateMerchandiseAddresses(response);
+
+      // Call to check if the service is favorited
+      return this.merchandiseService.getFavorites().pipe(
+        tap((favorites) => {
+          this.isFavorited = favorites.some((x) => x.id === this.service?.id);
+        })
+      );
+    }),
+    catchError((err: HttpErrorResponse) => {
+      this.errorMessage = this.getErrorMessage(err);
+      return EMPTY; // Prevents unhandled error propagation
+    })
+  )
+  .subscribe();
     }
   }
+  private getErrorMessage(error: HttpErrorResponse): string {
+      // Check if error response has a body with a message
+      if (error.error instanceof ErrorEvent) {
+        // Client-side error
+        return error.error.message || 'Client-side error occurred';
+      } else {
+        // Server-side error
+        // Try multiple ways to extract the error message
+        if (error.error && error.error.message) {
+          // Directly from error object
+          return error.error.message;
+        }
+    
+        if (error.error && typeof error.error === 'string') {
+          // If error is a string message
+          return error.error;
+        }
+    
+        if (error.error && error.error.errorMessage) {
+          // Alternative error message property
+          return error.error.errorMessage;
+        }
+    
+        // Fallback to status text or a generic message
+        return error.statusText || 'An unexpected error occurred';
+      }
+    }
+
+
   openReservationDialog() {
     this.reservationDialog.openDialog();
   }
 
-  addToFavorite() {
-    //logic for adding service to favorite
-    this.isStarFilled = !this.isStarFilled;
+  toggleFavorite(): void {
+    this.isFavorited = !this.isFavorited;
+    this.merchandiseService
+      .favorizeMerchandise(
+        this.service?.id,
+         this.jwtService.getIdFromToken()
+      )
+      .pipe(tap((response) => {}))
+      .subscribe();
   }
 
   calculatePrice(): number {

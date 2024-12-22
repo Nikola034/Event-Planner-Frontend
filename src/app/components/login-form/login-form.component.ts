@@ -11,11 +11,14 @@ import { catchError, EMPTY, Observable, takeUntil, tap, throwError } from 'rxjs'
 import { HttpErrorResponse } from '@angular/common/http';
 import { EventToken } from '../auth/event-token';
 import { MessageService } from 'primeng/api';
+import { CommonModule } from '@angular/common';
+import { PhotoService } from '../photos/photo.service';
+import { AutoFocusModule } from 'primeng/autofocus';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonModule, DialogModule, DialogModule],
+  imports: [ReactiveFormsModule, ButtonModule, DialogModule, DialogModule, CommonModule,AutoFocusModule],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
   encapsulation: ViewEncapsulation.None
@@ -41,7 +44,7 @@ export class LoginFormComponent implements OnInit {
       this.jwtService.setEventToken(this.eventToken);
     }
     if (typeof window !== 'undefined' && window.localStorage) {
-      if (this.jwtService.IsLoggedIn()) {
+      if (this.jwtService.IsLoggedIn()&&this.jwtService.isInviteTokenValid()) {
         this.router.navigate(['home']);
       }
     }

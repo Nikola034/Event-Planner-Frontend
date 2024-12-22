@@ -1,0 +1,134 @@
+<div *ngIf="errorMessage" class="error-container">
+  <div class="error-message">
+    {{ errorMessage }}
+  </div>
+</div>
+<div *ngIf="eventDetails">
+<div class="event-details-container surface-100 p-4 border-round-md shadow-2">
+    <!-- Event Title -->
+    <div class="event-header text-center text-xl font-bold mb-3">
+      <h2>
+        {{ eventDetails!.title + " (" + eventDetails!.eventType!.title + ")" }}
+        <i
+          class="pi pi-star text-3xl"
+          [class.pi-star]="!isFavorited"
+          [class.pi-star-fill]="isFavorited"
+          (click)="toggleFavorite()"
+          [ngStyle]="{
+            cursor: 'pointer',
+            marginLeft: '10px'
+          }"
+        ></i>
+      </h2>
+    </div>
+  
+    <!-- Event Type and Public Status -->
+    <div class="grid mb-3">
+      <div class="col-6 text-md font-medium">
+        <span>Privacy:</span>
+        <span
+          class="font-bold"
+          [class.text-success]="eventDetails!.isPublic"
+          [class.text-danger]="!eventDetails!.isPublic"
+        >
+          {{ eventDetails!.isPublic ? 'Public' : 'Private' }}
+        </span>
+      </div>
+    </div>
+  
+    <!-- Event Date -->
+    <div class="grid mb-3">
+      <div class="col-12 text-md">
+        <i class="pi pi-calendar mr-2 text-5xl"></i>
+        <span class="mr-3">Date:</span>
+        <span class="font-bold">{{ eventDetails!.date | date: "dd.MM.YYYY." }}</span>
+      </div>
+    </div>
+  
+    <!-- Address Section -->
+    <div class="grid mb-3">
+      <div class="col-12 text-md">
+        <i class="pi pi-map-marker mr-2 text-5xl"></i>
+        <span class="mr-3">Address:</span>
+        <span class="font-bold">
+          {{ eventDetails!.address!.street }}, {{ eventDetails!.address!.city }},
+          {{ eventDetails!.address!.number }}
+        </span>
+      </div>
+    </div>
+  
+    <!-- Description -->
+    <div class="grid mb-3">
+      <div class="col-12">
+        <span class="font-medium mt-2">Description:</span>
+        <p class="m-0">{{ eventDetails!.description }}</p>
+      </div>
+    </div>
+  
+    <!-- Max Participants -->
+    <div class="grid mb-3">
+      <div class="col-12 text-md">
+        <i class="pi pi-users mr-2 text-5xl"></i>
+        <span class="mr-3">Max Participants:</span>
+        <span class="font-bold">{{ eventDetails!.maxParticipants }}</span>
+      </div>
+    </div>
+  
+    <!-- Organizer Details -->
+    <div class="grid mb-3">
+      <div class="col-12">
+        <h3 class="text-md font-medium mb-2">Organizer:</h3>
+        <span class="font-bold">{{ eventDetails!.organizer!.name + " " + eventDetails!.organizer!.surname }}</span>
+        <p class="m-0">Contact: {{ eventDetails!.organizer!.email }}</p>
+      </div>
+    </div>
+  
+    <app-map [showEvents]="true"></app-map>
+
+    <!-- Buttons -->
+    <div class="grid">
+      <div class="col-3 text-center">
+        <p-button
+          label="View Agenda"
+          class="p-button-primary w-full"
+          (onClick)="viewAgenda()"
+        ></p-button>
+      </div>
+      <div class="col-3 text-center">
+        <p-button
+          label="Generate PDF"
+          class="p-button-secondary w-full"
+          (onClick)="generatePdfReport()"
+        ></p-button>
+      </div>
+      <div class="col-4 text-center" *ngIf="eventDetails.isPublic">
+      <div class="col-3 text-center"> <!--*ngIf="admin"-->
+        <p-button
+          label="Stats"
+          class="p-button-primary w-full"
+          (onClick)="chart()"
+        ></p-button>
+      </div>
+      <div class="col-3 text-center" *ngIf="eventDetails.isPublic">
+        <p-button
+          label="Follow event"
+          class="p-button-primary w-full"
+          (onClick)="followEvent()"
+        ></p-button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<p-confirmDialog rejectVisible="false" acceptLabel="Ok"/>
+
+
+    <!-- Review Chart -->
+    <div class="chart-container" *ngIf="reviewChartData && reviewChartOptions">
+      <p-chart
+        type="bar"
+        [data]="reviewChartData"
+        [options]="reviewChartOptions"
+        style="max-width: 600px; margin: auto;"
+      ></p-chart>
+    </div>

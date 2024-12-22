@@ -1,5 +1,5 @@
 <p-toolbar
-  styleClass="flex justify-content-between w-full xl:w-10 fixed top-0 right-0 z-4 border-noround"
+  styleClass="flex justify-content-between w-full xl:w-10 fixed top-0 right-0 border-noround headercomponent"
 >
   <div class="p-toolbar-group-start">
     <p-button
@@ -23,11 +23,20 @@
     />
     <p-menubar [model]="items" styleClass="border-none h-3rem" />
     <p-button
+      icon="pi pi-bell-slash"
+      styleClass="max-h-2rem max-w-2rem text-color"
+      [rounded]="true"
+      (click)="toggleNotifications()"
+      [link]="true"
+    />
+    <p-button
       (onClick)="notificationsVisible = true"
       icon="pi pi-align-right"
       styleClass="mr-2"
       severity="secondary"
+      [disabled]="notificationsEnabled"
     />
+    
   </div>
 </p-toolbar>
 <div class="card flex justify-content-center">
@@ -38,7 +47,7 @@
 <div class="card flex justify-content-center">
   <p-sidebar
     [(visible)]="notificationsVisible"
-    styleClass="w-2"
+    styleClass="w-4"
     position="right"
   >
     <app-sidebar-notifications></app-sidebar-notifications>

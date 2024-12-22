@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ToolbarModule } from 'primeng/toolbar';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { InputTextModule } from 'primeng/inputtext';
@@ -28,7 +28,8 @@ import { JwtService } from '../auth/jwt.service';
   standalone: true,
   imports: [ToolbarModule, ScrollPanelModule, DialogModule, SplitButtonModule, InputTextModule, ButtonModule, InputIconModule, IconFieldModule, FormsModule, AvatarModule, AvatarGroupModule, MenubarModule, SidebarModule,  SidebarNotificationsComponent, SideMenuComponent],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.scss',
+  encapsulation:ViewEncapsulation.None
 })
 export class HeaderComponent {
   items: MenuItem[] | undefined;
@@ -36,6 +37,7 @@ export class HeaderComponent {
   sidemenuVisible: boolean = false;
   notificationsVisible: boolean = false;
   searchText:string='';
+  notificationsEnabled:boolean=false;
   
   constructor(private themeService:ThemeService, private router: Router,private searchService:SearchService,private jwtService:JwtService){}
 
@@ -43,6 +45,11 @@ export class HeaderComponent {
         this.themeService.changeTheme();
     }
     ngOnInit() {
+        this.searchService.search$.subscribe({
+            next:(data:string)=>{
+                this.searchText=data;
+            }
+        });
       this.items = [
         {
             label: this.username,
@@ -68,6 +75,10 @@ export class HeaderComponent {
             ]
         }
     ]
+    }
+
+    toggleNotifications(){
+        this.notificationsEnabled=!this.notificationsEnabled;
     }
 
     logout(){

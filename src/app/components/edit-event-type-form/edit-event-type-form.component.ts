@@ -80,7 +80,7 @@ export class EditEventTypeFormComponent implements OnChanges{
       .update(this.eventTypeData.id, dto)
       .pipe(
         tap((response) => {
-          console.log(response);
+          
         })
       )
       .subscribe();

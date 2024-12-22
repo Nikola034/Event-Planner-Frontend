@@ -15,7 +15,7 @@
             <th>Title</th>
             <th>Description</th>
             <th>Specificity</th>
-            <th>Image</th>
+            <th>Images</th> <!-- Updated header to Images -->
             <th>Base Price</th>
             <th>Discounted Price</th>
             <th>Category</th>
@@ -24,7 +24,7 @@
             <th>Edit</th>
             <th>Delete</th>
         </tr>
-        <tr> <!--Ovaj ovde red-->
+        <tr> <!-- Ovaj ovde red -->
             <th colspan="2">
                 <p-columnFilter
                 type="text" field="product.category.title" placeholder="Filter category" ariaLabel="Filter Category"/>
@@ -48,7 +48,13 @@
             <td>{{product.title}}</td>
             <td>{{product.description}}</td>
             <td>{{product.specificity}}</td>
-            <td><img [src]="product.merchandisePhotos[0]" [alt]="product.name" width="100" class="shadow-4"/></td>
+            <td>
+                <ul class="product-images">
+                    <li *ngFor="let photo of product.merchandisePhotos">
+                        <img [src]="getPhotoUrl(photo.photo)" [alt]="product.name || 'Loading...'" width="100" class="shadow-4"/>
+                    </li>
+                </ul>
+            </td>
             <td>{{product.price | currency:'USD'}}</td>
             <td>{{product.price - (product.price*product.discount)/100 | currency:'USD'}}</td>
             <td>{{product.category.title}}</td>
@@ -60,7 +66,7 @@
             <td>
                 <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': product.available, 'text-red-500 pi-times-circle': !product.available }"></i>
             </td>
-            <td><p-button icon="pi pi-pencil" (onClick)="editProduct(product.id)"></p-button></td>
+            <td><p-button icon="pi pi-pencil" (onClick)="editProduct(product.id)" [disabled]="!product.available"></p-button></td>
             <td><p-button icon="pi pi-trash" (onClick)="deleteProduct(product.id)"></p-button></td>
         </tr>
     </ng-template>

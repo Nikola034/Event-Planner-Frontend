@@ -22,6 +22,7 @@ import { SearchService } from '../../search-page/search.service';
 import { ProductService } from '../../product/product.service';
 import { ServiceFilters } from '../../service/service-filters';
 import { combineLatest, debounceTime, distinctUntilChanged } from 'rxjs';
+import { MapService } from '../../map/map.service';
 
 interface PageEvent {
   first: number;
@@ -64,7 +65,7 @@ export class MerchandiseComponent {
   merchandiseSort:string='price';
   @Input() panelTitle: string = '';
   @Input() panelType: string = '';
-  constructor(private merchandiseService: MerchandiseService, private searchService: SearchService) { }
+  constructor(private merchandiseService: MerchandiseService, private searchService: SearchService,private mapService:MapService) { }
 
   async ngOnInit() {
     switch (this.panelType) {
@@ -75,6 +76,7 @@ export class MerchandiseComponent {
             next: (data: MerchandiseOverviewDTO[]) => {
               this.merchandise = data;
               this.totalRecords = this.merchandise.length;
+              this.mapService.updateMerchandiseAddresses(data);
               this.updateDisplayedEvents();
             }
           });
@@ -97,7 +99,7 @@ export class MerchandiseComponent {
             this.searchValue = searchValue;
             this.productFilterValues = productFilters;
             this.serviceFilterValues = serviceFilters;
-            this.merchandiseSort=merchandiseSort
+            this.merchandiseSort=merchandiseSort;
             
             // Single search trigger
             this.merchandiseService.search(
@@ -109,6 +111,7 @@ export class MerchandiseComponent {
               next: (data: MerchandiseOverviewDTO[]) => {
                 this.merchandise = data;
                 this.totalRecords = this.merchandise.length;
+                this.mapService.updateMerchandiseAddresses(data);
                 this.updateDisplayedEvents();
               }
             });
@@ -116,6 +119,21 @@ export class MerchandiseComponent {
         });
         break;
       }
+      case 'Favorite':
+      case 'favorite':
+        {
+          if (typeof window !== 'undefined' && window.localStorage) {
+          this.merchandiseService.getFavorites().subscribe({
+            next: (data: MerchandiseOverviewDTO[]) => {
+              this.merchandise = data;
+              this.totalRecords = this.merchandise.length;
+              this.mapService.updateMerchandiseAddresses(data);
+              this.updateDisplayedEvents();
+            }
+          });
+        } 
+          break;
+        }
     }
   }
 

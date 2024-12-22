@@ -11,24 +11,28 @@ import { tap } from 'rxjs';
 import { RegisterEoDto } from '../auth/register-dtos/RegisterEo.dto';
 import { Role } from '../auth/register-dtos/role.dto';
 import { copyFileSync } from 'fs';
+import { MapComponent } from '../map/map.component';
+import { AddressDTO } from '../auth/register-dtos/address.dto';
+import { PhotoService } from '../photos/photo.service';
 
 @Component({
   selector: 'app-register-eo-form',
   standalone: true,
-  imports: [ButtonModule, ReactiveFormsModule, FileUploadModule, ToastModule, CommonModule],
+  imports: [ButtonModule, ReactiveFormsModule, FileUploadModule,MapComponent, ToastModule, CommonModule],
   templateUrl: './register-eo-form.component.html',
   styleUrl: './register-eo-form.component.scss',
   encapsulation: ViewEncapsulation.None
 })
 export class RegisterEoFormComponent {
   selectedPhoto: string | undefined
+  selectedProfilePhoto: string | null = null;
 
   registerForm = new FormGroup({
     name: new FormControl(''),
     surname: new FormControl(''),
     city: new FormControl(''),
     street: new FormControl(''),
-    number: new FormControl<number | null>(1),
+    number: new FormControl<string | null>(""),
     latitude: new FormControl<number | null>(1),
     longitude: new FormControl<number | null>(1),
     phone: new FormControl(''),
@@ -36,9 +40,20 @@ export class RegisterEoFormComponent {
     password1: new FormControl(''),
     password2: new FormControl(''),
   })
+  onAddressSelected(address: AddressDTO) {
+    this.registerForm.patchValue({
+      city: address.city,
+      street: address.street,
+      number: address.number,
+      latitude:address.latitude,
+      longitude:address.longitude
+    });
+  }
   
-  constructor(private router: Router, private jwtService: JwtService){}
-
+  constructor(private router: Router, private jwtService: JwtService, private photoService: PhotoService){}
+  getPhotoUrl(photo: string): string{
+    return this.photoService.getPhotoUrl(photo);
+  }
   createAccount(): void{
     if(this.registerForm.controls.password1.value != this.registerForm.controls.password2.value){
       //nisu iste sifre
@@ -50,7 +65,7 @@ export class RegisterEoFormComponent {
       phoneNumber: this.registerForm.controls.phone.value,
       email: this.registerForm.controls.email.value,
       password: this.registerForm.controls.password1.value,
-      photo: this.selectedPhoto,
+      photo: this.selectedProfilePhoto,
       role: 'EO',
       address: {
         city: this.registerForm.controls.city.value,
@@ -69,5 +84,26 @@ export class RegisterEoFormComponent {
 
   uploadFile($event: any) {
     this.selectedPhoto = $event.target.files[0].name
+  }
+
+  uploadProfilePhoto(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.photoService.uploadUserPhoto(file, -1).pipe(
+        tap(response => {
+          this.selectedProfilePhoto = file.name; // Assuming the server returns the file name
+        })
+      ).subscribe();
+    }
+  }
+
+  removeProfilePhoto(): void {
+    if (this.selectedProfilePhoto) {
+      this.photoService.deleteUserPhoto(-1).pipe(
+        tap(() => {
+          this.selectedProfilePhoto = null;
+        })
+      ).subscribe();
+    }
   }
 }

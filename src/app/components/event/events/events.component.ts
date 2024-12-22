@@ -2,7 +2,6 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
-import { Event } from '../event';
 import { EventService } from '../event.service';
 import { CommonModule } from '@angular/common';
 import { EventCardComponent } from '../event-card/event-card.component';
@@ -22,6 +21,7 @@ import { EventOverviewDTO } from '../event-overview-dto';
 import { EventFilters } from '../event-filters';
 import { SearchService } from '../../search-page/search.service';
 import { combineLatest, debounceTime, distinctUntilChanged } from 'rxjs';
+import { MapService } from '../../map/map.service';
 
 interface PageEvent {
   first: number;
@@ -59,14 +59,14 @@ export class EventsComponent implements OnInit {
   public filterSidebarVisible = false;
   searchValue: string = '';
   filterValues: EventFilters | null = null;
-  eventSort:string='date';
+  eventSort: string = 'date';
   // Pagination properties
   public first: number = 0;
   public rows: number = 3;
   public totalRecords: number = 0;
   @Input() panelTitle: string = '';
   @Input() panelType: string = '';
-  constructor(private eventService: EventService, private searchService: SearchService) { }
+  constructor(private eventService: EventService, private searchService: SearchService,private mapService:MapService) { }
 
   async ngOnInit() {
     switch (this.panelType) {
@@ -77,6 +77,7 @@ export class EventsComponent implements OnInit {
             next: (data: EventOverviewDTO[]) => {
               this.events = data;
               this.totalRecords = this.events.length;
+              this.mapService.updateEventAddresses(data);
               this.updateDisplayedEvents();
             }
           });
@@ -84,6 +85,7 @@ export class EventsComponent implements OnInit {
         }
       case "Search":
       case "search": {
+        if (typeof window !== 'undefined' && window.localStorage) {
         combineLatest([
           this.searchService.search$,
           this.searchService.eventFilters$,
@@ -96,25 +98,44 @@ export class EventsComponent implements OnInit {
             this.searchValue = searchValue;
             this.filterValues = eventFilters;
             this.eventSort = eventSort;
-
             this.triggerEventSearch();
           }
         });
+      }
         break;
       }
       case "followed":
       case "Followed":
-        if (typeof window !== 'undefined' && window.localStorage){
-        this.eventService.getFollowed().subscribe({
-          next: (data: EventOverviewDTO[]) => {
-            this.events = data;
-            this.totalRecords = this.events.length;
-            this.updateDisplayedEvents();
+        {
+          if (typeof window !== 'undefined' && window.localStorage) {
+            this.eventService.getFollowed().subscribe({
+              next: (data: EventOverviewDTO[]) => {
+                this.events = data;
+                this.totalRecords = this.events.length;
+                this.mapService.updateEventAddresses(data);
+                this.updateDisplayedEvents();
+              }
+            });
           }
-        });
-      }
-        break;
+          break;
+        }
+        case "favorite":
+          case "Favorite":
+            {
+              if (typeof window !== 'undefined' && window.localStorage) {
+                this.eventService.getFavorites().subscribe({
+                  next: (data: EventOverviewDTO[]) => {
+                    this.events = data;
+                    this.totalRecords = this.events.length;
+                    this.mapService.updateEventAddresses(data);
+                    this.updateDisplayedEvents();
+                  }
+                });
+              }
+              break;
+            }
     }
+
   }
 
   updateDisplayedEvents() {
@@ -124,10 +145,11 @@ export class EventsComponent implements OnInit {
 
 
   triggerEventSearch() {
-    this.eventService.search(this.filterValues, this.searchValue,this.eventSort).subscribe({
+    this.eventService.search(this.filterValues, this.searchValue, this.eventSort).subscribe({
       next: (data: EventOverviewDTO[]) => {
         this.events = data;
         this.totalRecords = this.events.length;
+        this.mapService.updateEventAddresses(data);
         this.updateDisplayedEvents();
       }
     });

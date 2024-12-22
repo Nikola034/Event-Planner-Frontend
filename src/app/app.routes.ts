@@ -25,6 +25,12 @@ import { ProductsCrudComponent } from './components/products-crud/products-crud.
 import { UpdateProductComponent } from './components/update-product/update-product.component';
 import { CreateProductComponent } from './components/create-product/create-product.component';
 import { AdminReviewsComponent } from './components/admin-reviews/admin-reviews.component';
+import { EventDetailsComponent } from './components/event-details/event-details.component';
+import { FavoriteEventsComponent } from './components/favorite-events/favorite-events.component';
+import { FavoriteMerchandiseComponent } from './components/favorite-merchandise/favorite-merchandise.component';
+import { AddActivityFormComponent } from './components/add-activity-form/add-activity-form.component';
+import { EditActivityFormComponent } from './components/edit-activity-form/edit-activity-form.component';
+import { CreateActivityFormComponent } from './components/create-activity-form/create-activity-form.component';
 
 
 export const routes: Routes = [
@@ -63,7 +69,7 @@ export const routes: Routes = [
                 component: ProductsCrudComponent
             },
             {
-                path: 'edit-product',
+                path: 'edit-product/:id',
                 data:{
                     breadcrumb: null
                 },
@@ -98,18 +104,18 @@ export const routes: Routes = [
                 component: CreateEventFormComponent
             },
             {
-                path: 'edit-event',
+                path: 'edit-event/:id',
                 data:{
                     breadcrumb: null
                 },
                 component: EditEventFormComponent
             },
             {
-                path: 'agenda',
+                path: 'event-details/:id',
                 data:{
                     breadcrumb: null
                 },
-                component: AgendaComponent
+                component: EventDetailsComponent
             },
             {
                 path: 'category',
@@ -160,15 +166,51 @@ export const routes: Routes = [
                     breadcrumb: 'Reviews'
                 },
                 component: AdminReviewsComponent
+            },
+            {
+                path: 'favorite-events',
+                data: {
+                    breadcrumb: 'Favorite Events'
+                },
+                component: FavoriteEventsComponent
+            },
+            {
+                path: 'favorite-merchandise',
+                data: {
+                    breadcrumb: 'Favorite Services/Products'
+                },
+                component: FavoriteMerchandiseComponent
+            } ,
+            {
+                path: 'agenda/:id',
+                data: {
+                    breadcrumb: 'Agenda'
+                },
+                component: AgendaComponent
+            },
+            {
+                path: 'agenda/:id/add',
+                data: {
+                    breadcrumb: 'Agenda'
+                },
+                component: CreateActivityFormComponent
+            },
+            {
+                path: 'agenda/edit/:activityId',
+                data: {
+                    breadcrumb: 'Agenda'
+                },
+                component: EditActivityFormComponent
             }
         ]
     },
     { path: '', component: LoginFormComponent},
-    { path: 'change-password', component: ChangePasswordComponent},
+    { path: 'change-password/:id', component: ChangePasswordComponent},
     { path: 'register-au', component: FastRegisterComponent},
     { path: 'register-eo', component: RegisterEoFormComponent},
     { path: 'register-sp', component: RegisterSpFormComponent},
-    { path: 'edit-au', component: EditAuFormComponent},
-    { path: 'edit-eo', component: EditEoFormComponent},
-    { path: 'edit-sp', component: EditSpFormComponent}
+    { path: 'edit-au/:id', component: EditAuFormComponent},
+    { path: 'edit-eo/:id', component: EditEoFormComponent},
+    { path: 'edit-sp/:id', component: EditSpFormComponent},
+    
 ];
