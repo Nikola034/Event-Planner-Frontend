@@ -23,11 +23,20 @@
     />
     <p-menubar [model]="items" styleClass="border-none h-3rem" />
     <p-button
+      icon="pi pi-bell-slash"
+      styleClass="max-h-2rem max-w-2rem text-color"
+      [rounded]="true"
+      (click)="toggleNotifications()"
+      [link]="true"
+    />
+    <p-button
       (onClick)="notificationsVisible = true"
       icon="pi pi-align-right"
       styleClass="mr-2"
       severity="secondary"
+      [disabled]="notificationsEnabled"
     />
+    
   </div>
 </p-toolbar>
 <div class="card flex justify-content-center">

@@ -37,6 +37,7 @@ export class HeaderComponent {
   sidemenuVisible: boolean = false;
   notificationsVisible: boolean = false;
   searchText:string='';
+  notificationsEnabled:boolean=false;
   
   constructor(private themeService:ThemeService, private router: Router,private searchService:SearchService,private jwtService:JwtService){}
 
@@ -69,6 +70,10 @@ export class HeaderComponent {
             ]
         }
     ]
+    }
+
+    toggleNotifications(){
+        this.notificationsEnabled=!this.notificationsEnabled;
     }
 
     logout(){
