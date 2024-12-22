@@ -4,7 +4,7 @@ import { ProductFilters } from './product-filters';
 import { PageResponse } from '../page/page-response';
 import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../../../globals';
-import { MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto';
+import { GetAllByCaterogiesDTO, MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto';
 import { Product } from './product';
 import { environment } from '../../../environments/environment';
 import { ProductOverviewDTO } from '../merchandise/product-overview.dto';
@@ -20,6 +20,10 @@ export class ProductService {
     getAll(): Observable<MerchandiseOverviewDTO[]> {
         return this.http
           .get<MerchandiseOverviewDTO[]>(`${environment.apiUrl}products`)
+      }
+      getAllByCategories(dto: GetAllByCaterogiesDTO): Observable<MerchandiseOverviewDTO[]> {
+        return this.http
+          .post<MerchandiseOverviewDTO[]>(`${environment.apiUrl}products/get-by-categories`, dto)
       }
       getById(id: number): Observable<ProductOverviewDTO> {
         return this.http

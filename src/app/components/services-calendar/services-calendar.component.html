@@ -1,0 +1,30 @@
+@if (calendarEvents.length > 0) {
+    <div class="flex justify-content-center align-items-center mb-3">
+        <div class="flex align-items-center gap-3">
+          <p-button 
+            icon="pi pi-chevron-left" 
+            (onClick)="previousMonth()"
+            [text]="true"
+            severity="contrast"
+          ></p-button>
+          
+          <h2 class="m-0 text-center" style="min-width: 200px">
+            {{ viewDate | date:'MMMM yyyy' }}
+          </h2>
+          
+          <p-button 
+            icon="pi pi-chevron-right" 
+            (onClick)="nextMonth()"
+            [text]="true"
+            severity="contrast"
+          ></p-button>
+        </div>
+      </div>
+      
+      <mwl-calendar-month-view
+        [events]="calendarEvents"
+        [viewDate]="viewDate"
+        class="event_calendar"
+      >
+      </mwl-calendar-month-view>
+  }
