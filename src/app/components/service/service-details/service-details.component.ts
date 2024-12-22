@@ -4,7 +4,7 @@ import { ReservationDialogComponent } from '../reservation-dialog/reservation-di
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MerchandiseDetailDTO } from '../../merchandise/merchandise-detail-dto';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MerchandiseService } from '../../merchandise/merchandise.service';
 import { CurrencyPipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
@@ -48,7 +48,7 @@ export class ServiceDetailsComponent implements OnInit {
     }
 ];
 
-  constructor(private route: ActivatedRoute, private merchandiseService: MerchandiseService,private mapService:MapService, private jwtService: JwtService) {}
+  constructor(private route: ActivatedRoute, private merchandiseService: MerchandiseService,private mapService:MapService, private jwtService: JwtService, private router: Router) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -132,5 +132,9 @@ export class ServiceDetailsComponent implements OnInit {
     const startIndex = event.first;
     const endIndex = startIndex + event.rows;
     this.paginatedReviews = this.service!.reviews.slice(startIndex, endIndex);
+  }
+
+  seeChat() {
+    this.router.navigate(['home', 'messenger']);
   }
 }

@@ -11,6 +11,8 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { DialogModule } from 'primeng/dialog';
 import { ProductService } from '../product/product.service';
 import { BuyProductComponent } from "./buy-product/buy-product.component";
+import { Router } from '@angular/router';
+import { JwtService } from '../auth/jwt.service';
 import { MapComponent } from '../map/map.component';
 import { MapService } from '../map/map.service';
 
@@ -46,7 +48,8 @@ export class ProdcutDetailsComponent implements OnInit {
       }
   ];
   
-    constructor(private route: ActivatedRoute, 
+    constructor(private route: ActivatedRoute,
+                private router: Router, 
                 private merchandiseService: MerchandiseService, 
                 private productService: ProductService,
               private mapService:MapService) {}
@@ -108,5 +111,9 @@ export class ProdcutDetailsComponent implements OnInit {
       const startIndex = event.first;
       const endIndex = startIndex + event.rows;
       this.paginatedReviews = this.product!.reviews.slice(startIndex, endIndex);
+    }
+
+    seeChat() {
+      this.router.navigate(['home','messenger', this.product?.serviceProviderId]);
     }
 }

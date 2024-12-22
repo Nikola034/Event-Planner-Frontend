@@ -147,7 +147,7 @@ export const routes: Routes = [
                 component: FollowedEventsComponent
             },
             {
-                path: 'messenger',
+                path: 'messenger/:serviceProviderId',
                 data: {
                     breadcrumb: 'Messenger'
                 },

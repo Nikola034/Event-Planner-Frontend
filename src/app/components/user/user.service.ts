@@ -21,6 +21,25 @@ export class UserService {
 
     return this.httpClient.post<any>(`${API_URL}/api/v1/users/follow-event`, null, { params: params });
   }
+
+  getServiceProvidersForOrganizerEvents(organizerId: number,role:string): Observable<UserOverviewDTO[]> {
+    console.log(`userId: ${organizerId}, role: ${role}`);
+    if (organizerId === -1)
+      return of([]);
+    if(role==='EO')
+      return this.httpClient.get<UserOverviewDTO[]>(`${API_URL}/api/v1/users/eo/${organizerId}/chat-users`);
+
+    else if(role==='SP')
+      return this.httpClient.get<UserOverviewDTO[]>(`${API_URL}/api/v1/users/sp/${organizerId}/chat-users`);
+
+    else
+      return this.httpClient.get<UserOverviewDTO[]>(`${API_URL}/api/v1/users/au/chat-users`);
+  }
+
+  getServiceProviderById(id: number): Observable<UserOverviewDTO> {
+    return this.httpClient.get<UserOverviewDTO>(`${API_URL}/api/v1/users/sp/${id}/message`);
+  }
+  
   getChatUsers(userId: number,role:string): Observable<UserOverviewDTO[]> {
     if (userId === -1) return of([]);
     if(role==='EO')
@@ -30,6 +49,7 @@ export class UserService {
   else
   return this.httpClient.get<UserOverviewDTO[]>(`${API_URL}/api/v1/users/au/${userId}/chat-users`);
   }
+  
   blockUser(blockerId: number, blockedUserId: number): Observable<any> {
     return this.httpClient.post<any>(
       `${API_URL}/api/v1/users/${blockerId}/block/${blockedUserId}`, 
