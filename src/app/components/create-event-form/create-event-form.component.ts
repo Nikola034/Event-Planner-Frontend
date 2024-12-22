@@ -28,7 +28,7 @@ import { constrainedMemory } from 'process';
 @Component({
   selector: 'app-create-event-form',
   standalone: true,
-  imports: [CommonModule, DropdownModule, FormsModule,MapComponent, MultiSelectModule, RadioButtonModule, ButtonModule, ReactiveFormsModule, CalendarModule, CheckboxModule, SendInvitationComponent, DialogModule],
+  imports: [CommonModule, DropdownModule, FormsModule,MapComponent, MultiSelectModule, RadioButtonModule, ButtonModule, ReactiveFormsModule, CalendarModule, CheckboxModule, DialogModule],
   templateUrl: './create-event-form.component.html',
   styleUrl: './create-event-form.component.scss'
 })
@@ -43,7 +43,7 @@ export class CreateEventFormComponent {
     latitude: new FormControl<number | null>(1),
     longitude: new FormControl<number | null>(1),
     maxParticipants: new FormControl<number | null>(-1),
-    public: new FormControl(),
+    public: new FormControl<boolean | null>(true),
   })
 
   constructor(private fb: FormBuilder, private jwtService: JwtService, private serviceService: ServiceService, 
@@ -99,10 +99,6 @@ export class CreateEventFormComponent {
   createEvent(): void{
     let d = this.addEventTypeForm.controls.date.value
   d?.setDate(d.getDate() +1)
-    let publicity: boolean = true;
-    if(this.addEventTypeForm.controls.public.value == null){
-      publicity = false
-    }
     const dto: CreateEventDTO = {
       title: this.addEventTypeForm.controls.title.value,
       description: this.addEventTypeForm.controls.description.value,
@@ -115,7 +111,7 @@ export class CreateEventFormComponent {
         longitude: this.addEventTypeForm.controls.longitude.value,
       },
       maxParticipants: this.addEventTypeForm.controls.maxParticipants.value,
-      isPublic: publicity,
+      isPublic: this.addEventTypeForm.controls.public.value,
       eventTypeId: this.selectedEventType,
       productIds: this.selectedProducts,
       serviceIds: this.selectedServices,

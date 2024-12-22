@@ -41,7 +41,7 @@ export class ServicesCalendarComponent implements OnInit{
     // Only run on browser
     switch (this.serviceType) {
       case "my":
-      case "my": {
+      case "My": {
         if (isPlatformBrowser(this.platformId)) {
           this.serviceService.getCalendarTimeslots(this.jwtService.getIdFromToken()).subscribe({
             next: (data: CalendarTimeSlotDTO[]) => {

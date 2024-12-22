@@ -19,7 +19,7 @@ import 'jspdf-autotable';
 @Component({
   selector: 'app-agenda',
   standalone: true,
-  imports: [TableModule, CommonModule, ButtonModule, DialogModule, CreateActivityFormComponent, EditActivityFormComponent],
+  imports: [TableModule, CommonModule, ButtonModule, DialogModule],
   templateUrl: './agenda.component.html',
   styleUrl: './agenda.component.scss'
 })
