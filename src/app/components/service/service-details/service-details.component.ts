@@ -14,6 +14,8 @@ import { PaginatorModule } from 'primeng/paginator';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MapComponent } from '../../map/map.component';
 import { MapService } from '../../map/map.service';
+import { JwtService } from '../../auth/jwt.service';
+import { catchError, EMPTY, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-service-details',
@@ -27,8 +29,8 @@ export class ServiceDetailsComponent implements OnInit {
   reservationDialog!: ReservationDialogComponent;
   serviceId: number = -1;
   service: MerchandiseDetailDTO | null = null;
-  isStarFilled: boolean = false;
-  images: any[] = [];
+  isFavorited: boolean = false;
+  images: any[] | undefined = [];
   paginatedReviews: any | undefined;
   errorMessage: string = '';
   responsiveOptions: any[] = [
@@ -46,24 +48,35 @@ export class ServiceDetailsComponent implements OnInit {
     }
 ];
 
-  constructor(private route: ActivatedRoute, private merchandiseService: MerchandiseService,private mapService:MapService) {}
+  constructor(private route: ActivatedRoute, private merchandiseService: MerchandiseService,private mapService:MapService, private jwtService: JwtService) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     this.serviceId = id ? Number(id) : -1;
 
     if(this.serviceId != -1) {
-      this.merchandiseService.getMerchandiseDetails(this.serviceId).subscribe({
-        next: (response) => {
-          this.service = response;
-          this.images = this.service.merchandisePhotos;
-          this.paginatedReviews = this.service.reviews.slice(0,5);
-          this.mapService.updateMerchandiseAddresses(response);
-        },
-        error: (err) => {
-          this.errorMessage= this.getErrorMessage(err);
-        }
-      });
+      this.merchandiseService
+  .getMerchandiseDetails(this.serviceId)
+  .pipe(
+    switchMap((response) => {
+      this.service = response;
+      this.images = this.service?.merchandisePhotos;
+      this.paginatedReviews = this.service?.reviews.slice(0, 5);
+      this.mapService.updateMerchandiseAddresses(response);
+
+      // Call to check if the service is favorited
+      return this.merchandiseService.getFavorites().pipe(
+        tap((favorites) => {
+          this.isFavorited = favorites.some((x) => x.id === this.service?.id);
+        })
+      );
+    }),
+    catchError((err: HttpErrorResponse) => {
+      this.errorMessage = this.getErrorMessage(err);
+      return EMPTY; // Prevents unhandled error propagation
+    })
+  )
+  .subscribe();
     }
   }
   private getErrorMessage(error: HttpErrorResponse): string {
@@ -99,9 +112,15 @@ export class ServiceDetailsComponent implements OnInit {
     this.reservationDialog.openDialog();
   }
 
-  addToFavorite() {
-    //logic for adding service to favorite
-    this.isStarFilled = !this.isStarFilled;
+  toggleFavorite(): void {
+    this.isFavorited = !this.isFavorited;
+    this.merchandiseService
+      .favorizeMerchandise(
+        this.service?.id,
+         this.jwtService.getIdFromToken()
+      )
+      .pipe(tap((response) => {}))
+      .subscribe();
   }
 
   calculatePrice(): number {

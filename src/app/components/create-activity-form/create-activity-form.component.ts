@@ -54,7 +54,7 @@ export class CreateActivityFormComponent {
       }
     }
     this.eventService.addActivity(eventId, dto).pipe(tap(response => {
-      console.log(response)
+
     })).subscribe()
   }
   onAddressSelected(address: AddressDTO) {

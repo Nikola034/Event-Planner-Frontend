@@ -11,3 +11,7 @@ export interface MerchandiseOverviewDTO {
     price:number | null | undefined;
     description: string | null | undefined;
   }
+
+  export interface GetAllByCaterogiesDTO{
+    categories: number[] | null | undefined
+  }

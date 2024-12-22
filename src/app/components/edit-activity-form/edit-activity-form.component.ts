@@ -116,7 +116,7 @@ export class EditActivityFormComponent {
       .updateActivity(this.activityId, dto)
       .pipe(
         tap((response) => {
-          console.log(response);
+          
         })
       )
       .subscribe();

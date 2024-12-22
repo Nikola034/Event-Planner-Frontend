@@ -13,6 +13,8 @@ import { tap } from 'rxjs';
 import { response } from 'express';
 import { CreateEventResponseDTO } from '../my-events/dtos/CreateEventResponse.dto';
 import { ActivatedRoute, Router } from '@angular/router';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 @Component({
   selector: 'app-agenda',
@@ -46,6 +48,43 @@ export class AgendaComponent {
     this.eventService.getAgenda(this.eventId).pipe(tap(response => {
       this.activities = response
     })).subscribe()
+  }
+
+  generatePdfReport() {
+    if (!this.activities || this.activities.length === 0) {
+      console.error('No activities available to generate the PDF report.');
+      return;
+    }
+  
+    // Create a new jsPDF instance
+    const pdf = new jsPDF();
+  
+    // Add a title
+    pdf.setFontSize(18);
+    pdf.text(`Agenda for Event: ${this.event.title}`, 105, 10, { align: 'center' });
+    pdf.setFontSize(12);
+  
+    // Prepare table headers and data
+    const headers = [['Title', 'Address', 'Description', 'Start', 'End']];
+    const data = this.activities.map((activity) => [
+      activity.title,
+      `${activity.address?.city}, ${activity.address?.street}, ${activity.address?.number}`,
+      activity.description,
+      activity.startTime,
+      activity.endTime,
+    ]);
+  
+    // Add table to the PDF
+    (pdf as any).autoTable({
+      head: headers,
+      body: data,
+      startY: 20, // Position table below the title
+      theme: 'striped', // Table theme
+      styles: { fontSize: 10 },
+    });
+  
+    // Save the PDF
+    pdf.save(`${this.event.title.replace(/[^a-zA-Z0-9]/g, '_')}_Agenda.pdf`);
   }
 
   showAddForm() {

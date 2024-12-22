@@ -4,7 +4,7 @@ import { map, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ServiceFilters } from './service-filters';
 import { PageResponse } from '../page/page-response';
-import { MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto';
+import { GetAllByCaterogiesDTO, MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto';
 import { API_URL } from '../../../globals';
 import { ReservationRequest } from './reservation-request';
 import { ReservationResponse } from './reservation-response';
@@ -23,6 +23,10 @@ export class ServiceService {
   getAll(): Observable<MerchandiseOverviewDTO[]> {
     return this.http
       .get<MerchandiseOverviewDTO[]>(`${environment.apiUrl}services`)
+  }
+  getAllByCategories(dto: GetAllByCaterogiesDTO): Observable<MerchandiseOverviewDTO[]> {
+    return this.http
+      .post<MerchandiseOverviewDTO[]>(`${environment.apiUrl}services/get-by-categories`, dto)
   }
   getById(id: number): Observable<Service | undefined> {
     const event = this.services.find(e => e.id === id);

@@ -14,6 +14,7 @@ import { ProductService } from '../product/product.service';
 import { tap } from 'rxjs';
 import { response } from 'express';
 import { PhotoService } from '../photos/photo.service';
+import { JwtService } from '../auth/jwt.service';
 
 @Component({
   selector: 'app-products-crud',
@@ -27,14 +28,14 @@ export class ProductsCrudComponent {
 
   products: ProductOverviewDTO[] = []
 
-  constructor(private productService: ProductService, private router: Router, private photoService: PhotoService){}
+  constructor(private productService: ProductService, private router: Router, private photoService: PhotoService, private jwtService: JwtService){}
 
   ngOnInit(){
     this.loadData()
   }
 
   loadData(): void{
-    this.productService.getAllBySp(2).pipe(
+    this.productService.getAllBySp(this.jwtService.getIdFromToken()).pipe(
       tap(response => {
         this.products = response
       })
