@@ -20,6 +20,9 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { UserReportDTO } from '../user-report-dto';
 import { UserReportService } from '../user-report.service';
+import { WebSocketService } from '../../../web-socket.service';
+import { MessageRequestDTO } from '../message-request-dto';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-messenger',
@@ -30,7 +33,7 @@ import { UserReportService } from '../user-report.service';
   providers: [DialogService,MessageService]
 })
 export class MessengerComponent implements OnInit {
-  constructor(private userService: UserService, public jwtService: JwtService, private messengerService: MessengerService,private messageService:MessageService,private userReportService:UserReportService) { }
+  constructor(private route: ActivatedRoute, private userService: UserService, public jwtService: JwtService, private messengerService: MessengerService,private messageService:MessageService,private userReportService:UserReportService, private webSocketService: WebSocketService) { }
   users: UserOverviewDTO[] = [];
   selectedUser: any = null;
   messages: MessageDTO[] = [];
@@ -63,28 +66,16 @@ export class MessengerComponent implements OnInit {
   }
 
   sendMessage() {
-    if (!this.messageContent.trim()) return;
+    if(!this.messageContent.trim()) return;
+    const newMessage: MessageRequestDTO = {
+      senderId: this.jwtService.getIdFromToken(),
+      receiverId: this.selectedUser.id,
+      content: this.messageContent
+    };
 
-    this.messengerService.sendMessage(
-      this.jwtService.getIdFromToken(),
-      this.selectedUser.id,
-      this.messageContent
-    ).subscribe({
-      next: (response) => {
-        // Add the new message to the messages array
-        this.messages.push({
-          ...response
-          // Add any other necessary properties
-        });
-
-        // Clear input and scroll to bottom
-        this.messageContent = '';
-        this.scrollToBottom();
-      },
-      error: (err) => {
-        console.error('Error sending message', err);
-      }
-    });
+    this.webSocketService.sendMessage(newMessage);
+    this.messageContent = '';
+    this.scrollToBottom();
   }
 
   // Scroll to bottom of message panel
@@ -110,6 +101,25 @@ export class MessengerComponent implements OnInit {
         },
       });
     }
+
+    const serviceProviderId = this.route.snapshot.paramMap.get('serviceProviderId') ? Number(this.route.snapshot.paramMap.get('serviceProviderId')) : -1;
+    if(serviceProviderId !== -1) {
+      this.userService.getServiceProviderById(serviceProviderId).subscribe({
+        next: (response) => {
+          this.onUserSelect(response);
+          // this.selectedUser = response;
+          // this.loadMessages();
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      });
+    }
+
+    this.webSocketService.onMessageReceived().subscribe((message) => {
+      this.messages.push(message);
+      this.scrollToBottom();
+    });
   }
   openReportDialog() {
     // Reset report reason when opening dialog

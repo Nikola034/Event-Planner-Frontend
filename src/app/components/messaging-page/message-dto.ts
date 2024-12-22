@@ -3,5 +3,5 @@ export interface MessageDTO {
     content: string;
     sentTime: Date; 
     senderId: number; 
-    recipientId: number; 
+    receiverId: number; 
   }

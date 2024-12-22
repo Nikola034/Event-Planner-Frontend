@@ -43,7 +43,7 @@
     </div>
     <div class="flex align-items-end justify-content-center fixed" 
          style="bottom: 0px; right: 5.5rem; border-radius: 0px; z-index: 1000; cursor: pointer;">
-    <p-button class="foating-button"><i>You need more info? Chat with us</i></p-button></div>
+    <p-button class="foating-button" (onClick)="seeChat()"><i>You need more info? Chat with us</i></p-button></div>
     <div class="ml-8 mr-8 mt-5 align-items-center justify-content-center mb-3">
         <div class="align-items-center justify-content-center mb-3" style="width: 100%; margin-bottom: 1rem;"
             *ngFor="let review of paginatedReviews">

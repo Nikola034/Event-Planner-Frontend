@@ -22,5 +22,6 @@ export interface MerchandiseDetailDTO {
     address: AddressDTO,
     category: CategoryDto,
     eventTypes: EventType,
-    rating: number
+    rating: number,
+    serviceProviderId: number
 }
