@@ -11,6 +11,7 @@ import { ServiceFilters } from '../service/service-filters';
 import { ProductFilters } from '../product/product-filters';
 import { MerchandiseDetailDTO } from './merchandise-detail-dto';
 import { JwtService } from '../auth/jwt.service';
+import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -31,6 +32,9 @@ export class MerchandiseService {
         userId:userId
     };
     return this.http.get<MerchandiseOverviewDTO[]>(`${API_URL}/api/v1/merchandise/top`,{params});
+  }
+  favorizeMerchandise(merchandiseId: number | null | undefined, userId: number | null | undefined): Observable<boolean> {
+    return this.http.post<boolean>(`${environment.apiUrl}merchandise/${merchandiseId}/add-to-favorites/${userId}`, {})
   }
 
   search(serviceFilters: ServiceFilters | null = null,productFilters: ProductFilters | null = null, search: string = '',sort:string='price'): Observable<MerchandiseOverviewDTO[]> {

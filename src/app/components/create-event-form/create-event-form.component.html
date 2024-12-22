@@ -98,14 +98,13 @@
           <p-calendar placeholder="Date*" formControlName="date" />
         </div>
         <div class="flex justify-content-center align-items-center gap-2">
-          <p-checkbox formControlName="public" value="yes" inputId="public"/>
-          <label for="public">Public</label>
+          <p-checkbox formControlName="public" [binary]="true" label="Public"></p-checkbox>
         </div>
         <div
           class="flex justify-content-center align-items-center gap-2 mt-3 w-full"
         >
         <p-dropdown placeholder="Event Type*" [options]="eventTypes"  [(ngModel)]="selectedEventType" [ngModelOptions]="{ standalone: true }" optionLabel="title"
-        optionValue="id">
+        optionValue="id" (onChange)="onChange($event)">
           <ng-template let-eventType pTemplate="item">
             <div>
               <strong>{{ eventType.title }}</strong>

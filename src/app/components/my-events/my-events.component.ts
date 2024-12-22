@@ -19,6 +19,7 @@ import { Event } from '../event/event';
 import { Router } from '@angular/router';
 import { EventOverviewDTO } from '../event/event-overview-dto';
 import { JwtService } from '../auth/jwt.service';
+import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
 
 interface PageEvent {
   first: number;
@@ -44,7 +45,8 @@ interface PageEvent {
     FloatLabelModule,
     TableModule,
     SidebarModule,
-    PaginatorModule
+    PaginatorModule,
+    EventCalendarComponent
   ],
   templateUrl: './my-events.component.html',
   styleUrl: './my-events.component.scss'
@@ -72,7 +74,7 @@ export class MyEventsComponent {
   }
 
   loadData(): void{
-    this.eventService.getByEo(1).subscribe({
+    this.eventService.getByEo(this.jwtService.getIdFromToken()).subscribe({
       next: (data: EventOverviewDTO[]) => {
         this.events = data;
         this.totalRecords = this.events.length;

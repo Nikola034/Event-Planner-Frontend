@@ -12,11 +12,12 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CreateServiceResponse } from '../create-response';
 import { ServiceService } from '../service.service';
 import { response } from 'express';
+import { ServicesCalendarComponent } from '../../services-calendar/services-calendar.component';
 
 @Component({
   selector: 'app-service-crud',
   standalone: true,
-  imports: [ButtonModule, DropdownModule, RouterModule, TableModule, CurrencyPipe, DialogModule, EditServiceFormComponent, AddServiceFormComponent, CommonModule],
+  imports: [ButtonModule, DropdownModule, RouterModule, TableModule, CurrencyPipe, DialogModule, EditServiceFormComponent, AddServiceFormComponent, CommonModule, ServicesCalendarComponent],
   templateUrl: './service-crud.component.html',
   styleUrl: './service-crud.component.scss'
 })

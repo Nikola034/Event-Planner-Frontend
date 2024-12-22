@@ -87,21 +87,28 @@
 
     <!-- Buttons -->
     <div class="grid">
-      <div class="col-4 text-center">
+      <div class="col-3 text-center">
         <p-button
           label="View Agenda"
           class="p-button-primary w-full"
           (onClick)="viewAgenda()"
         ></p-button>
       </div>
-      <div class="col-4 text-center">
+      <div class="col-3 text-center">
         <p-button
           label="Generate PDF"
           class="p-button-secondary w-full"
-          (onClick)="generateReport()"
+          (onClick)="generatePdfReport()"
         ></p-button>
       </div>
-      <div class="col-4 text-center" *ngIf="eventDetails.public">
+      <div class="col-3 text-center"> <!--*ngIf="admin"-->
+        <p-button
+          label="Stats"
+          class="p-button-primary w-full"
+          (onClick)="chart()"
+        ></p-button>
+      </div>
+      <div class="col-3 text-center" *ngIf="eventDetails.public">
         <p-button
           label="Follow event"
           class="p-button-primary w-full"
@@ -113,3 +120,14 @@
 
 </div>
 <p-confirmDialog rejectVisible="false" acceptLabel="Ok"/>
+
+
+    <!-- Review Chart -->
+    <div class="chart-container" *ngIf="reviewChartData && reviewChartOptions">
+      <p-chart
+        type="bar"
+        [data]="reviewChartData"
+        [options]="reviewChartOptions"
+        style="max-width: 600px; margin: auto;"
+      ></p-chart>
+    </div>

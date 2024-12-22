@@ -33,6 +33,7 @@ export class EventDetailsComponent {
   eventId!: number
 
   participants: any[] = [];
+  reviews: any[] = [];
   reviewChartData: any;
   reviewChartOptions: any;
   errorMessage:string='';
@@ -133,59 +134,106 @@ export class EventDetailsComponent {
   }
 
   viewAgenda(): void {
-    this.router.navigate(['home/agenda'], {
-      state: { eventId: this.eventDetails.id },
-    });
+    this.router.navigate(['home/agenda', this.eventDetails.id]);
   }
 
-  generateReport(): void {
-    // this.eventService
-    //   .getReport(this.eventDetails.id)
-    //   .pipe(
-    //     tap((response) => {
-    //       this.participants = response.participants;
+  chart(): void {
+    this.eventService
+      .getReport(this.eventDetails.id)
+      .pipe(
+        tap((response) => {
+          this.participants = response.participants;
 
-    //       // Prepare chart data for reviews
-    //       const ratings = response.reviews.map((review: any) => review.rating);
+          // Prepare chart data for reviews
+          const ratings = response.reviews.map((review: any) => review.rating);
   
-    //       const gradeCounts = Array(5).fill(0); // Initialize counts for grades 1-5
-    //       ratings.forEach((rating: number) => {
-    //         gradeCounts[rating - 1]++;
-    //       });
+          const gradeCounts = Array(5).fill(0); // Initialize counts for grades 1-5
+          ratings.forEach((rating: number) => {
+            gradeCounts[rating - 1]++;
+          });
   
-    //       this.reviewChartData = {
-    //         labels: Array.from({ length: 5 }, (_, i) => `${i + 1}`),
-    //         datasets: [
-    //           {
-    //             label: 'Number of Ratings',
-    //             data: gradeCounts,
-    //             backgroundColor: 'rgba(75, 192, 192, 0.6)',
-    //             borderColor: 'rgba(75, 192, 192, 1)',
-    //             borderWidth: 1,
-    //           },
-    //         ],
-    //       };
-  
-    //       this.reviewChartOptions = {
-    //         responsive: true,
-    //         plugins: {
-    //           legend: {
-    //             display: true,
-    //             position: 'top',
-    //           },
-    //           tooltip: {
-    //             enabled: true,
-    //           },
-    //         },
-    //         scales: {
-    //           y: {
-    //             beginAtZero: true,
-    //           },
-    //         },
-    //       };
-    //     })
-    //   )
-    //   .subscribe();
+          this.reviewChartData = {
+            labels: Array.from({ length: 5 }, (_, i) => `${i + 1}`),
+            datasets: [
+              {
+                label: 'Number of Ratings',
+                data: gradeCounts,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+              },
+            ],
+          };
+          
+          this.reviewChartOptions = {
+            responsive: true,
+            plugins: {
+              legend: {
+                display: true,
+                position: 'top',
+              },
+              tooltip: {
+                enabled: true,
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          };
+        })
+      )
+      .subscribe();
+  }
+
+  generatePdfReport(){
+    this.eventService
+    .getReport(this.eventDetails.id)
+    .pipe(
+      tap(response => {
+        this.participants = response.participants;
+        this.reviews = response.reviews;
+
+        // Generate the PDF
+        const pdf = new jsPDF();
+
+        // Add Title
+        pdf.setFontSize(18);
+        pdf.text('Event Report', 105, 10, { align: 'center' });
+        pdf.setFontSize(12);
+
+        // Add Event Details
+        pdf.text(`Event: ${this.eventDetails.title}`, 10, 30);
+        pdf.text(`Date: ${this.eventDetails.date}`, 10, 40);
+        pdf.text(`Location: ${this.eventDetails.address.street}, ${this.eventDetails.address.city}`, 10, 50);
+        pdf.text(`Organizer: ${this.eventDetails.organizer.name} ${this.eventDetails.organizer.surname}`, 10, 60);
+
+        // Add Participants Section
+        pdf.setFontSize(14);
+        pdf.text('Participants:', 10, 80);
+        pdf.setFontSize(12);
+
+        this.participants.forEach((participant: any, index: number) => {
+          pdf.text(`${index + 1}. ${participant.name} (${participant.email})`, 10, 90 + index * 10);
+        });
+
+        // Add Reviews Section
+        pdf.setFontSize(14);
+        const reviewsStartY = 100 + this.participants.length * 10;
+        pdf.text('Reviews:', 10, reviewsStartY);
+        pdf.setFontSize(12);
+
+        this.reviews.forEach((review: any, index: number) => {
+          const reviewY = reviewsStartY + 10 + index * 10;
+          pdf.text(`${index + 1}. Rating: ${review.rating}, Comment: ${review.comment}`, 10, reviewY);
+        });
+
+        // Save PDF
+        pdf.save(`${this.eventDetails.title}-Report.pdf`);
+      })
+    )
+    .subscribe();
   }
   
 }

@@ -45,7 +45,7 @@ export class CreateEventTypeFormComponent{
     }
     this.eventTypeService.create(dto).pipe(
       tap(response => {
-        console.log(response)
+        
       })
     ).subscribe();
   }

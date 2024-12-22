@@ -14,11 +14,13 @@ import { ProductService } from '../product/product.service';
 import { tap } from 'rxjs';
 import { response } from 'express';
 import { PhotoService } from '../photos/photo.service';
+import { JwtService } from '../auth/jwt.service';
+import { ServicesCalendarComponent } from "../services-calendar/services-calendar.component";
 
 @Component({
   selector: 'app-products-crud',
   standalone: true,
-  imports: [ButtonModule, DropdownModule, RouterModule, TableModule, CurrencyPipe, DialogModule, EditServiceFormComponent, AddServiceFormComponent, CommonModule],
+  imports: [ButtonModule, DropdownModule, RouterModule, TableModule, CurrencyPipe, DialogModule, EditServiceFormComponent, AddServiceFormComponent, CommonModule, ServicesCalendarComponent],
   templateUrl: './products-crud.component.html',
   styleUrl: './products-crud.component.scss'
 })
@@ -27,14 +29,14 @@ export class ProductsCrudComponent {
 
   products: ProductOverviewDTO[] = []
 
-  constructor(private productService: ProductService, private router: Router, private photoService: PhotoService){}
+  constructor(private productService: ProductService, private router: Router, private photoService: PhotoService, private jwtService: JwtService){}
 
   ngOnInit(){
     this.loadData()
   }
 
   loadData(): void{
-    this.productService.getAllBySp(2).pipe(
+    this.productService.getAllBySp(this.jwtService.getIdFromToken()).pipe(
       tap(response => {
         this.products = response
       })
