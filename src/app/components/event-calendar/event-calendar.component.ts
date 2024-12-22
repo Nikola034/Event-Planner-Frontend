@@ -84,7 +84,7 @@ export class EventCalendarComponent implements OnInit {
         type: event.type,
         address: event.address,
         description: event.description,
-        isPublic: event.public
+        isPublic: event.isPublic
       }
     }));
   }

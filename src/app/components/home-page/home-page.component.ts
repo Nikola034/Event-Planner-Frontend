@@ -10,6 +10,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { UserService } from '../user/user.service';
 import { MapComponent } from "../map/map.component";
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { SearchService } from '../search-page/search.service';
 
 @Component({
   selector: 'app-home-page',
@@ -20,9 +22,37 @@ import { MapComponent } from "../map/map.component";
   providers: [MessageService,ConfirmationService]
 })
 export class HomePageComponent implements OnInit {
-  constructor(private jwtService: JwtService, private messageService: MessageService,private confirmationService: ConfirmationService,private userService:UserService) { }
+  constructor(private jwtService: JwtService, private messageService: MessageService,private confirmationService: ConfirmationService,private userService:UserService,private fb: FormBuilder,private searchService:SearchService) {
+    this.filterForm = this.fb.group({
+      showEvents: [true],
+      showServices: [true],
+      showProducts: [true],
+      events: this.fb.group({
+        eventDate: [''],
+        type: [''],
+        city: ['']
+      }),
+      services: this.fb.group({
+        priceMin: [''],
+        priceMax: [''],
+        category: [''],
+        durationMin: [''],
+        durationMax: [''],
+        city: ['']
+      }),
+      products: this.fb.group({
+        priceMin: [''],
+        priceMax: [''],
+        category: [''],
+        durationMin: [''],
+        durationMax: [''],
+        city: ['']
+      })
+    });
+   }
   eventToken: string  = "";
   decodedEventToken:any="";
+  filterForm: FormGroup;
   ngOnInit(): void {
     if (typeof window !== 'undefined' && window.localStorage) {
       if(!this.jwtService.isInviteTokenValid())return;
@@ -48,6 +78,10 @@ export class HomePageComponent implements OnInit {
     }
   }
 
+  resetSearchParameters(){
+    this.searchService.updateFilters(this.filterForm.value);
+    this.searchService.updateSearch("");
+  }
   
 
 }

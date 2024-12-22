@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { Event } from '../event';
 import { CommonModule } from '@angular/common';
 import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
@@ -24,7 +23,9 @@ export class EventCardComponent{
   @Input() event!: EventOverviewDTO;
   displayInviteForm: boolean = false;
 
-  constructor(private router: Router){}
+  constructor(private router: Router){
+    
+  }
 
   showAgenda(eventId: number){
     this.router.navigate(['home/agenda',eventId]);
