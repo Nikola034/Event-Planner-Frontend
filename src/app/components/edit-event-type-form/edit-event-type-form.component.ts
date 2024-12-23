@@ -18,6 +18,7 @@ import { UpdateEventTypeDTO } from '../create-event-type-form/dtos/update-event-
 import { parse } from 'path';
 import { response } from 'express';
 import { CreateEventTypeResponseDTO } from '../create-event-type-form/dtos/create-event-type-response.dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-event-type-form',
@@ -46,7 +47,8 @@ export class EditEventTypeFormComponent implements OnChanges{
   constructor(
     private fb: FormBuilder,
     private categoryService: CategoryService,
-    private eventTypeService: EventTypeService
+    private eventTypeService: EventTypeService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -80,7 +82,7 @@ export class EditEventTypeFormComponent implements OnChanges{
       .update(this.eventTypeData.id, dto)
       .pipe(
         tap((response) => {
-          
+          this.router.navigate(['home/event-types'])
         })
       )
       .subscribe();

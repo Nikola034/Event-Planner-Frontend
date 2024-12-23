@@ -27,6 +27,7 @@ import { MapComponent } from '../map/map.component';
 import { AddressDTO } from '../auth/register-dtos/address.dto';
 import { ActivatedRoute } from '@angular/router';
 import { response } from 'express';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-activity-form',
@@ -71,7 +72,8 @@ export class EditActivityFormComponent {
   constructor(
     private fb: FormBuilder,
     private eventService: EventService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -116,7 +118,7 @@ export class EditActivityFormComponent {
       .updateActivity(this.activityId, dto)
       .pipe(
         tap((response) => {
-          
+          this.location.back()
         })
       )
       .subscribe();

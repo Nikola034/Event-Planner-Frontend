@@ -10,6 +10,7 @@ import { tap } from 'rxjs';
 import { CreateEventTypeDTO } from './dtos/create-event-type.dto';
 import { EventTypeService } from './event-type.service';
 import { response } from 'express';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-event-type-form',
@@ -26,7 +27,7 @@ export class CreateEventTypeFormComponent{
   categories: CategoryDto[] = []
   selectedCategories: any[] = [];
 
-  constructor(private fb: FormBuilder, private categoryService: CategoryService, private eventTypeService: EventTypeService) {
+  constructor(private fb: FormBuilder, private categoryService: CategoryService, private eventTypeService: EventTypeService, private router: Router) {
     
   }
 
@@ -45,7 +46,7 @@ export class CreateEventTypeFormComponent{
     }
     this.eventTypeService.create(dto).pipe(
       tap(response => {
-        
+        this.router.navigate(['home/event-types']);
       })
     ).subscribe();
   }
