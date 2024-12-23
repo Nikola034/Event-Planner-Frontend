@@ -12,14 +12,14 @@ import { EventService } from '../event/event.service';
 import { ProductService } from '../product/product.service';
 import { ServiceService } from '../service/service.service';
 import { CreateEventTypeResponseDTO } from '../create-event-type-form/dtos/create-event-type-response.dto';
-import { MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto';
+import { GetAllByCaterogiesDTO, MerchandiseOverviewDTO } from '../merchandise/merchandise-overview-dto';
 import { tap } from 'rxjs';
 import { UpdateEventDTO } from '../my-events/dtos/UpdateEvent.dto';
 import { EventOverviewDTO } from '../event/event-overview-dto';
 import { CreateEventResponseDTO, GetProductByIdResponseDTO, GetServiceByIdResponseDTO } from '../my-events/dtos/CreateEventResponse.dto';
 import { response } from 'express';
 import { formatDate } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MapComponent } from '../map/map.component';
 import { AddressDTO } from '../auth/register-dtos/address.dto';
 
@@ -53,7 +53,8 @@ export class EditEventFormComponent {
   }
 
   constructor(private fb: FormBuilder, private jwtService: JwtService, private serviceService: ServiceService, 
-    private productService: ProductService, private eventTypeService: EventTypeService, private eventService: EventService, private route: ActivatedRoute) {
+    private productService: ProductService, private eventTypeService: EventTypeService, private eventService: EventService, private route: ActivatedRoute,
+  private router: Router) {
     }
 
   event: CreateEventResponseDTO | undefined
@@ -69,16 +70,33 @@ export class EditEventFormComponent {
   selectedServices: (number | null | undefined)[] = []
   selectedProducts: (number | null | undefined)[] = []
 
+  onChange($event: any) {
+    if(this.eventTypes.find(x => x.id == $event.value)?.title == 'all'){
+      this.serviceService.getAll().pipe(tap(response => {
+        this.services = response
+      })).subscribe()
+      this.productService.getAll().pipe(tap(response => {
+        this.products = response
+      })).subscribe()
+    }
+    else{
+      const dto: GetAllByCaterogiesDTO = {
+        categories: this.eventTypes.find(x => x.id == $event.value)?.recommendedCategories.map(x => x.id)
+      }
+      this.serviceService.getAllByCategories(dto).pipe(tap(response => {
+        this.services = response
+        this.selectedServices = []
+      })).subscribe()
+      this.productService.getAllByCategories(dto).pipe(tap(response => {
+        this.products = response
+        this.selectedProducts = []
+      })).subscribe()
+    }
+  }
+
   ngOnInit(){
     const id = this.route.snapshot.paramMap.get('id');
     this.eventId = id ? Number(id) : -1;
-
-    this.serviceService.getAll().pipe(tap(response => {
-      this.services = response
-    })).subscribe()
-    this.productService.getAll().pipe(tap(response => {
-      this.products = response
-    })).subscribe()
     this.eventTypeService.getAllWp().pipe(tap(response => {
       this.eventTypes = response
     })).subscribe()
@@ -99,6 +117,8 @@ export class EditEventFormComponent {
       this.selectedEventType = response.eventType.id;
       this.selectedProducts = response.products.map(x => x.id);
       this.selectedServices = response.services.map(x => x.id);
+      const fakeEvent = { value: response.eventType.id };
+    this.onChange(fakeEvent);
     })).subscribe()
 }
 editEvent(): void{
@@ -122,7 +142,7 @@ editEvent(): void{
     isPublic: this.event?.isPublic
   }
   this.eventService.update(this.eventId, dto).pipe(tap(response => {
-    
+    this.router.navigate(['home/my_events'])
   })).subscribe()
 } 
 formatDate(isoDate: string): Date {

@@ -31,6 +31,7 @@ export class EditSpFormComponent {
   photosToShow: string[] = [];
 
   photosToAdd: PhotoToAdd[] = [];
+  loadingPhotos: { id: string; loading: boolean }[] = [];
 
   spId!: number;
   fbl: FormBuilder = new FormBuilder();
@@ -84,24 +85,23 @@ export class EditSpFormComponent {
       email: response.email,
     });
 
-    // Populate merchandise photos
-    const photosArray = this.registerForm.get('photos') as FormArray;
-    response.photos.forEach(photo => {
-      photosArray.push(this.fbl.group({
-        photo: new FormControl(this.getPhotoUrl(photo.photo)),
-      }));
+     // Clear and repopulate the photos array
+     const photosArray = this.registerForm.get('photos') as FormArray;
+     photosArray.clear(); // Ensure no duplicate data
+     response.photos.forEach(photo => {
+         photosArray.push(this.fbl.group({
+             photo: new FormControl(this.getPhotoUrl(photo.photo)),
+         }));
+         this.photosToAdd.push({
+             id: photo.id,
+             photo: photo.photo,
+         });
+     });
 
-      // Add to photosToAdd array to keep track of uploaded photos
-      this.photosToAdd.push({
-        id: photo.id,
-        photo: photo.photo,
-      });
-    });
+     this.selectedProfilePhoto = response.photo;
 
-    this.selectedProfilePhoto = response.photo
-
-    // Update photos to show in the UI
-    this.updatePhotosToShow();
+     this.updatePhotosToShow();
+     console.log(this.photosToShow)
   })).subscribe()
   }
 
@@ -123,7 +123,7 @@ export class EditSpFormComponent {
     }
     this.jwtService.updateSp(this.spId, dto).pipe(
       tap(response => {
-          
+        this.router.navigate(['home'])
       })
     ).subscribe()
   }
@@ -154,24 +154,57 @@ export class EditSpFormComponent {
   uploadFile($event: any): void {
     const files = $event.target.files as File[];
     if (files && files.length > 0) {
-        const file = files[0]; 
-
+        const file = files[0];
         const photosArray = this.registerForm.get('photos') as FormArray;
 
-        // Check if the file name already exists in the array
-        const existingPhoto = photosArray.value.find((photo: { photo: string }) => photo.photo === file.name);
-        
-        if (!existingPhoto) {
-            this.addPhoto(file.name); 
-            this.photoService.uploadBusinessPhoto(file).pipe(tap(response => {
-                this.photosToAdd.push({
-                  id: response,
-                  photo: file.name
-                })
-            })).subscribe();
-        } else {
-            console.log('File already exists, skipping upload.');
-        }
+        // Generate a temporary ID for the loading state
+        const tempId = `${file.name}-${Date.now()}`;
+        this.loadingPhotos.push({ id: tempId, loading: true });
+
+        // Add a placeholder while the photo uploads
+        photosArray.push(this.fbl.group({
+            photo: new FormControl(tempId) // Use tempId as a placeholder
+        }));
+        this.updatePhotosToShow();
+
+        this.photoService.uploadBusinessPhoto(file).pipe(
+            tap(response => {
+                // Replace the placeholder ID with the real photo URL
+                const photoIndex = this.photosToAdd.findIndex(x => x.photo === tempId);
+                if (photoIndex !== -1) {
+                    this.photosToAdd[photoIndex] = {
+                        id: response,
+                        photo: file.name
+                    };
+                } else {
+                    this.photosToAdd.push({
+                        id: response,
+                        photo: file.name
+                    });
+                }
+
+                // Mark the photo as not loading
+                this.loadingPhotos = this.loadingPhotos.filter(x => x.id !== tempId);
+
+                // Update the form array
+                const photosArray = this.registerForm.get('photos') as FormArray;
+                const photoControlIndex = photosArray.value.findIndex(
+                    (photo: { photo: string }) => photo.photo === tempId
+                );
+                if (photoControlIndex !== -1) {
+                    photosArray.at(photoControlIndex).patchValue({ photo: file.name });
+                }
+
+                this.updatePhotosToShow();
+            })
+        ).subscribe({
+            error: () => {
+                // Remove the placeholder if the upload fails
+                this.loadingPhotos = this.loadingPhotos.filter(x => x.id !== tempId);
+                photosArray.removeAt(photosArray.length - 1); // Remove the last added placeholder
+                this.updatePhotosToShow();
+            }
+        });
     }
 }
 
@@ -189,8 +222,11 @@ export class EditSpFormComponent {
 
   updatePhotosToShow(): void {
     const photosArray = this.registerForm.get('photos') as FormArray;
-    this.photosToShow = photosArray.value.map((photo: { photo: string }) => photo.photo);
-  }
+    this.photosToShow = photosArray.value.map((photo: { photo: string }) => {
+        const isLoading = this.loadingPhotos.some(x => x.id === photo.photo);
+        return isLoading ? 'loading-indicator.png' : photo.photo;
+    });
+}
 
   removePhoto(index: number): void {
     const photosArray = this.registerForm.get('photos') as FormArray;

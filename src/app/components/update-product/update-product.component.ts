@@ -19,7 +19,7 @@ import { MerchandiseService } from '../merchandise/merchandise.service';
 import { response } from 'express';
 import { PhotoService } from '../photos/photo.service';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MapComponent } from '../map/map.component';
 import { AddressDTO } from '../auth/register-dtos/address.dto';
 
@@ -80,7 +80,7 @@ export class UpdateProductComponent {
   });
 
   constructor(private route: ActivatedRoute, private eventTypeService: EventTypeService, private categoryService: CategoryService, private productService: ProductService, private jwtService: JwtService, 
-    private fb: FormBuilder, private photoService: PhotoService
+    private fb: FormBuilder, private photoService: PhotoService, private router: Router
   ){
 
   }
@@ -152,24 +152,57 @@ export class UpdateProductComponent {
   uploadFile($event: any): void {
     const files = $event.target.files as File[];
     if (files && files.length > 0) {
-        const file = files[0]; 
-
+        const file = files[0];
         const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
 
-        // Check if the file name already exists in the array
-        const existingPhoto = photosArray.value.find((photo: { photo: string }) => photo.photo === file.name);
-        
-        if (!existingPhoto) {
-            this.addPhoto(file.name); 
-            this.photoService.uploadMerchandisePhoto(file).pipe(tap(response => {
-                this.photosToAdd.push({
-                  id: response,
-                  photo: file.name
-                })
-            })).subscribe();
-        } else {
-            console.log('File already exists, skipping upload.');
-        }
+        // Generate a temporary ID for the loading state
+        const tempId = `${file.name}-${Date.now()}`;
+        this.loadingPhotos.push({ id: tempId, loading: true });
+
+        // Add a placeholder while the photo uploads
+        photosArray.push(this.fbl.group({
+            photo: new FormControl(tempId) // Use tempId as a placeholder
+        }));
+        this.updatePhotosToShow();
+
+        this.photoService.uploadMerchandisePhoto(file).pipe(
+            tap(response => {
+                // Replace the placeholder ID with the real photo URL
+                const photoIndex = this.photosToAdd.findIndex(x => x.photo === tempId);
+                if (photoIndex !== -1) {
+                    this.photosToAdd[photoIndex] = {
+                        id: response,
+                        photo: file.name
+                    };
+                } else {
+                    this.photosToAdd.push({
+                        id: response,
+                        photo: file.name
+                    });
+                }
+
+                // Mark the photo as not loading
+                this.loadingPhotos = this.loadingPhotos.filter(x => x.id !== tempId);
+
+                // Update the form array
+                const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
+                const photoControlIndex = photosArray.value.findIndex(
+                    (photo: { photo: string }) => photo.photo === tempId
+                );
+                if (photoControlIndex !== -1) {
+                    photosArray.at(photoControlIndex).patchValue({ photo: file.name });
+                }
+
+                this.updatePhotosToShow();
+            })
+        ).subscribe({
+            error: () => {
+                // Remove the placeholder if the upload fails
+                this.loadingPhotos = this.loadingPhotos.filter(x => x.id !== tempId);
+                photosArray.removeAt(photosArray.length - 1); // Remove the last added placeholder
+                this.updatePhotosToShow();
+            }
+        });
     }
 }
 
@@ -185,10 +218,15 @@ export class UpdateProductComponent {
     this.updatePhotosToShow();
   }
 
+  loadingPhotos: { id: string; loading: boolean }[] = [];
+
   updatePhotosToShow(): void {
     const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
-    this.photosToShow = photosArray.value.map((photo: { photo: string }) => photo.photo);
-  }
+    this.photosToShow = photosArray.value.map((photo: { photo: string }) => {
+        const isLoading = this.loadingPhotos.some(x => x.id === photo.photo);
+        return isLoading ? 'loading-indicator.png' : photo.photo;
+    });
+}
 
   removePhoto(index: number): void {
     const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
@@ -260,13 +298,14 @@ export class UpdateProductComponent {
       reservationDeadline: this.addProductForm.controls.reservationDeadline.value,
       cancellationDeadline: this.addProductForm.controls.cancellationDeadline.value,
       automaticReservation: this.addProductForm.controls.automaticReservation.value,
-      serviceProviderId: 2,//this.jwtService.getIdFromToken(),
+      serviceProviderId: this.jwtService.getIdFromToken(),
       merchandisePhotos: this.photosToAdd.map(x => x.id),
       eventTypesIds: this.selectedEventTypes
     }
     this.productService.update(this.productId
       , dto).pipe(
       tap(response => {
+        this.router.navigate(['home/my_products'])
       })
     ).subscribe()
 

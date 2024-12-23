@@ -11,7 +11,7 @@ import { response } from 'express';
 import { tap } from 'rxjs';
 import { MapComponent } from '../map/map.component';
 import { AddressDTO } from '../auth/register-dtos/address.dto';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-activity-form',
@@ -32,7 +32,7 @@ export class CreateActivityFormComponent {
     latitude: new FormControl<number | null | undefined>(1), 
     longitude: new FormControl<number | null | undefined>(1), 
   });
-  constructor(private fb: FormBuilder, private eventService: EventService, private route: ActivatedRoute) {
+  constructor(private router: Router, private fb: FormBuilder, private eventService: EventService, private route: ActivatedRoute) {
     
   }
 
@@ -54,7 +54,7 @@ export class CreateActivityFormComponent {
       }
     }
     this.eventService.addActivity(eventId, dto).pipe(tap(response => {
-
+        this.router.navigate(['home/agenda', eventId]);
     })).subscribe()
   }
   onAddressSelected(address: AddressDTO) {

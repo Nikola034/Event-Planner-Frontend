@@ -63,4 +63,7 @@ export class UserService {
   getEoById(id: number | undefined | null): Observable<RegisterEoResponseDto>{
     return this.httpClient.get<RegisterEoResponseDto>(`${environment.apiUrl}users/eo/${id}`);
   }
+  getAdminById(id: number | undefined | null): Observable<RegisterEoResponseDto>{
+    return this.httpClient.get<RegisterEoResponseDto>(`${environment.apiUrl}users/admin/${id}`);
+  }
 }

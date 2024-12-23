@@ -38,7 +38,7 @@ export class ChangePasswordComponent {
       newPassword2: this.registerForm.controls.new2.value
     }
     this.jwtService.changePassword(this.userId, dto).pipe(tap(response => {
-
+        this.router.navigate(['home'])
     })).subscribe();
   }
 }

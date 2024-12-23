@@ -77,7 +77,7 @@ export class RegisterEoFormComponent {
     }
     this.jwtService.registerEo(dto).pipe(
       tap(response => {
-          
+          this.router.navigate(['home'])
       })
     ).subscribe()
   }

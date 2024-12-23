@@ -66,6 +66,10 @@ export class LoginFormComponent implements OnInit {
     }
   }
 
+  guest(): void{
+    this.router.navigate(['home'])
+  }
+
   login(): void {
     // Validate form before submission
     if (this.loginForm.invalid) {

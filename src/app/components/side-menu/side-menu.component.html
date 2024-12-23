@@ -10,19 +10,14 @@
       class="user flex flex-column justify-content-between align-items-center gap-1 mb-4 mt-4"
     >
       <p-avatar
-        styleClass="mr-2"
         size="xlarge"
         shape="circle"
-        image="dinja.jpg"
+        [image]="this.photo"
       />
-      <span class="name text-2xl">Goci Ristic</span>
-      <span class="email text-base opacity-70">goci.ristic&#64;gmail.com</span>
+      <span class="name text-2xl">{{this.username || 'Loading...'}}</span>
+      <span class="email text-base opacity-70">{{this.email || 'Loading...'}}</span>
     </div>
     <div class="flex flex-column options">
-      <div class="flex align-items-center divider mt-2 mb-2 pl-2 text-xs">
-        <span class="text-color-secondary">Placeholder</span>
-      </div>
-
       <p-button
         styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
         [text]="true"
@@ -38,6 +33,7 @@
         styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
         [text]="true"
         [routerLink]="'/home/my_services'"
+        *ngIf="this.role == 'SP'"
       >
         <ng-template pTemplate="content">
           <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>
@@ -49,21 +45,19 @@
         styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
         [text]="true"
         [routerLink]="'/home/my_products'"
+        *ngIf="this.role == 'SP'"
       >
         <ng-template pTemplate="content">
           <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>
           <span>My products</span>
         </ng-template>
       </p-button>
-
-      <div class="flex align-items-center divider mt-2 mb-2 pl-2 text-xs">
-        <span class="text-color-secondary">Placeholder</span>
-      </div>
-
+      
       <p-button
         styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
         [text]="true"
         [routerLink]="'/home/event-types'"
+        *ngIf="this.role == 'A'"
       >
         <ng-template pTemplate="content">
           <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>
@@ -75,6 +69,7 @@
         styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
         [text]="true"
         [routerLink]="'/home/my_events'"
+        *ngIf="this.role == 'EO'"
       >
         <ng-template pTemplate="content">
           <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>
@@ -86,6 +81,7 @@
         styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
         [text]="true"
         [routerLink]="'/home/category'"
+        *ngIf="this.role == 'A'"
       >
         <ng-template pTemplate="content">
           <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>
@@ -116,6 +112,7 @@
         styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
         [text]="true"
         [routerLink]="'/home/admin-user-reports'"
+        *ngIf="this.role == 'A'"
       >
         <ng-template pTemplate="content">
           <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>
@@ -126,6 +123,7 @@
         styleClass="w-full justify-content-left pl-3 border-round-right-xl h-3rem mb-2 text-color hover:surface-hover"
         [text]="true"
         [routerLink]="'/home/admin-reviews'"
+        *ngIf="this.role == 'A'"
       >
         <ng-template pTemplate="content">
           <i class="pi pi-objects-column mr-4" style="font-size: 1rem"></i>

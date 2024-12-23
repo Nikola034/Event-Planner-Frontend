@@ -96,7 +96,7 @@ export class EditEoFormComponent {
     }
     this.jwtService.updateEo(this.eoId, dto).pipe(
       tap(response => {
-          
+          this.router.navigate(['home'])
       })
     ).subscribe()
   }

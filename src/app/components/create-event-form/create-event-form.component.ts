@@ -24,6 +24,7 @@ import { EventService } from '../event/event.service';
 import { MapComponent } from '../map/map.component';
 import { AddressDTO } from '../auth/register-dtos/address.dto';
 import { constrainedMemory } from 'process';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-event-form',
@@ -47,7 +48,7 @@ export class CreateEventFormComponent {
   })
 
   constructor(private fb: FormBuilder, private jwtService: JwtService, private serviceService: ServiceService, 
-    private productService: ProductService, private eventTypeService: EventTypeService, private eventService: EventService) {}
+    private productService: ProductService, private eventTypeService: EventTypeService, private eventService: EventService, private router: Router) {}
   
   eventTypes: CreateEventTypeResponseDTO[] = []
   selectedEventType: any = null
@@ -118,7 +119,7 @@ export class CreateEventFormComponent {
       organizerId: this.jwtService.getIdFromToken()
     }
     this.eventService.create(dto).pipe(tap(response => {
-      
+      this.router.navigate(['home/my_events']);
     })).subscribe()
   }
 }

@@ -132,7 +132,7 @@ export class JwtService {
   }
 
   IsAdmin(): boolean {
-    return this.getRoleFromToken() == 'Admin';
+    return this.getRoleFromToken() == 'A';
   }
 
   IsAu(): boolean {
