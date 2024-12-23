@@ -90,7 +90,7 @@ export class EditSpFormComponent {
      photosArray.clear(); // Ensure no duplicate data
      response.photos.forEach(photo => {
          photosArray.push(this.fbl.group({
-             photo: new FormControl(this.getPhotoUrl(photo.photo)),
+             photo: new FormControl(photo.photo),
          }));
          this.photosToAdd.push({
              id: photo.id,
@@ -101,7 +101,6 @@ export class EditSpFormComponent {
      this.selectedProfilePhoto = response.photo;
 
      this.updatePhotosToShow();
-     console.log(this.photosToShow)
   })).subscribe()
   }
 
@@ -224,7 +223,7 @@ export class EditSpFormComponent {
     const photosArray = this.registerForm.get('photos') as FormArray;
     this.photosToShow = photosArray.value.map((photo: { photo: string }) => {
         const isLoading = this.loadingPhotos.some(x => x.id === photo.photo);
-        return isLoading ? 'loading-indicator.png' : photo.photo;
+        return isLoading ? 'loading-indicator.png' : this.getPhotoUrl(photo.photo);
     });
 }
 
@@ -238,7 +237,6 @@ export class EditSpFormComponent {
     // Find the ID of the photo
     const photoId = this.photosToAdd.find(photo => {
       const storedPhotoName = photo.photo.split('/').pop()
-      console.log(storedPhotoName)
       return storedPhotoName === photoName;
     })?.id;
   
@@ -257,7 +255,6 @@ export class EditSpFormComponent {
       if (photoIndex !== -1) {
         this.photosToAdd.splice(photoIndex, 1);
       }
-      console.log(this.photosToAdd)
       // Remove the photo from the FormArray
       photosArray.removeAt(index);
   

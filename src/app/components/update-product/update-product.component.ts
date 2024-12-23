@@ -133,7 +133,7 @@ export class UpdateProductComponent {
       const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
       product.merchandisePhotos.forEach(photo => {
         photosArray.push(this.fbl.group({
-          photo: new FormControl(this.getPhotoUrl(photo.photo)),
+          photo: new FormControl(photo.photo),
         }));
   
         // Add to photosToAdd array to keep track of uploaded photos
@@ -180,7 +180,6 @@ export class UpdateProductComponent {
                         photo: file.name
                     });
                 }
-
                 // Mark the photo as not loading
                 this.loadingPhotos = this.loadingPhotos.filter(x => x.id !== tempId);
 
@@ -192,7 +191,6 @@ export class UpdateProductComponent {
                 if (photoControlIndex !== -1) {
                     photosArray.at(photoControlIndex).patchValue({ photo: file.name });
                 }
-
                 this.updatePhotosToShow();
             })
         ).subscribe({
@@ -224,10 +222,9 @@ export class UpdateProductComponent {
     const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
     this.photosToShow = photosArray.value.map((photo: { photo: string }) => {
         const isLoading = this.loadingPhotos.some(x => x.id === photo.photo);
-        return isLoading ? 'loading-indicator.png' : photo.photo;
+        return isLoading ? 'loading-indicator.png' : this.getPhotoUrl(photo.photo)
     });
 }
-
   removePhoto(index: number): void {
     const photosArray = this.addProductForm.get('merchandisePhotos') as FormArray;
   
@@ -238,7 +235,6 @@ export class UpdateProductComponent {
     // Find the ID of the photo
     const photoId = this.photosToAdd.find(photo => {
       const storedPhotoName = photo.photo.split('/').pop()
-      console.log(storedPhotoName)
       return storedPhotoName === photoName;
     })?.id;
   
@@ -257,7 +253,6 @@ export class UpdateProductComponent {
       if (photoIndex !== -1) {
         this.photosToAdd.splice(photoIndex, 1);
       }
-      console.log(this.photosToAdd)
       // Remove the photo from the FormArray
       photosArray.removeAt(index);
   
