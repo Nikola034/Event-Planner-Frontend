@@ -35,12 +35,12 @@ export class SideMenuComponent {
             this.role = this.jwtService.getRoleFromToken()
             if (this.jwtService.getRoleFromToken() == 'AU') {
                 this.userService
-                  .getEoById(this.jwtService.getIdFromToken())
+                  .getAuById(this.jwtService.getIdFromToken())
                   .pipe(
                     tap((response) => {
-                      this.username = response.name + ' ' + response.surname;
+                      this.username = response.email
                       this.email = response.email;
-                      this.photo = this.photoService.getPhotoUrl(response.photo);
+                      this.photo = 'guest.jpg'
                     })
                   )
                   .subscribe();

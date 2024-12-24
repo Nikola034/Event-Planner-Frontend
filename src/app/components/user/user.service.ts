@@ -46,6 +46,9 @@ export class UserService {
   getSpById(id: number | undefined | null): Observable<RegisterSpResponseDto>{
     return this.httpClient.get<RegisterSpResponseDto>(`${environment.apiUrl}users/sp/${id}`);
   }
+  getAuById(id: number | undefined | null): Observable<RegisterEoResponseDto>{
+    return this.httpClient.get<RegisterEoResponseDto>(`${environment.apiUrl}users/${id}`);
+  }
   getEoById(id: number | undefined | null): Observable<RegisterEoResponseDto>{
     return this.httpClient.get<RegisterEoResponseDto>(`${environment.apiUrl}users/eo/${id}`);
   }

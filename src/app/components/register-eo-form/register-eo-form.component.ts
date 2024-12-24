@@ -14,6 +14,8 @@ import { copyFileSync } from 'fs';
 import { MapComponent } from '../map/map.component';
 import { AddressDTO } from '../auth/register-dtos/address.dto';
 import { PhotoService } from '../photos/photo.service';
+import { UserService } from '../user/user.service';
+import { response } from 'express';
 
 @Component({
   selector: 'app-register-eo-form',
@@ -50,7 +52,21 @@ export class RegisterEoFormComponent {
     });
   }
   
-  constructor(private router: Router, private jwtService: JwtService, private photoService: PhotoService){}
+  constructor(private router: Router, private jwtService: JwtService, private photoService: PhotoService, private userService: UserService){}
+
+  ngOnInit(){
+    if(this.jwtService.getRoleFromToken() == 'AU'){
+      this.userService.getAuById(this.jwtService.getIdFromToken()).pipe(
+        tap(response => {
+          this.registerForm.get('email')?.disable();
+          this.registerForm.patchValue({
+            email: response.email,
+          });
+        })
+      ).subscribe()
+    }
+  }
+
   getPhotoUrl(photo: string): string{
     return this.photoService.getPhotoUrl(photo);
   }
@@ -75,7 +91,12 @@ export class RegisterEoFormComponent {
         longitude: this.registerForm.controls.longitude.value,
       }
     }
-    this.jwtService.registerEo(dto).pipe(
+    let promotion = false;
+    if(this.jwtService.getRoleFromToken() == 'AU'){
+      promotion = true;
+      this.jwtService.Logout();
+    }
+    this.jwtService.registerEo(dto, promotion).pipe(
       tap(response => {
           this.router.navigate(['home'])
       })

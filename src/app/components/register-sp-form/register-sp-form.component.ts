@@ -13,6 +13,7 @@ import { PhotoService } from '../photos/photo.service';
 import { CreateBusinessPhotoDTO, CreateMerchandisePhotoDTO, PhotoToAdd } from '../merchandise/merchandise-photos-request-dto';
 import { MapComponent } from '../map/map.component';
 import { AddressDTO } from '../auth/register-dtos/address.dto';
+import { UserService } from '../user/user.service';
 @Component({
   selector: 'app-register-sp-form',
   standalone: true,
@@ -50,7 +51,20 @@ export class RegisterSpFormComponent {
     companyPhotos: this.fbl.array([])
   })
   
-  constructor(private router: Router, private jwtService: JwtService, private photoService: PhotoService){}
+  constructor(private router: Router, private jwtService: JwtService, private photoService: PhotoService, private userService: UserService){}
+
+  ngOnInit(){
+    if(this.jwtService.getRoleFromToken() == 'AU'){
+      this.userService.getAuById(this.jwtService.getIdFromToken()).pipe(
+        tap(response => {
+          this.registerForm.get('email')?.disable();
+          this.registerForm.patchValue({
+            email: response.email,
+          });
+        })
+      ).subscribe()
+    }
+  }
 
   onAddressSelected(address: AddressDTO) {
     this.registerForm.patchValue({
@@ -87,7 +101,12 @@ export class RegisterSpFormComponent {
       description: this.registerForm.controls.description.value,
       photos: this.photosToAdd.map(x => x.id)
     }
-    this.jwtService.registerSp(dto).pipe(
+    let promotion = false;
+    if(this.jwtService.getRoleFromToken() == 'AU'){
+      promotion = true;
+      this.jwtService.Logout();
+    }
+    this.jwtService.registerSp(dto, promotion).pipe(
       tap(response => {
         this.router.navigate(['home'])
       })
