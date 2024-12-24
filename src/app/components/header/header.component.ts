@@ -87,23 +87,24 @@ export class HeaderComponent {
       if (this.jwtService.IsLoggedIn()) {
         if (this.jwtService.getRoleFromToken() == 'AU') {
           this.userService
-            .getEoById(this.jwtService.getIdFromToken())
+            .getAuById(this.jwtService.getIdFromToken())
             .pipe(
               tap((response) => {
-                this.username = response.name + ' ' + response.surname;
+                this.username = response.email;
                 this.items = [
                   {
                     label: this.username || 'Loading..',
                     icon: '',
                     items: [
                       {
-                        label: 'Profile',
+                        label: 'Become an Event Organizer',
                         icon: 'pi pi-user',
-                        command: () => this.editProfile('au'),
+                        command: () => this.register('eo'),
                       },
                       {
-                        label: 'Settings',
+                        label: 'Become a Service Provider',
                         icon: 'pi pi-cog',
+                        command: () => this.register('sp'),
                       },
                       {
                         label: 'Help',

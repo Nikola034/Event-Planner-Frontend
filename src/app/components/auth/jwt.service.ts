@@ -101,14 +101,37 @@ export class JwtService {
     );
   }
 
-  registerAu(dto: RegisterAuDto): Observable<RegisterAuResponseDto> {
-    return this.httpClient.post<RegisterAuResponseDto>(`${environment.apiUrl}auth/register-au`, dto);
+  registerAu(dto: RegisterAuDto, promotion?: boolean): Observable<RegisterAuResponseDto> {
+    let url = `${environment.apiUrl}auth/register-au`;
+    
+    // Conditionally append promotion query parameter
+    if (promotion) {
+      url = `${url}?promotion=${encodeURIComponent(promotion)}`;
+    }
+  
+    return this.httpClient.post<RegisterAuResponseDto>(url, dto);
   }
-  registerEo(dto: RegisterEoDto): Observable<RegisterEoResponseDto> {
-    return this.httpClient.post<RegisterEoResponseDto>(`${environment.apiUrl}auth/register-eo`, dto);
+  
+  registerEo(dto: RegisterEoDto, promotion?: boolean): Observable<RegisterEoResponseDto> {
+    let url = `${environment.apiUrl}auth/register-eo`;
+    
+    // Conditionally append promotion query parameter
+    if (promotion) {
+      url = `${url}?promotion=${encodeURIComponent(promotion)}`;
+    }
+  
+    return this.httpClient.post<RegisterEoResponseDto>(url, dto);
   }
-  registerSp(dto: RegisterSpDto): Observable<RegisterSpResponseDto> {
-    return this.httpClient.post<RegisterSpResponseDto>(`${environment.apiUrl}auth/register-sp`, dto);
+  
+  registerSp(dto: RegisterSpDto, promotion?: boolean): Observable<RegisterSpResponseDto> {
+    let url = `${environment.apiUrl}auth/register-sp`;
+    
+    // Conditionally append promotion query parameter
+    if (promotion) {
+      url = `${url}?promotion=${encodeURIComponent(promotion)}`;
+    }
+  
+    return this.httpClient.post<RegisterSpResponseDto>(url, dto);
   }
 
   updateAu(id: number, dto: UpdateAuDto): Observable<UpdateAuResponseDto> {
