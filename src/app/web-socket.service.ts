@@ -9,29 +9,36 @@ import { MessageRequestDTO } from './components/messaging-page/message-request-d
 })
 export class WebSocketService {
   private stompClient: any;
+  private currentSubscription: any;
   private messageSubject = new Subject<MessageDTO>();
 
-  constructor() { 
+  constructor() { }
+
+  public InitializeWebSocket() {
     const socket = new WebSocket('ws://localhost:8080/ws');
     this.stompClient = Stomp.over(socket);
-    this.connectToWebSocket();
   }
 
-  private connectToWebSocket() {
+  public connectToMessagesWebSocket(senderId: number, receiverId: number) {
+    if(this.currentSubscription) {
+      this.currentSubscription.unsubscribe();
+    }
+    
     this.stompClient.connect({}, () => {
-      this.subscribeToMessages();
-      // this.subscribeToNotifications();
-      // this.subscribeToBlockEvents(); 
+      const conversationId = this.generateConversationId(senderId, receiverId);
+      this.stompClient.subscribe(`/user/${senderId}/private/messages/${conversationId}`, (message: any) => {
+        if(message.body) {
+          const msg: MessageDTO = JSON.parse(message.body);
+          this.messageSubject.next(msg);
+        }
+      });
+    }, (error: any) => {
+      console.error("WS not connected " + error);
     });
   }
 
-  private subscribeToMessages() {
-    this.stompClient.subscribe('/user/message', (message: any) => {
-      if(message.body) {
-        const msg: MessageDTO = JSON.parse(message.body);
-        this.messageSubject.next(msg);
-      }
-    });
+  private generateConversationId(senderId: number, receiverId: number) {
+    return senderId < receiverId ? `${senderId}-${receiverId}` : `${receiverId}-${senderId}`;
   }
 
   sendMessage(message: MessageRequestDTO) {

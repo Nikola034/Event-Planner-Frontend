@@ -47,6 +47,8 @@ export class MessengerComponent implements OnInit {
 
   onUserSelect(user: any) {
     this.selectedUser = user;
+    this.webSocketService.InitializeWebSocket();
+    this.webSocketService.connectToMessagesWebSocket(this.jwtService.getIdFromToken(), this.selectedUser.id);
     this.loadMessages();
   }
 
@@ -68,13 +70,16 @@ export class MessengerComponent implements OnInit {
 
   sendMessage() {
     if(!this.messageContent.trim()) return;
-    const newMessage: MessageRequestDTO = {
+    const newMessage: MessageDTO = {
+      id: 0,
       senderId: this.jwtService.getIdFromToken(),
       receiverId: this.selectedUser.id,
-      content: this.messageContent
+      content: this.messageContent,
+      sentTime: new Date()
     };
 
     this.webSocketService.sendMessage(newMessage);
+    this.messages.push(newMessage);
     this.messageContent = '';
     this.scrollToBottom();
   }
@@ -108,18 +113,18 @@ export class MessengerComponent implements OnInit {
       this.userService.getServiceProviderById(serviceProviderId).subscribe({
         next: (response) => {
           this.onUserSelect(response);
-          // this.selectedUser = response;
-          // this.loadMessages();
         },
         error: (err) => {
           console.error(err);
         }
       });
     }
-
+    
     this.webSocketService.onMessageReceived().subscribe((message) => {
-      this.messages.push(message);
-      this.scrollToBottom();
+      if(message.senderId === this.selectedUser.id) {
+        this.messages.push(message);
+        this.scrollToBottom();
+      }
     });
   }
   openReportDialog() {
