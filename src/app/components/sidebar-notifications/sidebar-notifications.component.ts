@@ -5,11 +5,12 @@ import { TabViewModule } from 'primeng/tabview';
 import { CardModule } from 'primeng/card';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
+import { JwtService } from '../auth/jwt.service';
 
 @Component({
   selector: 'app-sidebar-notifications',
   standalone: true,
-  imports: [TabViewModule,CardModule,CommonModule,ButtonModule],
+  imports: [TabViewModule, CardModule, CommonModule, ButtonModule],
   templateUrl: './sidebar-notifications.component.html',
   styleUrl: './sidebar-notifications.component.scss'
 })
@@ -18,10 +19,17 @@ export class SidebarNotificationsComponent {
   unreadNotifications: NotificationDTO[] = [];
   readNotifications: NotificationDTO[] = [];
 
-  constructor(private notificationService: NotificationService) { }
+  constructor(private notificationService: NotificationService, private jwtService: JwtService) { }
 
   ngOnInit() {
     this.loadNotifications();
+    if (this.jwtService.getIdFromToken() != -1) {
+      this.notificationService.onNotificationReceived().subscribe(notification => {
+        this.unreadNotifications.push(notification);
+      });
+      this.notificationService.InitializeWebSocket();
+      this.notificationService.connectToNotificationsWebSocket();
+    }
   }
 
   loadNotifications() {
