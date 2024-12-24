@@ -14,6 +14,7 @@ import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { PhotoService } from '../photos/photo.service';
 import { AutoFocusModule } from 'primeng/autofocus';
+import { NotificationService } from '../sidebar-notifications/notification.service';
 
 @Component({
   selector: 'app-login-form',
