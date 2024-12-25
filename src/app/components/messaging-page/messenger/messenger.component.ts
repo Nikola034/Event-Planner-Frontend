@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { UserOverviewDTO } from '../../user/user-overview-dto';
 import { UserService } from '../../user/user.service';
 import { JwtService } from '../../auth/jwt.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
 import { ScrollPanel, ScrollPanelModule } from 'primeng/scrollpanel';
 import { PanelModule } from 'primeng/panel';
@@ -22,23 +22,27 @@ import { UserReportDTO } from '../user-report-dto';
 import { UserReportService } from '../user-report.service';
 import { WebSocketService } from '../../../web-socket.service';
 import { MessageRequestDTO } from '../message-request-dto';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-messenger',
   standalone: true,
-  imports: [ButtonModule, DataViewModule, CommonModule, ToastModule,AvatarModule,InputTextareaModule, ScrollPanelModule, PanelModule, InputTextModule, DialogModule,InputTextModule,DividerModule, FormsModule],
+  imports: [ButtonModule, DataViewModule, CommonModule, ToastModule, AvatarModule, InputTextareaModule, ScrollPanelModule, PanelModule, InputTextModule, DialogModule, InputTextModule, DividerModule, FormsModule],
   templateUrl: './messenger.component.html',
   styleUrl: './messenger.component.scss',
-  providers: [DialogService,MessageService]
+  providers: [DialogService, MessageService]
 })
 export class MessengerComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private userService: UserService, public jwtService: JwtService, private messengerService: MessengerService,private messageService:MessageService,private userReportService:UserReportService, private webSocketService: WebSocketService) { }
+  constructor(private route: ActivatedRoute, private userService: UserService, public jwtService: JwtService, private messengerService: MessengerService, private messageService: MessageService, private userReportService: UserReportService, private webSocketService: WebSocketService
+    , @Inject(PLATFORM_ID) platformId: Object,
+    private router: Router
+  ) { this.isBrowser = isPlatformBrowser(platformId); }
   users: UserOverviewDTO[] = [];
+  private isBrowser: boolean;
   selectedUser: any = null;
   messages: MessageDTO[] = [];
   messageContent: string = "";
-  showMessages:boolean=false;
+  showMessages: boolean = false;
   @ViewChild('messagePanel') messagePanel!: ScrollPanel;
   reportDialogVisible: boolean = false;
   reportReason: string = '';
@@ -47,9 +51,20 @@ export class MessengerComponent implements OnInit {
 
   onUserSelect(user: any) {
     this.selectedUser = user;
-    this.webSocketService.InitializeWebSocket();
-    this.webSocketService.connectToMessagesWebSocket(this.jwtService.getIdFromToken(), this.selectedUser.id);
-    this.loadMessages();
+    this.userService.getBlockedUsers().subscribe({
+      next: (response: UserOverviewDTO[]) => {
+        const isBlocked = response.some(user => user.id === this.selectedUser.id);
+        if (isBlocked) return;
+        
+        this.webSocketService.InitializeWebSocket();
+        this.webSocketService.connectToMessagesWebSocket(this.jwtService.getIdFromToken(), this.selectedUser.id);
+        this.loadMessages();
+      },
+      error: (err) => {
+        console.error('Error fetching service providers', err);
+      },
+    });
+
   }
 
   loadMessages() {
@@ -60,7 +75,7 @@ export class MessengerComponent implements OnInit {
       next: (response) => {
         this.messages = response;
         this.scrollToBottom();
-        this.showMessages=true;
+        this.showMessages = true;
       },
       error: (err) => {
         console.error('Error fetching messages', err);
@@ -69,7 +84,7 @@ export class MessengerComponent implements OnInit {
   }
 
   sendMessage() {
-    if(!this.messageContent.trim()) return;
+    if (!this.messageContent.trim()) return;
     const newMessage: MessageDTO = {
       id: 0,
       senderId: this.jwtService.getIdFromToken(),
@@ -79,9 +94,7 @@ export class MessengerComponent implements OnInit {
     };
 
     this.webSocketService.sendMessage(newMessage);
-    this.messages.push(newMessage);
     this.messageContent = '';
-    this.scrollToBottom();
   }
 
   // Scroll to bottom of message panel
@@ -98,8 +111,9 @@ export class MessengerComponent implements OnInit {
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && window.localStorage) {
-      this.userService.getChatUsers(this.jwtService.getIdFromToken(), this.jwtService.getRoleFromToken()).subscribe({
+      this.userService.getChatUsers().subscribe({
         next: (response) => {
+          console.log(response);
           this.users = response;
         },
         error: (err) => {
@@ -107,24 +121,32 @@ export class MessengerComponent implements OnInit {
         },
       });
     }
+    if (this.isBrowser) {
+      const serviceProviderId = this.route.snapshot.paramMap.get('serviceProviderId') ? Number(this.route.snapshot.paramMap.get('serviceProviderId')) : -1;
+      if (serviceProviderId !== -1) {
+        this.userService.getChatUserById(serviceProviderId).subscribe({
+          next: (response) => {
+            this.onUserSelect(response);
+          },
+          error: (err) => {
+            console.error(err);
+          }
+        });
+      }
+    }
 
-    const serviceProviderId = this.route.snapshot.paramMap.get('serviceProviderId') ? Number(this.route.snapshot.paramMap.get('serviceProviderId')) : -1;
-    if(serviceProviderId !== -1) {
-      this.userService.getServiceProviderById(serviceProviderId).subscribe({
+    this.webSocketService.onMessageReceived().subscribe((message) => {
+      this.messages.push(message);
+      this.userService.getChatUsers().subscribe({
         next: (response) => {
-          this.onUserSelect(response);
+          this.users = response;
         },
         error: (err) => {
-          console.error(err);
-        }
+          console.error('Error fetching service providers', err);
+        },
       });
-    }
-    
-    this.webSocketService.onMessageReceived().subscribe((message) => {
-      if(message.senderId === this.selectedUser.id) {
-        this.messages.push(message);
-        this.scrollToBottom();
-      }
+      this.scrollToBottom();
+
     });
   }
   openReportDialog() {
@@ -140,11 +162,11 @@ export class MessengerComponent implements OnInit {
 
   submitReport() {
     if (!this.selectedUser) {
-      this.messageService.add({ 
-        severity: 'error', 
-        summary: 'Error', 
-        detail: 'No user selected to report', 
-        life: 3000 
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No user selected to report',
+        life: 3000
       });
       return;
     }
@@ -155,7 +177,7 @@ export class MessengerComponent implements OnInit {
 
       // Prepare report DTO
       const reportRequest: UserReportDTO = {
-        reporterId:this.jwtService.getIdFromToken(),
+        reporterId: this.jwtService.getIdFromToken(),
         reportedUserId: this.selectedUser.id,
         reason: this.reportReason.trim()
       };
@@ -164,22 +186,22 @@ export class MessengerComponent implements OnInit {
       this.userReportService.reportUser(reportRequest).subscribe({
         next: (response) => {
           // Success handling
-          this.messageService.add({ 
-            severity: 'success', 
-            summary: 'User Reported', 
-            detail: 'The user has been reported successfully', 
-            life: 3000 
+          this.messageService.add({
+            severity: 'success',
+            summary: 'User Reported',
+            detail: 'The user has been reported successfully',
+            life: 3000
           });
           this.reportDialogVisible = false;
           this.reportReason = '';
         },
         error: (error) => {
           // Error handling
-          this.messageService.add({ 
-            severity: 'error', 
-            summary: 'Report Failed', 
-            detail: error.message || 'Unable to submit report', 
-            life: 3000 
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Report Failed',
+            detail: error.message || 'Unable to submit report',
+            life: 3000
           });
         },
         complete: () => {
@@ -189,72 +211,81 @@ export class MessengerComponent implements OnInit {
       });
     } else {
       // Show error toast if no reason provided
-      this.messageService.add({ 
-        severity: 'error', 
-        summary: 'Report Failed', 
-        detail: 'Please provide a reason for reporting', 
-        life: 3000 
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Report Failed',
+        detail: 'Please provide a reason for reporting',
+        life: 3000
       });
     }
   }
   blockUser() {
     if (!this.selectedUser) {
-      this.messageService.add({ 
-        severity: 'error', 
-        summary: 'Error', 
-        detail: 'No user selected to block', 
-        life: 3000 
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No user selected to block',
+        life: 3000
       });
       return;
     }
-  
+
     // Open the confirmation dialog instead of directly blocking
     this.blockConfirmationDialogVisible = true;
   }
-  
+
   // Add a new method to confirm blocking
   confirmBlockUser() {
     if (!this.selectedUser) return;
-  
+
     const currentUserId = this.jwtService.getIdFromToken();
     const userToBlockId = this.selectedUser.id;
-  
+
     this.userService.blockUser(currentUserId, userToBlockId).subscribe({
       next: (response) => {
         // Show success toast
-        this.messageService.add({ 
-          severity: 'success', 
-          summary: 'User Blocked', 
-          detail: `User ${this.selectedUser?.firstName} ${this.selectedUser?.lastName} has been blocked`, 
-          life: 3000 
+        this.messageService.add({
+          severity: 'success',
+          summary: 'User Blocked',
+          detail: `User ${this.selectedUser?.firstName} ${this.selectedUser?.lastName} has been blocked`,
+          life: 3000
         });
-  
+
+
         // Reset the selected user and hide messages
         this.selectedUser = null;
         this.showMessages = false;
         this.messages = [];
-  
+
         // Refresh the user list to remove blocked user
-        this.ngOnInit();
-  
+        this.userService.getChatUsers().subscribe({
+          next: (response) => {
+            this.users = response;
+          },
+          error: (err) => {
+            console.error('Error fetching service providers', err);
+          },
+        });
+        this.router.navigate(['home', 'messenger', -1]);
+
         // Close the confirmation dialog
         this.blockConfirmationDialogVisible = false;
       },
       error: (error) => {
         // Show error toast if blocking fails
-        this.messageService.add({ 
-          severity: 'error', 
-          summary: 'Block Failed', 
-          detail: error.message || 'Unable to block user', 
-          life: 3000 
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Block Failed',
+          detail: error.message || 'Unable to block user',
+          life: 3000
         });
-  
+
         // Close the confirmation dialog
         this.blockConfirmationDialogVisible = false;
       }
     });
   }
-  
+
   // Add a method to cancel blocking
   cancelBlockUser() {
     this.blockConfirmationDialogVisible = false;

@@ -4,4 +4,5 @@ export interface UserOverviewDTO {
     firstName: string;
     lastName: string;
     profilePicture: string;
+    role:string
 }

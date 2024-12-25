@@ -27,8 +27,6 @@ export class SidebarNotificationsComponent {
       this.notificationService.onNotificationReceived().subscribe(notification => {
         this.unreadNotifications.push(notification);
       });
-      this.notificationService.InitializeWebSocket();
-      this.notificationService.connectToNotificationsWebSocket();
     }
   }
 

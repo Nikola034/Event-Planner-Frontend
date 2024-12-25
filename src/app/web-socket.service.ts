@@ -26,7 +26,7 @@ export class WebSocketService {
     
     this.stompClient.connect({}, () => {
       const conversationId = this.generateConversationId(senderId, receiverId);
-      this.stompClient.subscribe(`/user/${senderId}/private/messages/${conversationId}`, (message: any) => {
+      this.currentSubscription = this.stompClient.subscribe(`/user/${senderId}/private/messages/${conversationId}`, (message: any) => {
         if(message.body) {
           const msg: MessageDTO = JSON.parse(message.body);
           this.messageSubject.next(msg);

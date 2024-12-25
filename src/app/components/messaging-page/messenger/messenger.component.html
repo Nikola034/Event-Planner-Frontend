@@ -50,7 +50,7 @@
                     </div>
                     <div class="flex align-items-center gap-2">
                         <p-button severity="warning" label="Report user" (click)="openReportDialog()"></p-button>
-                        <p-button severity="danger" label="Block user" (click)="blockUser()"></p-button>
+                        <p-button severity="danger" label="Block user" (click)="blockUser()" *ngIf="!(selectedUser.role=='EO'&&jwtService.getRoleFromToken()=='EO')"></p-button>
                     </div>
 
                 </div>
