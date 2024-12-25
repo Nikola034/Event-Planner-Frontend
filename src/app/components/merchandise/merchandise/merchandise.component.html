@@ -10,7 +10,7 @@
     </ng-template>
     <p-divider styleClass="m-0"/>
     <div *ngFor="let merchandise of displayedMerchandise">
-        <app-merchandise-card [merchandise]="merchandise"></app-merchandise-card>
+        <app-merchandise-card [merchandise]="merchandise" [eventId]="eventId"></app-merchandise-card>
         <p-divider styleClass="m-0"/>
     </div>
 

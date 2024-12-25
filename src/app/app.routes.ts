@@ -31,6 +31,7 @@ import { FavoriteMerchandiseComponent } from './components/favorite-merchandise/
 import { AddActivityFormComponent } from './components/add-activity-form/add-activity-form.component';
 import { EditActivityFormComponent } from './components/edit-activity-form/edit-activity-form.component';
 import { CreateActivityFormComponent } from './components/create-activity-form/create-activity-form.component';
+import { BudgetComponent } from './components/budget/budget.component';
 
 
 export const routes: Routes = [
@@ -201,6 +202,13 @@ export const routes: Routes = [
                     breadcrumb: 'Agenda'
                 },
                 component: EditActivityFormComponent
+            },
+            {
+                path: 'budget/:eventId',
+                data: {
+                    breadcrumb: "Budget"
+                },
+                component: BudgetComponent
             }
         ]
     },

@@ -65,6 +65,7 @@ export class MerchandiseComponent {
   merchandiseSort:string='price';
   @Input() panelTitle: string = '';
   @Input() panelType: string = '';
+  eventId: number = -1;
   constructor(private merchandiseService: MerchandiseService, private searchService: SearchService,private mapService:MapService) { }
 
   async ngOnInit() {
@@ -149,4 +150,18 @@ export class MerchandiseComponent {
     this.updateDisplayedEvents();
   }
 
+  getMerchandiseByCategory(categoryId: number) {
+    if(categoryId > 0) {
+      this.merchandiseService.getMerchandiseByCategory(categoryId).subscribe({
+        next: (data: MerchandiseOverviewDTO[]) => {
+          this.merchandise = data;
+          this.totalRecords = this.merchandise.length;
+          this.updateDisplayedEvents();
+        }
+      });
+    }else {
+      console.warn("Category Id is invalid: ", categoryId);
+    }
+    
+  }
 }

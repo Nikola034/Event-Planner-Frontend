@@ -13,6 +13,7 @@ import { CreateServiceResponse } from '../create-response';
 import { ServiceService } from '../service.service';
 import { response } from 'express';
 import { ServicesCalendarComponent } from '../../services-calendar/services-calendar.component';
+import { JwtService } from '../../auth/jwt.service';
 
 @Component({
   selector: 'app-service-crud',
@@ -24,9 +25,9 @@ import { ServicesCalendarComponent } from '../../services-calendar/services-cale
 
 export class ServiceCrudComponent implements OnInit {
   allServices: CreateServiceResponse[] = [];
-  constructor(private serviceService: ServiceService) {}
+  constructor(private serviceService: ServiceService, private jwtService: JwtService) {}
   ngOnInit(): void {
-      this.serviceService.getAllBySpId(2).subscribe({
+      this.serviceService.getAllBySpId(this.jwtService.getIdFromToken()).subscribe({
         next: (response) => {
           this.allServices = response;
         },
