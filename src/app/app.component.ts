@@ -6,6 +6,8 @@ import { BreadcrumbComponent } from "./components/breadcrumb/breadcrumb/breadcru
 import { PrimeNGConfig } from 'primeng/api';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from './components/sidebar-notifications/notification.service';
+import { SuspensionService } from './suspension.service';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +20,8 @@ export class AppComponent implements OnInit {
   showBasicNavigation = true;
   private readonly destroy$ = new Subject<void>();
   
-  constructor(private primengConfig: PrimeNGConfig, private router: Router){}
+  constructor(private primengConfig: PrimeNGConfig, private router: Router){
+    }
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;

@@ -79,6 +79,10 @@ export class EventDetailsComponent {
     
   }
 
+  seeChat() {
+    this.router.navigate(['home', 'messenger',this.eventDetails?.organizer.id]);
+  }
+
   followEvent():void{
     this.userService.followEvent(this.eventDetails.id).subscribe({
       next: () => {

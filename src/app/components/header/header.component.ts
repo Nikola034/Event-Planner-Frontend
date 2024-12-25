@@ -32,7 +32,9 @@ import { response } from 'express';
 import { debounceTime, tap } from 'rxjs';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
-
+import { NotificationService } from '../sidebar-notifications/notification.service';
+import { BadgeModule } from 'primeng/badge';
+import { SuspensionService } from '../../suspension.service';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -52,6 +54,8 @@ import { Inject, PLATFORM_ID } from '@angular/core';
     SidebarModule,
     SidebarNotificationsComponent,
     SideMenuComponent,
+    BadgeModule
+    
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -64,6 +68,7 @@ export class HeaderComponent {
   notificationsVisible: boolean = false;
   searchText: string = '';
   notificationsEnabled: boolean = false;
+  newNotifications:number=0;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
@@ -71,13 +76,30 @@ export class HeaderComponent {
     private router: Router,
     private searchService: SearchService,
     private jwtService: JwtService,
-    private userService: UserService
+    private userService: UserService,
+    private notificationService:NotificationService,
+    private suspensionService:SuspensionService
   ) {}
 
   changeTheme() {
     this.themeService.changeTheme();
   }
+
+  public getNewNotifications(){
+    return this.newNotifications.toString();
+  }
+
+  showNotifications(){
+    this.notificationsVisible=true;
+    this.newNotifications=0;
+  }
+
   ngOnInit() {
+    if (this.jwtService.getIdFromToken() != -1) {
+      this.notificationService.onNotificationReceived().subscribe(notification => {
+        this.newNotifications++;
+      });
+    }
     this.searchService.search$.subscribe({
       next: (data: string) => {
         this.searchText = data;
@@ -288,6 +310,8 @@ export class HeaderComponent {
   }
 
   logout() {
+    this.suspensionService.disconnect();
+    this.notificationService.disconnect();
     this.jwtService.Logout();
     this.router.navigate(['']);
   }

@@ -135,6 +135,6 @@ export class ServiceDetailsComponent implements OnInit {
   }
 
   seeChat() {
-    this.router.navigate(['home', 'messenger']);
+    this.router.navigate(['home', 'messenger',this.service?.serviceProviderId]);
   }
 }

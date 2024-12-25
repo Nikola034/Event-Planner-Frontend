@@ -29,13 +29,19 @@
       (click)="toggleNotifications()"
       [link]="true"
     />
+
     <p-button
-      (onClick)="notificationsVisible = true"
+      (onClick)="showNotifications()"
       icon="pi pi-align-right"
       styleClass="mr-2"
-      severity="secondary"
       [disabled]="notificationsEnabled"
+      badgeSeverity="contrast"
+      severity="secondary"
+      styleClass="text-color"
+      badgeClass="text-color surface-card"
+      [badge]="getNewNotifications()" label="Notifications" icon="pi pi-bell"
     />
+
     
   </div>
 </p-toolbar>

@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -8,6 +8,8 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptors } fro
 import { Interceptor } from './components/auth/http-interceptor';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { NotificationService } from './components/sidebar-notifications/notification.service';
+import { SuspensionService } from './suspension.service';
 
 
 export const appConfig: ApplicationConfig = {
@@ -18,6 +20,7 @@ export const appConfig: ApplicationConfig = {
         useFactory: adapterFactory,
       })
     ),
+    { provide: APP_INITIALIZER, useFactory: () => () => null, deps: [NotificationService,SuspensionService], multi: true }
 
   ]
 };

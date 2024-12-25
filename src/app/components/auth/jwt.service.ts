@@ -22,6 +22,7 @@ import { UpdateSpResponseDto } from './update-dtos/register-dtos/UpdateSpRespons
 import { ChangePasswordDto } from './update-dtos/register-dtos/ChangePassword.dto';
 import { ChangePasswordResponseDto } from './update-dtos/register-dtos/ChangePasswordResponse.dto';
 import { EventToken } from './event-token';
+import { NotificationService } from '../sidebar-notifications/notification.service';
 
 @Injectable({
   providedIn: 'root',

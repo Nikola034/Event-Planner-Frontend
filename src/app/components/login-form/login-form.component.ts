@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ViewEncapsulation } from '@angular/core';
@@ -11,18 +11,22 @@ import { catchError, EMPTY, Observable, takeUntil, tap, throwError } from 'rxjs'
 import { HttpErrorResponse } from '@angular/common/http';
 import { EventToken } from '../auth/event-token';
 import { MessageService } from 'primeng/api';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { PhotoService } from '../photos/photo.service';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { NotificationService } from '../sidebar-notifications/notification.service';
+import { SuspensionDTO, SuspensionService } from '../../suspension.service';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonModule, DialogModule, DialogModule, CommonModule,AutoFocusModule],
+  imports: [ReactiveFormsModule, ButtonModule, DialogModule, DialogModule, CommonModule,AutoFocusModule,ConfirmDialogModule ],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  providers:[ConfirmationService]
 })
 export class LoginFormComponent implements OnInit {
   isDialogVisible = false;
@@ -33,9 +37,22 @@ export class LoginFormComponent implements OnInit {
   })
   displayErrorDialog = false;
   errorMessage = '';
-  constructor(private router: Router, private jwtService: JwtService, private route: ActivatedRoute) { }
+  suspension: SuspensionDTO | null = null;
+  private isBrowser: boolean;
+
+  constructor(private router: Router, private jwtService: JwtService, private route: ActivatedRoute,private notificationService:NotificationService,private suspensionService:SuspensionService
+    ,private confirmationService:ConfirmationService,@Inject(PLATFORM_ID) platformId: Object
+  ) { 
+    this.isBrowser = isPlatformBrowser(platformId);
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state && 'suspension' in navigation.extras.state) {
+      this.suspension = navigation.extras.state['suspension'] as SuspensionDTO;
+    }
+
+  }
 
   ngOnInit(): void {
+    
     this.route.queryParams.subscribe(params => {
       if (params['inviteToken']) {
         this.eventToken = { eventToken: params['inviteToken'] };
@@ -48,6 +65,22 @@ export class LoginFormComponent implements OnInit {
       if (this.jwtService.IsLoggedIn()&&this.jwtService.isInviteTokenValid()) {
         this.router.navigate(['home']);
       }
+    }
+    if (this.suspension && this.isBrowser) {
+      const startTime = new Date(this.suspension.startTime);
+      const endTime = new Date(this.suspension.endTime);
+      
+      this.confirmationService.confirm({
+        message: `Your account has been suspended.<br><br>
+                 Reason: ${this.suspension.reason}<br>
+                 Start Time: ${startTime.toLocaleString()}<br>
+                 End Time: ${endTime.toLocaleString()}`,
+        header: 'Account Suspended',
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: 'OK',
+        rejectVisible: false,
+        closeOnEscape: false,
+      });
     }
   }
 
@@ -89,6 +122,8 @@ export class LoginFormComponent implements OnInit {
 
         // Check if logged in and navigate based on role
         if (this.jwtService.IsLoggedIn()) {
+          this.notificationService.InitializeWebSocket();
+          this.suspensionService.InitializeWebSocket();
           this.router.navigate(['home']);
           //this.navigateBasedOnRole();
         } else {

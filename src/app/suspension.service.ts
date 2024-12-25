@@ -1,36 +1,43 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { Observable, of, Subject, BehaviorSubject } from 'rxjs';
-import { NotificationDTO } from './notification-dto';
-import { API_URL } from '../../../globals';
-import { JwtService } from '../auth/jwt.service';
-import { MessageDTO } from '../messaging-page/message-dto';
 import { Stomp } from '@stomp/stompjs';
 import { isPlatformBrowser } from '@angular/common';
+import { API_URL } from '../globals';
+import { JwtService } from './components/auth/jwt.service';
+import { Router } from '@angular/router';
+import { NotificationService } from './components/sidebar-notifications/notification.service';
+
+export interface SuspensionDTO {
+  id: number;
+  userId: number;
+  reason: string;
+  startTime: string;
+  endTime: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
-export class NotificationService {
+export class SuspensionService {
   private stompClient: any;
   private currentSubscription: any;
-  private notificationSubject = new Subject<NotificationDTO>();
+  private suspensionSubject = new Subject<SuspensionDTO>();
   private connectionStatus = new BehaviorSubject<boolean>(false);
   private reconnectAttempts = 0;
   private readonly MAX_RECONNECT_ATTEMPTS = 5;
   private readonly RECONNECT_INTERVAL = 3000;
-  private baseUrl = `${API_URL}/api/v1/notifications`;
   private isBrowser: boolean;
 
   constructor(
-    private http: HttpClient, 
     private jwtService: JwtService,
-    @Inject(PLATFORM_ID) platformId: Object
+    private router: Router,
+    @Inject(PLATFORM_ID) platformId: Object,
+    private notificationService:NotificationService
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
     
     if (this.isBrowser) {
-      // Only initialize WebSocket in browser environment
       if (this.jwtService.getIdFromToken() !== -1) {
         this.InitializeWebSocket();
       }
@@ -55,18 +62,17 @@ export class NotificationService {
       this.stompClient = Stomp.over(socket);
       this.stompClient.reconnect_delay = this.RECONNECT_INTERVAL;
       
-      // Configure heartbeat
       this.stompClient.heartbeat.outgoing = 20000;
       this.stompClient.heartbeat.incoming = 20000;
 
-      this.connectToNotificationsWebSocket();
+      this.connectToSuspensionsWebSocket();
     } catch (error) {
       console.error('Failed to initialize WebSocket:', error);
       this.attemptReconnect();
     }
   }
 
-  public connectToNotificationsWebSocket() {
+  public connectToSuspensionsWebSocket() {
     if (!this.isBrowser) return;
     
     if (this.currentSubscription) {
@@ -78,18 +84,18 @@ export class NotificationService {
       if (userId === -1) return;
 
       this.currentSubscription = this.stompClient.subscribe(
-        `/user/${userId}/notifications`,
-        (notification: any) => {
-          if (notification.body) {
-            const notificationData = JSON.parse(notification.body);
-            this.notificationSubject.next(notificationData);
+        `/user/${userId}/suspensions`,
+        (suspension: any) => {
+          if (suspension.body) {
+            const suspensionData: SuspensionDTO = JSON.parse(suspension.body);
+            this.suspensionSubject.next(suspensionData);
+            this.handleSuspension(suspensionData);
           }
         }
       );
       
       this.connectionStatus.next(true);
       this.reconnectAttempts = 0;
-      //console.log('Successfully connected to notifications WebSocket');
     };
 
     const errorCallback = (error: any) => {
@@ -100,6 +106,17 @@ export class NotificationService {
 
     if (this.stompClient) {
       this.stompClient.connect({}, connectCallback, errorCallback);
+    }
+  }
+
+  private handleSuspension(suspension: SuspensionDTO): void {
+    if (this.isBrowser) {
+      this.jwtService.Logout();
+      this.notificationService.disconnect();
+      this.disconnect();
+      this.router.navigate([''], {
+        state: { suspension }
+      });
     }
   }
 
@@ -114,7 +131,6 @@ export class NotificationService {
     setTimeout(() => {
       if (!this.isConnected() && this.jwtService.getIdFromToken() !== -1) {
         this.reconnectAttempts++;
-        //console.log(`Attempting to reconnect (${this.reconnectAttempts}/${this.MAX_RECONNECT_ATTEMPTS})`);
         this.InitializeWebSocket();
       }
     }, this.RECONNECT_INTERVAL);
@@ -145,23 +161,7 @@ export class NotificationService {
     return this.connectionStatus.asObservable();
   }
 
-  getUnreadNotifications(): Observable<NotificationDTO[]> {
-    const userId = this.jwtService.getIdFromToken();
-    if (userId === -1) return of([]);
-    return this.http.get<NotificationDTO[]>(`${this.baseUrl}/unread/${userId}`);
-  }
-
-  getReadNotifications(): Observable<NotificationDTO[]> {
-    const userId = this.jwtService.getIdFromToken();
-    if (userId === -1) return of([]);
-    return this.http.get<NotificationDTO[]>(`${this.baseUrl}/read/${userId}`);
-  }
-
-  markAsRead(notificationId: number): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/${notificationId}/read`, {});
-  }
-
-  onNotificationReceived(): Observable<NotificationDTO> {
-    return this.notificationSubject.asObservable();
+  onSuspensionReceived(): Observable<SuspensionDTO> {
+    return this.suspensionSubject.asObservable();
   }
 }
