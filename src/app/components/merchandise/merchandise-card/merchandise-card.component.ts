@@ -20,14 +20,14 @@ import { Router } from '@angular/router';
 })
 export class MerchandiseCardComponent{
   @Input() merchandise!: MerchandiseOverviewDTO;
-
+  @Input() eventId: number = -1;
   constructor(private router:Router){}
 
   seeDetails(){
     if(this.merchandise.type==='Service')
       this.router.navigate(['home','service',this.merchandise.id]);
     else {
-      this.router.navigate(['home', 'product', this.merchandise.id, -1]);
+      this.router.navigate(['home', 'product', this.merchandise.id, this.eventId]);
     }
   }
 

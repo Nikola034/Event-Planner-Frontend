@@ -54,5 +54,9 @@ export class MerchandiseService {
       let userId=this.jwtService.getIdFromToken();
       return this.http.get<MerchandiseOverviewDTO[]>(`${API_URL}/api/v1/merchandise/${userId}/favorite`);
     }
+
+  getMerchandiseByCategory(categoryId: number): Observable<MerchandiseOverviewDTO[]> {
+    return this.http.get<MerchandiseOverviewDTO[]>(`${API_URL}/api/v1/merchandise/category/${categoryId}`);
+  }
   constructor(private serviceService: ServiceService, private productService: ProductService,private http: HttpClient,private jwtService:JwtService) { }
 }

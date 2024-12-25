@@ -14,3 +14,8 @@ export interface CreateCategoryDto{
     description: string,
     pending: boolean
 }
+
+export interface BudgetItemCategoryDTO {
+    id: number,
+    title: string
+}

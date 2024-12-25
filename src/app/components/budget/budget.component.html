@@ -1,0 +1,65 @@
+<div *ngIf="(event && budget)">
+    <div class="card">
+        <p-table [value]="budget.budgetItems" [tableStyle]="{ 'min-width': '60rem' }">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    <div class="">
+                        <h2>{{event.title}}</h2>
+                        <h3>{{event.eventType.title}}</h3>
+                    </div>
+                    <div class="flex align-items-end">
+                        <div class="flex flex-column mr-3">
+                            <p class="m-0"><span class="font-bold text-white">Total Budget: {{budget.maxAmount}}</span></p>
+                            <p class="m-0"><span class="font-bold text-white">Amount Spent: {{budget.spentAmount}}</span></p>
+                        </div>
+                        <p-button icon="pi pi-plus" rounded raised (onClick)="displayAddBudgetItemForm()"/>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Category Name</th>
+                    <th>Max Amount</th>
+                    <th>Amount Spent</th>
+                    <th>Merchandise</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-budgetItem>
+                <tr>
+                    <td>{{ budgetItem.category.title }}</td>
+                    <td>{{ budgetItem.maxAmount | currency:'EUR':'symbol':'1.0-0' }}</td>
+                    <td>{{ budgetItem.amountSpent | currency:'EUR':'symbol':'1.0-0' }}</td>
+                    <td>
+                        <div *ngIf="isVisible(budgetItem.merchandise)">
+                            <h3>{{budgetItem.merchandise.title}}</h3>
+                            <p-button label="See Details" 
+                            class="p-button-primary text-color"
+                            (onClick)="seeMerchandiseDetails(budgetItem.merchandise)"/>
+                        </div>
+                        <p-button *ngIf="!isVisible(budgetItem.merchandise)" label="Choose Merchandise" 
+                        class="p-button-primary text-color" 
+                        (onClick)="chooseMerchandise(budgetItem.category.id)"/>
+                    </td>
+                    <td>
+                        <p-button icon="pi pi-pencil" (onClick)="openEditForm(budgetItem.id)"/>
+                    </td>
+                    <td>
+                        <p-button icon="pi pi-trash" (onClick)="deleteBudgetItem(budgetItem.id)"/>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <p-dialog [(visible)]="displayMerchandises">
+        <app-merchandise [panelTitle]="'Choose merchandise'" 
+                        [panelType]="'budget'"></app-merchandise>
+    </p-dialog>
+    <p-dialog header="Edit Budget Item" [(visible)]="displayEditForm" [modal]="true">
+        <app-edit-budget-form [budgetItemId]="selectBudgetItemId" [budgetId]="budget!.budgetId" (budgetUpdated)="editBudgetItem($event)"></app-edit-budget-form>
+    </p-dialog>
+    <p-dialog header="Add Budget Item" [(visible)]="displayAddForm">
+        <app-add-budget-form [budgetId]="budget.budgetId" (budgetCreated)="addBudgetItem($event)"></app-add-budget-form>
+    </p-dialog>
+</div>

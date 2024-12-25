@@ -42,4 +42,8 @@ export class EventCardComponent{
   showDetails(eventId: number){
     this.router.navigate(['home/event-details', eventId])
   }
+
+  showBudget(eventId: number) {
+    this.router.navigate(["home/budget", eventId]);
+  }
 }

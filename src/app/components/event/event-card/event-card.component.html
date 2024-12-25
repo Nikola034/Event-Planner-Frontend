@@ -49,6 +49,12 @@
         (onClick)="showInvitationsForm()"
       ></p-button>
       <p-button
+        label="Budget"
+        styleClass="p-button-primary text-color mr-2 ml-2"
+        *ngIf="0 === 0"
+        (onClick)="showBudget(event.id)">
+      </p-button>
+      <p-button
         class="mr-2"
         icon="pi pi-pencil"
         *ngIf="0 === 0"
