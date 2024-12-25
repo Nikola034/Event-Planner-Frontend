@@ -1,0 +1,26 @@
+<div class="flex justify-content-center pt-4">
+    <div class="sm:w-10 md:w-15rem lg:w-15rem xl:w-18rem">
+        <div class="surface-100 justify-content-center  pt-5 pb-1">
+            <div class="field flex justify-content-center mb-8">
+                <form [formGroup]="addBudgetItem">
+                    <div class="field flex justify-content-center">
+                        <p-dropdown [options]="allCategories"
+                            placeholder="Category*" optionLabel="title" name="category"
+                            (onChange)="onCategoryChange($event)"/>
+                    </div>
+                    <div class="field flex justify-content-center">
+                        <input
+                        formControlName="maxAmount"
+                        type="number"
+                        placeholder="Max Amount"
+                        name="maxAmount"
+                        class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
+                    </div>
+                    <div class="field flex justify-content-center mt-8">
+                        <p-button (onClick)="onSubmit()">Add Budget Item</p-button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
