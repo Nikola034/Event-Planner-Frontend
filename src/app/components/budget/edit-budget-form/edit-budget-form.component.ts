@@ -24,7 +24,6 @@ export class EditBudgetFormComponent {
   }
 
   isInputValid(maxAmount: number) {
-    console.log(maxAmount !== null && maxAmount > 0);
     return maxAmount !== null && maxAmount > 0;
   }
 

@@ -150,9 +150,9 @@ export class MerchandiseComponent {
     this.updateDisplayedEvents();
   }
 
-  getMerchandiseByCategory(categoryId: number) {
+  getMerchandiseByCategory(categoryId: number, maxAmount: number) {
     if(categoryId > 0) {
-      this.merchandiseService.getMerchandiseByCategory(categoryId).subscribe({
+      this.merchandiseService.getMerchandiseByCategory(categoryId, maxAmount).subscribe({
         next: (data: MerchandiseOverviewDTO[]) => {
           this.merchandise = data;
           this.totalRecords = this.merchandise.length;

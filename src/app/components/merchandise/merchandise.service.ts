@@ -55,8 +55,11 @@ export class MerchandiseService {
       return this.http.get<MerchandiseOverviewDTO[]>(`${API_URL}/api/v1/merchandise/${userId}/favorite`);
     }
 
-  getMerchandiseByCategory(categoryId: number): Observable<MerchandiseOverviewDTO[]> {
-    return this.http.get<MerchandiseOverviewDTO[]>(`${API_URL}/api/v1/merchandise/category/${categoryId}`);
+  getMerchandiseByCategory(categoryId: number, maxAmount: number): Observable<MerchandiseOverviewDTO[]> {
+    const params = {
+      maxPrice: maxAmount
+    }
+    return this.http.get<MerchandiseOverviewDTO[]>(`${API_URL}/api/v1/merchandise/category/${categoryId}`, {params});
   }
   constructor(private serviceService: ServiceService, private productService: ProductService,private http: HttpClient,private jwtService:JwtService) { }
 }

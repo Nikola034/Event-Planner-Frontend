@@ -40,7 +40,7 @@
                         </div>
                         <p-button *ngIf="!isVisible(budgetItem.merchandise)" label="Choose Merchandise" 
                         class="p-button-primary text-color" 
-                        (onClick)="chooseMerchandise(budgetItem.category.id)"/>
+                        (onClick)="chooseMerchandise(budgetItem.category.id, budgetItem.maxAmount)"/>
                     </td>
                     <td>
                         <p-button icon="pi pi-pencil" (onClick)="openEditForm(budgetItem.id)"/>
