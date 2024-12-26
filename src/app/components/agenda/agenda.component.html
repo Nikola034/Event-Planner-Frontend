@@ -4,7 +4,7 @@
         <h2>{{"Agenda For Event: " + this.event.title}}</h2>
         <div>
           <p-button (onClick)="generatePdfReport()" styleClass="mr-4" label="PDF Report" icon="pi pi-file" />
-          <p-button (onClick)="showAddForm()" icon="pi pi-plus" />
+          <p-button (onClick)="showAddForm()" icon="pi pi-plus" *ngIf="this.role == 'EO' || this.role == 'A'"/>
         </div>
       </div>
     </ng-template>
