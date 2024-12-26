@@ -48,6 +48,7 @@ export class MapComponent implements OnInit {
   private markerIcons: { [key: string]: any } = {};
   lat = 45.25710603831593;
   lng = 19.84540080257916;
+  defaultAddress:boolean=true;
   @Output() addressSelected = new EventEmitter<AddressDTO>();
 
   constructor(
@@ -90,6 +91,12 @@ export class MapComponent implements OnInit {
     this.currentMarkers[type].forEach((marker: any) => this.map.removeLayer(marker));
     this.currentMarkers[type] = [];
     addresses.forEach((address) => {
+      if(this.defaultAddress){
+        this.lat=address.latitude??0;
+        this.lng=address.longitude??0;
+        this.defaultAddress=false;
+        this.map.setView([this.lat, this.lng], this.map.getZoom());
+      }
       this.currentMarkers[type].push(this.addMarker(address.latitude, address.longitude, type));
     })
   }

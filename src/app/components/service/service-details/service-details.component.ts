@@ -48,7 +48,7 @@ export class ServiceDetailsComponent implements OnInit {
     }
 ];
 
-  constructor(private route: ActivatedRoute, private merchandiseService: MerchandiseService,private mapService:MapService, private jwtService: JwtService, private router: Router) {}
+  constructor(private route: ActivatedRoute, private merchandiseService: MerchandiseService,private mapService:MapService, public jwtService: JwtService, private router: Router) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');

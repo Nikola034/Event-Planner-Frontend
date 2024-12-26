@@ -14,7 +14,7 @@
                 <p class="m-0">Price: <span class="font-bold text-white">{{calculatePrice() | currency:'EUR':'symbol':'1.0-0'}}</span></p>
                 <p class="m-0">Time: <span class="font-bold text-white">{{service!.minDuration}} - {{service!.maxDuration}}</span></p>
             </div>
-            <p-button class="mt-2" (click)="openReservationDialog()" [disabled]="!service!.available" severity="primary">Open Reservation</p-button>
+            <p-button class="mt-2" (click)="openReservationDialog()" [disabled]="(!service!.available)||jwtService.getRoleFromToken()!='EO'" severity="primary">Book Reservation</p-button>
         </div>
     </div>
     
