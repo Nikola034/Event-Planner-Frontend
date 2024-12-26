@@ -37,6 +37,14 @@ export class ProductService {
         return this.http
           .put<ProductOverviewDTO>(`${environment.apiUrl}products/${id}`, dto)
       }
+      showProduct(id: number): Observable<boolean> {
+        return this.http
+          .put<boolean>(`${environment.apiUrl}products/show/${id}`, {})
+      }
+      availProduct(id: number): Observable<boolean> {
+        return this.http
+          .put<boolean>(`${environment.apiUrl}products/avail/${id}`, {})
+      }
       delete(id: number): Observable<boolean> {
         return this.http
           .delete<boolean>(`${environment.apiUrl}products/${id}`)

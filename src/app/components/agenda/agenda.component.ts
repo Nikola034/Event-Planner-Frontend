@@ -15,6 +15,7 @@ import { CreateEventResponseDTO } from '../my-events/dtos/CreateEventResponse.dt
 import { ActivatedRoute, Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { JwtService } from '../auth/jwt.service';
 
 @Component({
   selector: 'app-agenda',
@@ -28,14 +29,19 @@ export class AgendaComponent {
   displayEditForm: boolean = false;
   event!: CreateEventResponseDTO ;
 
+  role!: string;
+
   activities: ActivityOverviewDTO[] = [];
   selectedActivity!: ActivityOverviewDTO ;
   eventId!:number;
 
-  constructor(private eventService: EventService,private route:ActivatedRoute, private router: Router){}
+  constructor(private eventService: EventService,private route:ActivatedRoute, private router: Router, private jwtService: JwtService){}
 
   ngOnInit(){
     this.loadData();
+    if(typeof window !== 'undefined' && window.localStorage){
+      this.role = this.jwtService.getRoleFromToken();
+    }
   }
 
 

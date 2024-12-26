@@ -113,7 +113,6 @@ export class MessengerComponent implements OnInit {
     if (typeof window !== 'undefined' && window.localStorage) {
       this.userService.getChatUsers().subscribe({
         next: (response) => {
-          console.log(response);
           this.users = response;
         },
         error: (err) => {

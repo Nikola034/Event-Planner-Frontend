@@ -20,7 +20,10 @@
             <th>Discounted Price</th>
             <th>Category</th>
             <th>Event Types</th>
+            <th>Visible</th>
             <th>Available</th>
+            <th>Visibility</th>
+            <th>Availability</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
@@ -40,6 +43,9 @@
             <th colspan="2">
                 <p-columnFilter type="boolean" field="available"/>
             </th>
+            <th></th>
+            <th></th>
+            <th></th>
             <th></th>
         </tr>
     </ng-template>
@@ -63,9 +69,14 @@
                   <li *ngFor="let item of product.eventTypes">{{ item.title }}</li>
                 </ul>
               </td>
+              <td>
+                <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': product.visible, 'text-red-500 pi-times-circle': !product.visible}"></i>
+            </td>
             <td>
                 <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': product.available, 'text-red-500 pi-times-circle': !product.available }"></i>
             </td>
+            <td><p-button [icon]="product.visible ? 'pi pi-eye-slash' : 'pi pi-eye'" (onClick)="showProduct(product.id)" [disabled]="!product.available"></p-button></td>
+            <td><p-button (onClick)="availProduct(product.id)" [label]="product.available ? 'Disable' : 'Enable' "></p-button></td>
             <td><p-button icon="pi pi-pencil" (onClick)="editProduct(product.id)" [disabled]="!product.available"></p-button></td>
             <td><p-button icon="pi pi-trash" (onClick)="deleteProduct(product.id)"></p-button></td>
         </tr>

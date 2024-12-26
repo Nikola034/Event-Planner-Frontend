@@ -10,6 +10,7 @@ import { EventOverviewDTO } from '../event-overview-dto';
 import { Router } from '@angular/router';
 import { SendInvitationComponent } from "../../send-invitation/send-invitation.component";
 import { DialogModule } from 'primeng/dialog';
+import { JwtService } from '../../auth/jwt.service';
 
 
 @Component({
@@ -22,9 +23,12 @@ import { DialogModule } from 'primeng/dialog';
 export class EventCardComponent{
   @Input() event!: EventOverviewDTO;
   displayInviteForm: boolean = false;
+  role!: string;
 
-  constructor(private router: Router){
-    
+  constructor(private router: Router, private jwtService: JwtService){
+    if(typeof window !== 'undefined' && window.localStorage){
+      this.role = this.jwtService.getRoleFromToken();
+    }
   }
 
   showAgenda(eventId: number){
