@@ -96,7 +96,7 @@
           (onClick)="viewAgenda()"
         ></p-button>
       </div>
-      <div class="col-3 text-center">
+      <div class="col-3 text-center" *ngIf="this.role == 'A'">
         <p-button
           label="Generate PDF"
           class="p-button-secondary w-full"
@@ -104,7 +104,7 @@
         ></p-button>
       </div>
       <div class="col-4 text-center" *ngIf="eventDetails.isPublic">
-      <div class="col-3 text-center"> <!--*ngIf="admin"-->
+      <div class="col-3 text-center" *ngIf="this.role == 'A'"> 
         <p-button
           label="Stats"
           class="p-button-primary w-full"
@@ -126,7 +126,7 @@
 
 
     <!-- Review Chart -->
-    <div class="chart-container" *ngIf="reviewChartData && reviewChartOptions">
+    <div class="chart-container" *ngIf="reviewChartData && reviewChartOptions && this.role == 'A'">
       <p-chart
         type="bar"
         [data]="reviewChartData"
