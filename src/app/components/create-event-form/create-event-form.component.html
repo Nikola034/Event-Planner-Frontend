@@ -102,7 +102,7 @@
           <label for="public">Public</label>
         </div>
         <div
-          class="flex justify-content-center align-items-center gap-2 mt-3 w-full"
+          class="flex justify-content-center align-items-center gap-2 mt-3 mb-3 w-full"
         >
         <p-dropdown placeholder="Event Type*" [options]="eventTypes"  [(ngModel)]="selectedEventType" [ngModelOptions]="{ standalone: true }" optionLabel="title"
         optionValue="id" (onChange)="onChange($event)">
@@ -112,52 +112,6 @@
             </div>
           </ng-template>
         </p-dropdown>
-        </div>
-        <div class="field flex justify-content-center w-full mt-7">
-          <div class="grid w-full">
-            <div class="col-6">
-              <p-multiSelect
-            [options]="services"
-            placeholder="Recommended services*"
-            name="services"
-            styleClass="w-full"
-            [showToggleAll]="false"
-            [filter]="false"
-            [showClear]="false"
-            [(ngModel)]="selectedServices"
-            [ngModelOptions]="{ standalone: true }"
-            optionLabel="title"
-        optionValue="id"
-            >
-            <ng-template let-service pTemplate="item">
-              <div>
-                <strong>{{ service.title }}</strong>
-              </div>
-            </ng-template>
-          </p-multiSelect>
-            </div>
-            <div class="col-6">
-              <p-multiSelect
-            [options]="products"
-            placeholder="Recommended products*"
-            name="products"
-            styleClass="w-full"
-            [showToggleAll]="false"
-            [filter]="false"
-            [showClear]="false"
-            [(ngModel)]="selectedProducts"
-            [ngModelOptions]="{ standalone: true }"
-            optionLabel="title"
-        optionValue="id"
-            >
-            <ng-template let-product pTemplate="item">
-              <div>
-                <strong>{{ product.title }}</strong>
-              </div>
-            </ng-template>
-          </p-multiSelect>
-            </div>
-          </div>
         </div>
         <div class="field flex justify-content-center">
           <p-button (click)="createEvent()">CREATE EVENT</p-button>
