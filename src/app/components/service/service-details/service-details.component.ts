@@ -112,6 +112,13 @@ export class ServiceDetailsComponent implements OnInit {
     this.reservationDialog.openDialog();
   }
 
+  isEoLogged(){
+    if(typeof window !== 'undefined' && window.localStorage){
+      return this.jwtService.getRoleFromToken()=='EO';
+    }
+    return false;
+  }
+
   toggleFavorite(): void {
     this.isFavorited = !this.isFavorited;
     this.merchandiseService
