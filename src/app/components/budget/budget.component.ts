@@ -56,10 +56,10 @@ export class BudgetComponent implements OnInit {
     return merchandise !== null;
   }
 
-  chooseMerchandise(categoryId: number) { 
+  chooseMerchandise(categoryId: number, maxAmount: number) { 
     this.displayMerchandises = true;
     this.merchandiseComponent.eventId = this.event!.id;
-    this.merchandiseComponent.getMerchandiseByCategory(categoryId);
+    this.merchandiseComponent.getMerchandiseByCategory(categoryId, maxAmount);
   }
 
   displayAddBudgetItemForm() {
