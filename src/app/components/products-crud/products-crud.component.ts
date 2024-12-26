@@ -15,48 +15,88 @@ import { tap } from 'rxjs';
 import { response } from 'express';
 import { PhotoService } from '../photos/photo.service';
 import { JwtService } from '../auth/jwt.service';
-import { ServicesCalendarComponent } from "../services-calendar/services-calendar.component";
+import { ServicesCalendarComponent } from '../services-calendar/services-calendar.component';
 
 @Component({
   selector: 'app-products-crud',
   standalone: true,
-  imports: [ButtonModule, DropdownModule, RouterModule, TableModule, CurrencyPipe, DialogModule, EditServiceFormComponent, AddServiceFormComponent, CommonModule, ServicesCalendarComponent],
+  imports: [
+    ButtonModule,
+    DropdownModule,
+    RouterModule,
+    TableModule,
+    CurrencyPipe,
+    DialogModule,
+    EditServiceFormComponent,
+    AddServiceFormComponent,
+    CommonModule,
+    ServicesCalendarComponent,
+  ],
   templateUrl: './products-crud.component.html',
-  styleUrl: './products-crud.component.scss'
+  styleUrl: './products-crud.component.scss',
 })
 export class ProductsCrudComponent {
   selectedProduct!: ProductOverviewDTO;
 
-  products: ProductOverviewDTO[] = []
+  products: ProductOverviewDTO[] = [];
 
-  constructor(private productService: ProductService, private router: Router, private photoService: PhotoService, private jwtService: JwtService){}
+  constructor(
+    private productService: ProductService,
+    private router: Router,
+    private photoService: PhotoService,
+    private jwtService: JwtService
+  ) {}
 
-  ngOnInit(){
-    this.loadData()
+  ngOnInit() {
+    this.loadData();
   }
 
-  loadData(): void{
-    this.productService.getAllBySp(this.jwtService.getIdFromToken()).pipe(
-      tap(response => {
-        this.products = response
-      })
-    ).subscribe()
+  loadData(): void {
+    this.productService
+      .getAllBySp(this.jwtService.getIdFromToken())
+      .pipe(
+        tap((response) => {
+          this.products = response;
+        })
+      )
+      .subscribe();
   }
 
-  createProduct(): void{
-    this.router.navigate(['home/create-product'])
+  createProduct(): void {
+    this.router.navigate(['home/create-product']);
   }
-  editProduct(productId: number): void{
-    this.router.navigate(['home/edit-product', productId])
-  }
-
-  deleteProduct(productId: number): void{
-    this.productService.delete(productId).pipe(tap(response => {
-      
-    })).subscribe()
+  editProduct(productId: number): void {
+    this.router.navigate(['home/edit-product', productId]);
   }
 
-  getPhotoUrl(photo: string): string{
-    return this.photoService.getPhotoUrl(photo)
+  showProduct(productId: number) {
+    this.productService
+      .showProduct(productId)
+      .pipe(tap((response) => {
+        this.loadData()
+      }))
+      .subscribe();
+  }
+
+  availProduct(productId: number) {
+    this.productService
+      .availProduct(productId)
+      .pipe(tap((response) => {
+        this.loadData()
+      }))
+      .subscribe();
+  }
+
+  deleteProduct(productId: number): void {
+    this.productService
+      .delete(productId)
+      .pipe(tap((response) => {
+        this.loadData()
+      }))
+      .subscribe();
+  }
+
+  getPhotoUrl(photo: string): string {
+    return this.photoService.getPhotoUrl(photo);
   }
 }

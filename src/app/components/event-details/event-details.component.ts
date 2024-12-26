@@ -32,6 +32,8 @@ export class EventDetailsComponent {
   isFavorited: boolean = false;
   eventId!: number
 
+  role!: string;
+
   participants: any[] = [];
   reviews: any[] = [];
   reviewChartData: any;
@@ -50,6 +52,9 @@ export class EventDetailsComponent {
 
   ngOnInit() {
     this.loadData();
+    if(typeof window !== 'undefined' && window.localStorage){
+      this.role = this.jwtService.getRoleFromToken();
+    }
   }
 
   loadData() {
