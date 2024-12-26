@@ -13,7 +13,6 @@ import { DialogModule } from 'primeng/dialog';
 import { EditBudgetFormComponent } from "./edit-budget-form/edit-budget-form.component";
 import { AddBudgetFormComponent } from "./add-budget-form/add-budget-form.component";
 import { MerchandiseComponent } from "../merchandise/merchandise/merchandise.component";
-import { popup } from 'leaflet';
 
 @Component({
   selector: 'app-budget',
@@ -91,11 +90,9 @@ export class BudgetComponent implements OnInit {
 
   deleteBudgetItem(budgetItemId: number) {
     if(this.budget !== null) {
-      console.log(`budgetItem: ${budgetItemId} budgetId: ${this.budget.budgetId}`);
       this.budgetService.deleteBudgetItem(budgetItemId, this.budget.budgetId).subscribe({
         next: (response) => {
           this.budget = response;
-          console.log(this.budget);
         },
         error: (err) => {
           console.error(err);
