@@ -13,7 +13,7 @@ export class Interceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const accessToken: any = localStorage.getItem('user');
+    const accessToken: any = localStorage.getItem('access_token');
     if (req.headers.get('skip')) return next.handle(req);
 
     if (accessToken) {
