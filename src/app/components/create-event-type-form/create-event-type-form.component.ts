@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
@@ -11,6 +11,7 @@ import { CreateEventTypeDTO } from './dtos/create-event-type.dto';
 import { EventTypeService } from './event-type.service';
 import { response } from 'express';
 import { Router } from '@angular/router';
+import { CreateEventTypeResponseDTO } from './dtos/create-event-type-response.dto';
 
 @Component({
   selector: 'app-create-event-type-form',
@@ -20,6 +21,8 @@ import { Router } from '@angular/router';
   styleUrl: './create-event-type-form.component.scss'
 })
 export class CreateEventTypeFormComponent{
+  @Input() eventTypeData!: CreateEventTypeResponseDTO;
+  @Output() eventTypeDataCreated = new EventEmitter<boolean>();
   addEventTypeForm = new FormGroup({
     title: new FormControl(''),
     description: new FormControl(''),
@@ -46,9 +49,11 @@ export class CreateEventTypeFormComponent{
     }
     this.eventTypeService.create(dto).pipe(
       tap(response => {
+        this.eventTypeDataCreated.emit(true);
         this.router.navigate(['home/event-types']);
       })
     ).subscribe();
   }
 
+ 
 }

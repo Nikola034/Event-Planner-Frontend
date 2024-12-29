@@ -52,7 +52,7 @@
   [modal]="true"
   styleClass="w-6 h-full"
 >
-  <app-create-event-type-form> </app-create-event-type-form>
+  <app-create-event-type-form (eventTypeDataCreated)="handleEventTypeDataCreated($event)"> </app-create-event-type-form>
 </p-dialog>
 <p-dialog
   header="Edit Event Type"
@@ -60,5 +60,6 @@
   [modal]="true"
   styleClass="w-6 h-full"
 >
-  <app-edit-event-type-form [eventTypeData]="selectedEventType"> </app-edit-event-type-form>
+  <app-edit-event-type-form [eventTypeData]="selectedEventType"
+  (eventTypeDataUpdated)="handleEventTypeDataUpdated($event)"> </app-edit-event-type-form>
 </p-dialog>
