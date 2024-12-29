@@ -11,7 +11,6 @@ import { CreateEventTypeResponseDTO } from '../create-event-type-form/dtos/creat
 import { EventTypeService } from '../create-event-type-form/event-type.service';
 import { tap } from 'rxjs';
 
-
 interface PageEvent {
   first: number;
   rows: number;
@@ -31,8 +30,7 @@ export class EventTypesComponent {
   displayAddForm: boolean = false;
   displayEditForm: boolean = false;
 
-  selectedEventType!: CreateEventTypeResponseDTO
-
+  selectedEventType!: CreateEventTypeResponseDTO;
   public eventTypes: CreateEventTypeResponseDTO[] = [];
   public displayedEventTypes: CreateEventTypeResponseDTO[] = [];
 
@@ -40,21 +38,25 @@ export class EventTypesComponent {
   public rows: number = 3;
   public totalRecords: number = 0;
 
-  constructor(private router: Router, private eventTypeService: EventTypeService){}
+  constructor(private router: Router, private eventTypeService: EventTypeService) {}
 
-  ngOnInit(){
-    this.loadData()
+  ngOnInit() {
+    this.loadData();
   }
 
-  loadData(): void{
-    this.eventTypeService.getAll().pipe(tap(response => {
-      this.eventTypes = response
-    })).subscribe();
+  loadData(): void {
+    this.eventTypeService.getAll().pipe(
+      tap(response => {
+        this.eventTypes = response;
+        this.updateDisplayedEventTypes(); // Update the displayed data after loading
+      })
+    ).subscribe();
   }
 
   showAddForm() {
     this.displayAddForm = true;
   }
+
   showEditForm(et: CreateEventTypeResponseDTO) {
     this.displayEditForm = true;
     this.selectedEventType = et;
@@ -75,15 +77,30 @@ export class EventTypesComponent {
     this.displayedEventTypes = this.eventTypes.slice(this.first, end);
   }
 
-  deactivateEventType(id: number){
-    this.eventTypeService.deactivate(id).pipe(tap(response => {
-      this.loadData();
-    })).subscribe()
+  deactivateEventType(id: number) {
+    this.eventTypeService.deactivate(id).pipe(
+      tap(response => {
+        this.loadData();
+      })
+    ).subscribe();
   }
 
   onPageChange(event: PageEvent) {
     this.first = event.first;
     this.rows = event.rows;
     this.updateDisplayedEventTypes();
+  }
+
+  // Listen for updates from the edit form and reload data
+  handleEventTypeDataUpdated(updated: boolean) {
+    if (updated) {
+      this.loadData();  // Reload the data if it was updated
+    }
+  }
+
+  handleEventTypeDataCreated(updated: boolean) {
+    if (updated) {
+      this.loadData();  // Reload the data if it was updated
+    }
   }
 }

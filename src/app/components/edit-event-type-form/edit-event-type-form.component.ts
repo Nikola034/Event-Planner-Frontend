@@ -69,6 +69,7 @@ export class EditEventTypeFormComponent implements OnChanges{
         title: this.eventTypeData.title,
         description:  this.eventTypeData.description, 
       });
+      this.selectedCategories = this.eventTypeData.recommendedCategories
     }
   }
 
@@ -82,7 +83,8 @@ export class EditEventTypeFormComponent implements OnChanges{
       .update(this.eventTypeData.id, dto)
       .pipe(
         tap((response) => {
-          this.router.navigate(['home/event-types'])
+          this.eventTypeDataUpdated.emit(true);
+        this.router.navigate(['home/event-types']);
         })
       )
       .subscribe();
