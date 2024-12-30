@@ -15,11 +15,12 @@ import { Router } from '@angular/router';
 import { JwtService } from '../auth/jwt.service';
 import { MapComponent } from '../map/map.component';
 import { MapService } from '../map/map.service';
+import { LeaveReviewComponent } from "../leave-review/leave-review.component";
 
 @Component({
   selector: 'app-prodcut-details',
   standalone: true,
-  imports: [PaginatorModule, ButtonModule, CurrencyPipe, CommonModule, GalleriaModule, FieldsetModule,MapComponent, DialogModule, BuyProductComponent],
+  imports: [PaginatorModule, ButtonModule, CurrencyPipe, CommonModule, GalleriaModule, FieldsetModule, MapComponent, DialogModule, BuyProductComponent, LeaveReviewComponent],
   templateUrl: './prodcut-details.component.html',
   styleUrl: './prodcut-details.component.scss'
 })

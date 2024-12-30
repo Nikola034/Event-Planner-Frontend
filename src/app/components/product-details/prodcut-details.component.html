@@ -50,6 +50,7 @@
             (onPageChange)="onPageChange($event)" class="mt-3">
         </p-paginator>
     </div>
+    <app-leave-review [id]="product.id" [type]="'merchandise'"></app-leave-review>
 </div>
 <p-dialog header="Choose event" [(visible)]="displayEventSearch" [modal]="true">
     <app-buy-product [productId]="productId" (productBought)="productBought($event)"></app-buy-product>

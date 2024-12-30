@@ -16,11 +16,12 @@ import { MapComponent } from '../../map/map.component';
 import { MapService } from '../../map/map.service';
 import { JwtService } from '../../auth/jwt.service';
 import { catchError, EMPTY, switchMap, tap } from 'rxjs';
+import { LeaveReviewComponent } from "../../leave-review/leave-review.component";
 
 @Component({
   selector: 'app-service-details',
   standalone: true,
-  imports: [PaginatorModule,MapComponent, ButtonModule,ReservationDialogComponent,FloatLabelModule,InputTextModule, CurrencyPipe, CommonModule, GalleriaModule, FieldsetModule],
+  imports: [PaginatorModule, MapComponent, ButtonModule, ReservationDialogComponent, FloatLabelModule, InputTextModule, CurrencyPipe, CommonModule, GalleriaModule, FieldsetModule, LeaveReviewComponent],
   templateUrl: './service-details.component.html',
   styleUrl: './service-details.component.scss'
 })

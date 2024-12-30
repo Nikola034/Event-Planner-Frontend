@@ -18,11 +18,12 @@ import { MapService } from '../map/map.service';
 import { UserService } from '../user/user.service';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { LeaveReviewComponent } from "../leave-review/leave-review.component";
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [CommonModule, ButtonModule, ChartModule,MapComponent,ConfirmDialogModule],
+  imports: [CommonModule, ButtonModule, ChartModule, MapComponent, ConfirmDialogModule, LeaveReviewComponent],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',
   providers:[ConfirmationService]

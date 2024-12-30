@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ReviewOverviewDTO } from './review-overview-dto';
 import { API_URL } from '../../../globals';
+import { ReviewRequestDTO } from '../leave-review/review-request-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +23,9 @@ export class ReviewService {
 
   rejectReview(reviewId: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/${reviewId}/deny`, {});
+  }
+
+  leaveReview(id: number, request: ReviewRequestDTO): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${id}/add`, request);
   }
 }
