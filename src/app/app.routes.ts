@@ -32,6 +32,7 @@ import { AddActivityFormComponent } from './components/add-activity-form/add-act
 import { EditActivityFormComponent } from './components/edit-activity-form/edit-activity-form.component';
 import { CreateActivityFormComponent } from './components/create-activity-form/create-activity-form.component';
 import { BudgetComponent } from './components/budget/budget.component';
+import { PriceListComponent } from './components/price-list/price-list.component';
 
 
 export const routes: Routes = [
@@ -209,6 +210,13 @@ export const routes: Routes = [
                     breadcrumb: "Budget"
                 },
                 component: BudgetComponent
+            },
+            {
+                path: 'price-list',
+                data: {
+                    breadcrumb: "Price List"
+                },
+                component: PriceListComponent
             }
         ]
     },

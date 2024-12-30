@@ -1,0 +1,33 @@
+<div class="card pl-8 pr-8">
+    <p-table [value]="priceList" [tableStyle]="{'min-width': '60rem'}">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h2>Price List</h2>
+                <p-button (onClick)="getPDF()">PDF Report</p-button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Num</th>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Discount</th>
+                <th>Discounted Price</th>
+                <th>Edit</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+            <tr>
+                <td>{{rowIndex + 1}}</td>
+                <td>{{item.title}}</td>
+                <td>{{item.price | currency:'EUR'}}</td>
+                <td>{{item.discount}}%</td>
+                <td>{{item.discountedPrice | currency:'EUR'}}</td>
+                <td><p-button icon="pi pi-pencil" (onClick)="showEditForm(item)"/></td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+<p-dialog header="Edit Price List Item" [(visible)]="displayEditForm" [modal]="true">
+    <app-edit-price-list-item [priceListItem]="selectedPriceListItem" (priceListItemUpdated)="priceListItemUpdated($event)"></app-edit-price-list-item>
+</p-dialog>
