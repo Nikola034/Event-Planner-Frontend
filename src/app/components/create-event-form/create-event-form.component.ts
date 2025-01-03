@@ -92,7 +92,7 @@ export class CreateEventFormComponent {
       }
 
   ngOnInit(){
-      this.eventTypeService.getAllWp().pipe(tap(response => {
+      this.eventTypeService.getAllActiveWp().pipe(tap(response => {
         this.eventTypes = response
       })).subscribe()
   }
