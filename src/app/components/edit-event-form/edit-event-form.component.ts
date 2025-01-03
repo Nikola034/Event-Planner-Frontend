@@ -97,7 +97,7 @@ export class EditEventFormComponent {
   ngOnInit(){
     const id = this.route.snapshot.paramMap.get('id');
     this.eventId = id ? Number(id) : -1;
-    this.eventTypeService.getAllWp().pipe(tap(response => {
+    this.eventTypeService.getAllActiveWp().pipe(tap(response => {
       this.eventTypes = response
     })).subscribe()
     this.eventService.getById(this.eventId).pipe(tap(response => {
