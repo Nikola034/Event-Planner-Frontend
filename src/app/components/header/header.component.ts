@@ -1,5 +1,6 @@
 import {
   Component,
+  CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
   ViewChild,
   ViewEncapsulation,
@@ -13,7 +14,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { FormsModule } from '@angular/forms';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem, MenuItemCommandEvent, MessageService } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
 import { SidebarModule } from 'primeng/sidebar';
 import { SidebarNotificationsComponent } from '../sidebar-notifications/sidebar-notifications.component';
@@ -35,6 +36,8 @@ import { Inject, PLATFORM_ID } from '@angular/core';
 import { NotificationService } from '../sidebar-notifications/notification.service';
 import { BadgeModule } from 'primeng/badge';
 import { SuspensionService } from '../../suspension.service';
+import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -54,12 +57,15 @@ import { SuspensionService } from '../../suspension.service';
     SidebarModule,
     SidebarNotificationsComponent,
     SideMenuComponent,
-    BadgeModule
-    
+    BadgeModule,
+    ConfirmDialogModule,
+    ToastModule
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   encapsulation: ViewEncapsulation.None,
+  providers: [ConfirmationService, MessageService],
 })
 export class HeaderComponent {
   items: MenuItem[] | undefined;
@@ -68,7 +74,7 @@ export class HeaderComponent {
   notificationsVisible: boolean = false;
   searchText: string = '';
   notificationsEnabled: boolean = false;
-  newNotifications:number=0;
+  newNotifications: number = 0;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
@@ -77,28 +83,32 @@ export class HeaderComponent {
     private searchService: SearchService,
     private jwtService: JwtService,
     private userService: UserService,
-    private notificationService:NotificationService,
-    private suspensionService:SuspensionService
+    private notificationService: NotificationService,
+    private suspensionService: SuspensionService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {}
 
   changeTheme() {
     this.themeService.changeTheme();
   }
 
-  public getNewNotifications(){
+  public getNewNotifications() {
     return this.newNotifications.toString();
   }
 
-  showNotifications(){
-    this.notificationsVisible=true;
-    this.newNotifications=0;
+  showNotifications() {
+    this.notificationsVisible = true;
+    this.newNotifications = 0;
   }
 
   ngOnInit() {
     if (this.jwtService.getIdFromToken() != -1) {
-      this.notificationService.onNotificationReceived().subscribe(notification => {
-        this.newNotifications++;
-      });
+      this.notificationService
+        .onNotificationReceived()
+        .subscribe((notification) => {
+          this.newNotifications++;
+        });
     }
     this.searchService.search$.subscribe({
       next: (data: string) => {
@@ -129,10 +139,6 @@ export class HeaderComponent {
                         command: () => this.register('sp'),
                       },
                       {
-                        label: 'Help',
-                        icon: 'pi pi-question',
-                      },
-                      {
                         label: 'Logout',
                         icon: 'pi pi-sign-out',
                         command: () => this.logout(),
@@ -158,14 +164,6 @@ export class HeaderComponent {
                         label: 'Profile',
                         icon: 'pi pi-user',
                         command: () => this.editProfile('eo'),
-                      },
-                      {
-                        label: 'Settings',
-                        icon: 'pi pi-cog',
-                      },
-                      {
-                        label: 'Help',
-                        icon: 'pi pi-question',
                       },
                       {
                         label: 'Logout',
@@ -195,14 +193,6 @@ export class HeaderComponent {
                         command: () => this.editProfile('sp'),
                       },
                       {
-                        label: 'Settings',
-                        icon: 'pi pi-cog',
-                      },
-                      {
-                        label: 'Help',
-                        icon: 'pi pi-question',
-                      },
-                      {
                         label: 'Logout',
                         icon: 'pi pi-sign-out',
                         command: () => this.logout(),
@@ -225,14 +215,6 @@ export class HeaderComponent {
                     icon: '',
                     items: [
                       {
-                        label: 'Settings',
-                        icon: 'pi pi-cog',
-                      },
-                      {
-                        label: 'Help',
-                        icon: 'pi pi-question',
-                      },
-                      {
                         label: 'Logout',
                         icon: 'pi pi-sign-out',
                         command: () => this.logout(),
@@ -244,7 +226,7 @@ export class HeaderComponent {
             )
             .subscribe();
         }
-      }else{
+      } else {
         this.items = [
           {
             label: 'Guest',
@@ -277,33 +259,29 @@ export class HeaderComponent {
     }
   }
 
-  editProfile(role: string){
-    if(role == 'au'){
+  editProfile(role: string) {
+    if (role == 'au') {
       this.router.navigate(['edit-au', this.jwtService.getIdFromToken()]);
-    }
-    else if(role == 'eo'){
+    } else if (role == 'eo') {
       this.router.navigate(['edit-eo', this.jwtService.getIdFromToken()]);
-    }
-    else if(role == 'sp'){
+    } else if (role == 'sp') {
       this.router.navigate(['edit-sp', this.jwtService.getIdFromToken()]);
     }
   }
 
-  login(){
+  login() {
     this.router.navigate(['']);
   }
 
-  register(role: string){
-    if(role == 'au'){
+  register(role: string) {
+    if (role == 'au') {
       this.router.navigate(['register-au']);
-    }
-    else if(role == 'eo'){
+    } else if (role == 'eo') {
       this.router.navigate(['register-eo']);
-    }
-    else if(role == 'sp'){
+    } else if (role == 'sp') {
       this.router.navigate(['register-sp']);
     }
-  } 
+  }
 
   toggleNotifications() {
     this.notificationsEnabled = !this.notificationsEnabled;

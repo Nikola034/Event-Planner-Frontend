@@ -162,7 +162,17 @@
             (click)="editAccount()"
           ></p-button>
         </div>
+        <div class="field justify-content-center h-3rem w-full submit">
+          <p-button
+            styleClass="min-w-full w-full h-3rem border-noround"
+            label="DEACTIVATE ACCOUNT"
+            type="submit"
+            (click)="deactivateAccount()"
+          ></p-button>
+        </div>
       </form>
     </div>
   </div>
 </div>
+<p-toast />
+    <p-confirmdialog />

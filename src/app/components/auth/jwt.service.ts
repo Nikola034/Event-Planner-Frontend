@@ -145,6 +145,10 @@ export class JwtService {
     return this.httpClient.put<UpdateSpResponseDto>(`${environment.apiUrl}users/update-sp/${id}`, dto);
   }
 
+  deactivate(id: number): Observable<boolean> {
+    return this.httpClient.put<boolean>(`${environment.apiUrl}auth/deactivate/${id}`, {});
+  }
+
   changePassword(id: number, dto: ChangePasswordDto): Observable<ChangePasswordResponseDto> {
     return this.httpClient.put<ChangePasswordResponseDto>(`${environment.apiUrl}users/change-password/${id}`, dto);
   }

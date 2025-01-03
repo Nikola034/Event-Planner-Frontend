@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 import {FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,14 +13,19 @@ import { MapComponent } from '../map/map.component';
 import { AddressDTO } from '../auth/register-dtos/address.dto';
 import { PhotoService } from '../photos/photo.service';
 import { UserService } from '../user/user.service';
+import { response } from 'express';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-edit-eo-form',
   standalone: true,
-  imports: [ButtonModule, ReactiveFormsModule, FileUploadModule, ToastModule, CommonModule,MapComponent],
+  imports: [ButtonModule, ReactiveFormsModule, FileUploadModule, ToastModule, CommonModule,MapComponent, ConfirmDialogModule],
   templateUrl: './edit-eo-form.component.html',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   styleUrl: './edit-eo-form.component.scss',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  providers: [ConfirmationService, MessageService]
 })
 export class EditEoFormComponent {
   selectedPhoto: string | undefined
@@ -49,10 +54,34 @@ export class EditEoFormComponent {
       });
     }
   
+
+    confirm2($event: Event) {
+      console.log('cao')
+      this.confirmationService.confirm({
+          target: $event.target as EventTarget,
+          message: 'Do you want to delete this record?',
+          header: 'Danger Zone',
+          icon: 'pi pi-info-circle',
+          rejectLabel: 'Cancel',
+  
+          accept: () => {
+              this.deactivateAccount();
+          },
+          reject: () => {
+              this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+          },
+      });
+  }
     ngOnInit(){
       this.loadData()
     }
+    deactivateAccount(){
+      this.jwtService.deactivate(this.jwtService.getIdFromToken()).pipe(
+        tap(response => {
 
+        })
+      ).subscribe()
+    }
 
     loadData(): void{
       const id = this.route.snapshot.paramMap.get('id');
@@ -76,7 +105,9 @@ export class EditEoFormComponent {
     })).subscribe()
     }
   
-  constructor(private router: Router, private jwtService: JwtService, private photoService: PhotoService, private userService: UserService, private route: ActivatedRoute){}
+  constructor(private router: Router, private jwtService: JwtService, private photoService: PhotoService, private userService: UserService, private route: ActivatedRoute,
+    private confirmationService: ConfirmationService, private messageService: MessageService
+  ){}
   getPhotoUrl(photo: string): string{
     return this.photoService.getPhotoUrl(photo);
   }
