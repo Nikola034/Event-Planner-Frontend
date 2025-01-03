@@ -3,7 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { TokensDto } from './tokens.dto';
 import { LoginDTO } from '../login-form/login.dto';
@@ -25,6 +25,7 @@ import { EventToken } from './event-token';
 import { NotificationService } from '../sidebar-notifications/notification.service';
 import { env } from 'process';
 import { RefreshTokenDto } from './refresh-token.dto';
+import { Token } from 'html2canvas/dist/types/css/syntax/tokenizer';
 
 @Injectable({
   providedIn: 'root',
@@ -200,8 +201,12 @@ export class JwtService {
       localStorage.removeItem('refresh_token');
     }
   }
-  refreshToken(dto : RefreshTokenDto): Observable<TokensDto> {
-    return this.httpClient.post<TokensDto>(`${environment.apiUrl}auth/refresh_token`,dto);
+  refreshToken(refreshToken: string): Observable<TokensDto> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${refreshToken}`, // Add the refresh token to Authorization header
+    });
+
+    return this.httpClient.post<TokensDto>(`${environment.apiUrl}auth/refresh_token`,{}, {headers});
   }
   
   setTokens(response: { accessToken: string; refreshToken: string }): void {
