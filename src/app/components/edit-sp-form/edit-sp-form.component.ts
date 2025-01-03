@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -14,14 +14,18 @@ import { UserService } from '../user/user.service';
 import { response } from 'express';
 import { MapComponent } from '../map/map.component';
 import { AddressDTO } from '../auth/register-dtos/address.dto';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-edit-sp-form',
   standalone: true,
-  imports: [ButtonModule, ReactiveFormsModule,MapComponent, FileUploadModule, ToastModule, CommonModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [ButtonModule, ReactiveFormsModule,MapComponent, FileUploadModule, ToastModule, CommonModule, ConfirmDialogModule],
   templateUrl: './edit-sp-form.component.html',
   styleUrl: './edit-sp-form.component.scss',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  providers: [ConfirmationService, MessageService]
 })
 export class EditSpFormComponent {
   selectedPhoto: string | undefined;
@@ -52,7 +56,9 @@ export class EditSpFormComponent {
     email: new FormControl({value: '', disabled: true}),
     photos: this.fbl.array([])
   })
-  constructor(private route: ActivatedRoute, private router: Router, private jwtService: JwtService, private userService: UserService, private photoService: PhotoService){}
+  constructor(private route: ActivatedRoute, private router: Router, private jwtService: JwtService, private userService: UserService, private photoService: PhotoService,
+    private confirmationService: ConfirmationService, private messageService: MessageService
+  ){}
   ngOnInit(){
     this.loadData();
   }
@@ -102,6 +108,16 @@ export class EditSpFormComponent {
 
      this.updatePhotosToShow();
   })).subscribe()
+  }
+
+
+
+  deactivateAccount(){
+    this.jwtService.deactivate(this.jwtService.getIdFromToken()).pipe(
+      tap(response => {
+        
+      })
+    ).subscribe()
   }
 
   editAccount(): void{
