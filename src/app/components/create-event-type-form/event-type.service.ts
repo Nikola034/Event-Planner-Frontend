@@ -23,6 +23,9 @@ export class EventTypeService {
   getAllWp(): Observable<CreateEventTypeResponseDTO[]> {
     return this.httpClient.get<CreateEventTypeResponseDTO[]>(`${environment.apiUrl}event-types/all-wp`);
   }
+  getAllActiveWp(): Observable<CreateEventTypeResponseDTO[]> {
+    return this.httpClient.get<CreateEventTypeResponseDTO[]>(`${environment.apiUrl}event-types/all-active-wp`);
+  }
   getById(id: number | null): Observable<CreateEventTypeResponseDTO> {
     return this.httpClient.get<CreateEventTypeResponseDTO>(`${environment.apiUrl}event-types/${id}`);
   }

@@ -88,7 +88,7 @@ export class CreateProductComponent {
     this.categoryService.getAll().pipe(tap(response => {
       this.categories = response.categories;
     })).subscribe();
-    this.eventTypeService.getAllWp().pipe(tap(response => {
+    this.eventTypeService.getAllActiveWp().pipe(tap(response => {
       this.eventTypes = response;
     })).subscribe();
   }
