@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { NotificationService } from './notification.service';
-import { NotificationDTO } from './notification-dto';
+import { NotificationDTO, NotificationType } from './notification-dto';
 import { TabViewModule } from 'primeng/tabview';
 import { CardModule } from 'primeng/card';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { JwtService } from '../auth/jwt.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar-notifications',
@@ -19,7 +20,7 @@ export class SidebarNotificationsComponent {
   unreadNotifications: NotificationDTO[] = [];
   readNotifications: NotificationDTO[] = [];
 
-  constructor(private notificationService: NotificationService, private jwtService: JwtService) { }
+  constructor(private notificationService: NotificationService, private jwtService: JwtService, private router:Router) { }
 
   ngOnInit() {
     this.loadNotifications();
@@ -40,6 +41,19 @@ export class SidebarNotificationsComponent {
       .subscribe(notifications => {
         this.readNotifications = notifications;
       });
+  }
+
+  openNotification(notification: NotificationDTO){
+    if(notification.type==NotificationType.EVENT){
+      this.router.navigate(['home','event-details', notification.entityId]);
+    }
+    else if(notification.type==NotificationType.PRODUCT){
+      this.router.navigate(['home','product', notification.entityId,-1]);
+    }
+    else if(notification.type==NotificationType.SERVICE){
+      this.router.navigate(['home','service',notification.entityId]);
+    }
+    this.markAsRead(notification);
   }
 
   markAsRead(notification: NotificationDTO) {
