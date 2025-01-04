@@ -10,7 +10,7 @@ import { JwtService } from "./jwt.service";
     constructor(private jwtService: JwtService, private router: Router) { }
   
     canActivate(): boolean {
-      if (!this.jwtService.IsSp()) {
+      if (this.jwtService.IsSp()) {
         return true;
       } else {
         return false;

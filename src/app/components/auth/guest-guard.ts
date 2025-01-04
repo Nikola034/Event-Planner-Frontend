@@ -5,12 +5,12 @@ import { JwtService } from "./jwt.service";
 @Injectable({
     providedIn: 'root'
   })
-  export class AdminGuard implements CanActivate {
+  export class GuestGuard implements CanActivate {
   
     constructor(private jwtService: JwtService, private router: Router) { }
   
     canActivate(): boolean {
-      if (this.jwtService.IsAdmin()) {
+      if (!this.jwtService.IsLogged()) {
         return true;
       } else {
         return false;
@@ -18,4 +18,3 @@ import { JwtService } from "./jwt.service";
     }
   
   }
-  

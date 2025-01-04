@@ -10,7 +10,7 @@ import { JwtService } from "./jwt.service";
     constructor(private jwtService: JwtService, private router: Router) { }
   
     canActivate(): boolean {
-      if (!this.jwtService.IsEo()) {
+      if (this.jwtService.IsEo()) {
         return true;
       } else {
         return false;
