@@ -51,13 +51,13 @@
       <p-button
         label="Budget"
         styleClass="p-button-primary text-color mr-2 ml-2"
-        *ngIf="this.role == 'EO' || this.role == 'A'"
+        *ngIf="this.role == 'EO' && this.showButtons"
         (onClick)="showBudget(event.id)">
       </p-button>
       <p-button
         class="mr-2"
         icon="pi pi-pencil"
-        *ngIf="this.role == 'EO'|| this.role == 'A'"
+        *ngIf="(this.role == 'EO' && this.showButtons) || this.role == 'A'"
         (onClick)="showEditEventForm(event.id)"
       ></p-button>
     </div>
