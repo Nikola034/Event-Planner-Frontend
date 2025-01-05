@@ -18,9 +18,9 @@
                         <span>{{ merchandise.address?.street}} {{ merchandise.address?.number }}, {{
                             merchandise.address?.city }}</span>
                     </div>
-                    <div>   
+                    <div>  
                         <div class="flex align-items-center justify-content-start">
-                            <span>{{merchandise.rating}}</span>
+                            <span>{{merchandise.rating | number:'1.1-1'}}</span>
                             <p-rating [(ngModel)]="merchandise.rating" [readonly]="true" [cancel]="false" />
                         </div>
                     </div>
