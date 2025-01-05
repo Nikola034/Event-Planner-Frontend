@@ -21,7 +21,8 @@ export class MerchandiseService {
     'description',
     'specificity',
     'price',
-    'discount'
+    'discount',
+    'rating'
   ];
 
 
@@ -37,12 +38,39 @@ export class MerchandiseService {
     return this.http.post<boolean>(`${environment.apiUrl}merchandise/${merchandiseId}/add-to-favorites/${userId}`, {})
   }
 
-  search(serviceFilters: ServiceFilters | null = null,productFilters: ProductFilters | null = null, search: string = '',sort:string='price'): Observable<MerchandiseOverviewDTO[]> {
+  search(
+    serviceFilters: ServiceFilters | null = null,
+    productFilters: ProductFilters | null = null, 
+    search: string = '',
+    sort: string = 'price',
+    direction: 'asc' | 'desc' = 'asc'
+  ): Observable<MerchandiseOverviewDTO[]> {
     return forkJoin([
-      this.serviceService.search(serviceFilters,search,sort),
-      this.productService.search(productFilters,search,sort)
+      this.serviceService.search(serviceFilters, search),
+      this.productService.search(productFilters, search)
     ]).pipe(
-      map(([services, products]) => [...services, ...products]));
+      map(([services, products]) => {
+        const combined = [...services, ...products];
+        return combined.sort((a, b) => {
+          const aValue = a[sort as keyof MerchandiseOverviewDTO];
+          const bValue = b[sort as keyof MerchandiseOverviewDTO];
+          
+          // Handle null/undefined values
+          if (aValue === null || aValue === undefined) return 1;
+          if (bValue === null || bValue === undefined) return -1;
+          if (aValue === null && bValue === null) return 0;
+          
+          let comparison = 0;
+          
+          if (typeof aValue === 'number' && typeof bValue === 'number') {
+            comparison = aValue - bValue;
+          } else if (typeof aValue === 'string' && typeof bValue === 'string') {
+            comparison = aValue.localeCompare(bValue);
+          } 
+          return direction === 'asc' ? comparison : -comparison;
+        });
+      })
+    );
   }
 
   getMerchandiseDetails(merchandiseId: number): Observable<MerchandiseDetailDTO> {
