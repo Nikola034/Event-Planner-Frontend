@@ -25,7 +25,10 @@ export class EventCardComponent{
   displayInviteForm: boolean = false;
   role!: string;
 
+  showButtons: boolean = false;
+
   constructor(private router: Router, private jwtService: JwtService){
+    this.showButtons = this.router.url.includes('my_events')
     if(typeof window !== 'undefined' && window.localStorage){
       this.role = this.jwtService.getRoleFromToken();
     }

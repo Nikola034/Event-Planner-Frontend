@@ -103,7 +103,7 @@ export class AgendaComponent {
 
   onDelete(activityId: number): void {
     this.eventService.deleteActivity(this.eventId, activityId).pipe(tap(response => {
-      
+      this.loadData();
     })).subscribe()
   }
 }
