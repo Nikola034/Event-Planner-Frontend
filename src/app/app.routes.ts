@@ -116,7 +116,7 @@ export const routes: Routes = [
                     breadcrumb: null
                 },
                 component: CreateEventFormComponent,
-                canActivate: [AuthGuard, EoGuard]
+                canActivate: [AuthGuard, EoGuard, AdminGuard]
             },
             {
                 path: 'edit-event/:id',
@@ -124,7 +124,7 @@ export const routes: Routes = [
                     breadcrumb: null
                 },
                 component: EditEventFormComponent,
-                canActivate: [AuthGuard, EoGuard]
+                canActivate: [AuthGuard, EoGuard, AdminGuard]
             },
             {
                 path: 'event-details/:id',
@@ -217,7 +217,7 @@ export const routes: Routes = [
                     breadcrumb: 'Agenda'
                 },
                 component: CreateActivityFormComponent,
-                canActivate: [AuthGuard, EoGuard]
+                canActivate: [AuthGuard, EoGuard] 
             },
             {
                 path: 'agenda/edit/:activityId',
@@ -233,7 +233,7 @@ export const routes: Routes = [
                     breadcrumb: "Budget"
                 },
                 component: BudgetComponent,
-                canActivate: [AuthGuard] // ne znam ko sme
+                canActivate: [AuthGuard, EoGuard]
             },
             {
                 path: 'price-list',
