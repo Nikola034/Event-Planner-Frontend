@@ -1,44 +1,43 @@
 import { Routes } from '@angular/router';
-import { HomePageComponent } from './components/home-page/home-page.component';
-import { SearchPageComponent } from './components/search-page/search-page.component';
-import { LoginFormComponent } from './components/login-form/login-form.component';
-import { ServiceCrudComponent } from './components/service/service-crud/service-crud.component';
-import { RegisterEoFormComponent } from './components/register-eo-form/register-eo-form.component';
-import { RegisterSpFormComponent } from './components/register-sp-form/register-sp-form.component';
-import { EditAuFormComponent } from './components/edit-au-form/edit-au-form.component';
-import { EditEoFormComponent } from './components/edit-eo-form/edit-eo-form.component';
-import { EditSpFormComponent } from './components/edit-sp-form/edit-sp-form.component';
-import { ChangePasswordComponent } from './components/change-password/change-password.component';
-import { FastRegisterComponent } from './components/fast-register/fast-register.component';
-import { MyEventsComponent } from './components/my-events/my-events.component';
-import { EventTypesComponent } from './components/event-types/event-types.component';
-import { CreateEventFormComponent } from './components/create-event-form/create-event-form.component';
-import { EditEventFormComponent } from './components/edit-event-form/edit-event-form.component';
-import { AgendaComponent } from './components/agenda/agenda.component';
-import { CategoryCrudComponent } from './components/category/category-crud/category-crud.component';
-import { ServiceDetailsComponent } from './components/service/service-details/service-details.component';
-import { FollowedEventsComponent } from './components/followed-events/followed-events.component';
-import { ProdcutDetailsComponent } from './components/product-details/prodcut-details.component';
-import { MessagingPageComponent } from './components/messaging-page/messaging-page.component';
-import { AdminUserReportsComponent } from './components/admin-user-reports/admin-user-reports/admin-user-reports.component';
-import { ProductsCrudComponent } from './components/products-crud/products-crud.component';
-import { UpdateProductComponent } from './components/update-product/update-product.component';
-import { CreateProductComponent } from './components/create-product/create-product.component';
-import { AdminReviewsComponent } from './components/admin-reviews/admin-reviews.component';
-import { EventDetailsComponent } from './components/event-details/event-details.component';
-import { FavoriteEventsComponent } from './components/favorite-events/favorite-events.component';
-import { FavoriteMerchandiseComponent } from './components/favorite-merchandise/favorite-merchandise.component';
-import { AddActivityFormComponent } from './components/add-activity-form/add-activity-form.component';
-import { EditActivityFormComponent } from './components/edit-activity-form/edit-activity-form.component';
-import { CreateActivityFormComponent } from './components/create-activity-form/create-activity-form.component';
-import { BudgetComponent } from './components/budget/budget.component';
-import { PriceListComponent } from './components/price-list/price-list.component';
-import { AuthGuard } from './components/auth/auth-guard';
-import { EoGuard } from './components/auth/eo-guard';
-import { SpGuard } from './components/auth/sp-guard';
-import { AdminGuard } from './components/auth/admin-guard';
-import { AuGuard } from './components/auth/au-guard';
-import { GuestGuard } from './components/auth/guest-guard';
+import { HomePageComponent } from './layout/home-page/home-page.component';
+import { SearchPageComponent } from './layout/search-page/search-page-component/search-page.component';
+import { LoginFormComponent } from './user/login-form/login-form.component';
+import { ServiceCrudComponent } from './merchandise/service/service-crud/service-crud.component';
+import { RegisterEoFormComponent } from './user/register/register-eo-form/register-eo-form.component';
+import { RegisterSpFormComponent } from './user/register/register-sp-form/register-sp-form.component';
+import { EditAuFormComponent } from './user/edit-profile/edit-au-form/edit-au-form.component';
+import { EditEoFormComponent } from './user/edit-profile/edit-eo-form/edit-eo-form.component';
+import { EditSpFormComponent } from './user/edit-profile/edit-sp-form/edit-sp-form.component';
+import { ChangePasswordComponent } from './user/edit-profile/change-password/change-password.component';
+import { FastRegisterComponent } from './user/register/fast-register/fast-register.component';
+import { MyEventsComponent } from './event/my-events/my-events.component';
+import { EventTypesComponent } from './event-type/event-types/event-types.component';
+import { CreateEventFormComponent } from './event/create-event-form/create-event-form.component';
+import { EditEventFormComponent } from './event/edit-event-form/edit-event-form.component';
+import { AgendaComponent } from './event/agenda/agenda-component/agenda.component';
+import { CategoryCrudComponent } from './merchandise/category/category-crud/category-crud.component';
+import { ServiceDetailsComponent } from './merchandise/service/service-details/service-details.component';
+import { FollowedEventsComponent } from './event/followed-events/followed-events.component';
+import { ProdcutDetailsComponent } from './merchandise/product/product-details/prodcut-details.component';
+import { MessagingPageComponent } from './shared/messaging/messaging-page/messaging-page.component';
+import { AdminUserReportsComponent } from './user/admin-user-reports/admin-user-reports/admin-user-reports.component';
+import { ProductsCrudComponent } from './merchandise/product/products-crud/products-crud.component';
+import { UpdateProductComponent } from './merchandise/product/update-product/update-product.component';
+import { CreateProductComponent } from './merchandise/product/create-product/create-product.component';
+import { AdminReviewsComponent } from './review/admin-reviews/admin-reviews.component';
+import { EventDetailsComponent } from './event/event-details/event-details.component';
+import { FavoriteEventsComponent } from './event/favorite-events/favorite-events.component';
+import { FavoriteMerchandiseComponent } from './merchandise/merchandise/favorite-merchandise/favorite-merchandise.component';
+import { EditActivityFormComponent } from './event/agenda/edit-activity-form/edit-activity-form.component';
+import { CreateActivityFormComponent } from './event/agenda/create-activity-form/create-activity-form.component';
+import { BudgetComponent } from './event/budget/budget-component/budget.component';
+import { PriceListComponent } from './merchandise/price-list/price-list-component/price-list.component';
+import { AuthGuard } from './infrastructure/auth/auth-guard';
+import { EoGuard } from './infrastructure/auth/eo-guard';
+import { SpGuard } from './infrastructure/auth/sp-guard';
+import { AdminGuard } from './infrastructure/auth/admin-guard';
+import { AuGuard } from './infrastructure/auth/au-guard';
+import { GuestGuard } from './infrastructure/auth/guest-guard';
 
 
 export const routes: Routes = [
@@ -116,7 +115,7 @@ export const routes: Routes = [
                     breadcrumb: null
                 },
                 component: CreateEventFormComponent,
-                canActivate: [AuthGuard, EoGuard, AdminGuard]
+                canActivate: [AuthGuard, EoGuard]
             },
             {
                 path: 'edit-event/:id',
@@ -124,7 +123,7 @@ export const routes: Routes = [
                     breadcrumb: null
                 },
                 component: EditEventFormComponent,
-                canActivate: [AuthGuard, EoGuard, AdminGuard]
+                canActivate: [AuthGuard, EoGuard]
             },
             {
                 path: 'event-details/:id',
@@ -217,7 +216,7 @@ export const routes: Routes = [
                     breadcrumb: 'Agenda'
                 },
                 component: CreateActivityFormComponent,
-                canActivate: [AuthGuard, EoGuard] 
+                canActivate: [AuthGuard, EoGuard]
             },
             {
                 path: 'agenda/edit/:activityId',
@@ -241,7 +240,7 @@ export const routes: Routes = [
                     breadcrumb: "Price List"
                 },
                 component: PriceListComponent,
-                canActivate: [AuthGuard, SpGuard, AdminGuard]
+                canActivate: [AuthGuard, SpGuard]
             }
         ]
     },
@@ -253,5 +252,5 @@ export const routes: Routes = [
     { path: 'edit-au/:id', component: EditAuFormComponent, canActivate: [AuthGuard, AuGuard]},
     { path: 'edit-eo/:id', component: EditEoFormComponent, canActivate: [AuthGuard, EoGuard]},
     { path: 'edit-sp/:id', component: EditSpFormComponent, canActivate: [AuthGuard, SpGuard]},
-    
+
 ];

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
-import { HeaderComponent } from './components/header/header.component';
-import { SideMenuComponent } from './components/side-menu/side-menu.component';
-import { BreadcrumbComponent } from "./components/breadcrumb/breadcrumb/breadcrumb.component";
+import { HeaderComponent } from './layout/header/header.component';
+import { SideMenuComponent } from './layout/side-menu/side-menu.component';
+import { BreadcrumbComponent } from "./layout/breadcrumb/breadcrumb-component/breadcrumb.component";
 import { PrimeNGConfig } from 'primeng/api';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { NotificationService } from './components/sidebar-notifications/notification.service';
-import { SuspensionService } from './suspension.service';
+import { NotificationService } from './layout/sidebar-notifications/notification.service';
+import { SuspensionService } from './shared/user/suspension.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +19,7 @@ import { SuspensionService } from './suspension.service';
 export class AppComponent implements OnInit {
   showBasicNavigation = true;
   private readonly destroy$ = new Subject<void>();
-  
+
   constructor(private primengConfig: PrimeNGConfig, private router: Router){
     }
 
@@ -30,13 +30,13 @@ export class AppComponent implements OnInit {
       tap((event) => {
         if (event instanceof NavigationEnd) {
           const excludedRoutes = [
-            '/', 
-            '/change-password', 
-            '/register-sp', 
-            '/register-eo', 
-            '/register-au', 
-            '/edit-sp', 
-            '/edit-eo', 
+            '/',
+            '/change-password',
+            '/register-sp',
+            '/register-eo',
+            '/register-au',
+            '/edit-sp',
+            '/edit-eo',
             '/edit-au'
           ];
 
@@ -47,17 +47,17 @@ export class AppComponent implements OnInit {
           /^\/edit-sp\/\d+$/,
           /^\/change-password\/\d+$/  // Matches /edit-sp/:id
         ];
-    
+
           const currentUrl = event.urlAfterRedirects;
-          const currentFullUrl = typeof window !== 'undefined' 
-          ? window.location.href 
+          const currentFullUrl = typeof window !== 'undefined'
+          ? window.location.href
           : '';
-    
-          this.showBasicNavigation = 
-            !excludedRoutes.includes(currentUrl) && 
+
+          this.showBasicNavigation =
+            !excludedRoutes.includes(currentUrl) &&
             !dynamicExcludedPatterns.some(pattern => pattern.test(currentUrl)) &&
-            !currentFullUrl.includes('inviteToken=') && 
-            !currentFullUrl.includes('undefined=')         
+            !currentFullUrl.includes('inviteToken=') &&
+            !currentFullUrl.includes('undefined=')
           }
       })
     ).subscribe();
