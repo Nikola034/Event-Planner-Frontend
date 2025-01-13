@@ -145,11 +145,13 @@ describe('ReservationDialogComponent', () => {
     // Arrange
     component.visible = true;
     fixture.detectChanges();
+    const startTime = new Date('2025-01-15T10:00:00');
+    const endTime = new Date('2025-01-15T11:00:00');
 
     component.reservationForm.patchValue({
       selectedEvent: null,
-      startTime: new Date(),
-      endTime: new Date()
+      startTime: startTime,
+      endTime: endTime
     });
     fixture.detectChanges();
 
@@ -166,7 +168,7 @@ describe('ReservationDialogComponent', () => {
     });
   }));
 
-  it('should successfully submit reservation', fakeAsync(() => {
+  it('should successfully submit reservation with end date', fakeAsync(() => {
     const startTime = new Date('2025-01-15T10:00:00');
     const endTime = new Date('2025-01-15T11:00:00');
 
@@ -205,12 +207,54 @@ describe('ReservationDialogComponent', () => {
     });
   }));
 
-  it('should handle reservation error', fakeAsync(() => {
-    const errorMessage = 'Reservation failed';
+  it('should successfully submit reservation without end date', fakeAsync(() => {
+    const startTime = new Date('2025-01-15T10:00:00');
+    const endTime = null;
+
     component.reservationForm.patchValue({
       selectedEvent: mockEvents[0],
-      startTime: new Date(),
-      endTime: new Date()
+      startTime: startTime,
+      endTime: endTime
+    });
+
+    serviceService.reserve.and.returnValue(of({}));
+
+    component.submitReservation();
+    flush();
+
+    const timezoneOffset = new Date().getTimezoneOffset() * 60000;
+    const expectedStartTime = new Date(startTime.getTime() - timezoneOffset);
+    const expectedEndTime = null;
+
+    expect(serviceService.reserve).toHaveBeenCalledWith(1, {
+      eventId: 1,
+      startTime: expectedStartTime,
+      endTime: expectedEndTime,
+      organizerId: 1
+    });
+
+    expect(mockAdd).toHaveBeenCalledWith({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Reservation successful!'
+    });
+
+    expect(component.reservationForm.value).toEqual({
+      selectedEvent: null,
+      startTime: null,
+      endTime: null
+    });
+  }));
+
+  it('should handle reservation error', fakeAsync(() => {
+    const errorMessage = 'Reservation failed';
+    const startTime = new Date('2025-01-15T10:00:00');
+    const endTime = new Date('2025-01-15T11:00:00');
+
+    component.reservationForm.patchValue({
+      selectedEvent: mockEvents[0],
+      startTime: startTime,
+      endTime: endTime
     });
 
     serviceService.reserve.and.returnValue(throwError(() => ({ error: { message: errorMessage } })));
@@ -226,10 +270,13 @@ describe('ReservationDialogComponent', () => {
   }));
 
   it('should handle timeslots refresh error after successful reservation', fakeAsync(() => {
+    const startTime = new Date('2025-01-15T10:00:00');
+    const endTime = new Date('2025-01-15T11:00:00');
+
     component.reservationForm.patchValue({
       selectedEvent: mockEvents[0],
-      startTime: new Date(),
-      endTime: new Date()
+      startTime: startTime,
+      endTime: endTime
     });
 
     serviceService.reserve.and.returnValue(of({}));
@@ -242,6 +289,181 @@ describe('ReservationDialogComponent', () => {
       severity: 'error',
       summary: 'Error',
       detail: 'Failed to load timeslots'
+    });
+  }));
+
+  it('should validate start time is required', fakeAsync(() => {
+    // Arrange
+    component.visible = true;
+    fixture.detectChanges();
+  
+    component.reservationForm.patchValue({
+      selectedEvent: mockEvents[0],
+      startTime: null,
+      endTime: new Date()
+    });
+    fixture.detectChanges();
+  
+    // Act
+    component.submitReservation();
+    flush();
+  
+    // Assert
+    expect(mockAdd).toHaveBeenCalledWith({
+      severity: 'error',
+      summary: 'Fail',
+      detail: "Start time is required"
+    });
+    expect(serviceService.reserve).not.toHaveBeenCalled();
+  }));
+  
+  it('should validate end time is after start time', fakeAsync(() => {
+    // Arrange
+    const startTime = new Date('2025-01-15T11:00:00');
+    const endTime = new Date('2025-01-15T10:00:00'); // End time before start time
+  
+    component.reservationForm.patchValue({
+      selectedEvent: mockEvents[0],
+      startTime: startTime,
+      endTime: endTime
+    });
+  
+    component.submitReservation();
+    flush();
+  
+    expect(mockAdd).toHaveBeenCalledWith({
+      severity: 'error',
+      summary: 'Fail',
+      detail: "End time must be after start time"
+    });
+    expect(serviceService.reserve).not.toHaveBeenCalled();
+  }));
+  
+  
+  
+  it('should handle events loading error', fakeAsync(() => {
+    // Reset the component to remove the beforeEach setup
+    component = new ReservationDialogComponent(
+      serviceService,
+      TestBed.inject(FormBuilder),
+      eventService,
+      jwtService,
+      TestBed.inject(MessageService)
+    );
+    component.serviceId = 1;
+    
+    // Set up the error case
+    eventService.getByEo.and.returnValue(throwError(() => new Error('Failed to load events')));
+    
+    // Act
+    component.ngOnInit();
+    tick();
+
+    // Assert
+    expect(component.events).toEqual([]);
+  }));
+
+  it('should handle timeslots loading error', fakeAsync(() => {
+    // Reset the component to remove the beforeEach setup
+    component = new ReservationDialogComponent(
+      serviceService,
+      TestBed.inject(FormBuilder),
+      eventService,
+      jwtService,
+      TestBed.inject(MessageService)
+    );
+    component.serviceId = 1;
+    
+    // Set up the error case
+    serviceService.getServiceTimeslots.and.returnValue(throwError(() => new Error('Failed to load timeslots')));
+    
+    // Act
+    component.ngOnInit();
+    tick();
+
+    // Assert
+    expect(component.timeslots).toEqual([]);
+  }));
+  
+  it('should handle network error during reservation', fakeAsync(() => {
+    // Arrange
+    const startTime = new Date('2025-01-15T10:00:00');
+    const endTime = new Date('2025-01-15T11:00:00');
+
+    component.reservationForm.patchValue({
+      selectedEvent: mockEvents[0],
+      startTime: startTime,
+      endTime: endTime
+    });
+  
+    serviceService.reserve.and.returnValue(throwError(() => new Error('Network error')));
+  
+    // Act
+    component.submitReservation();
+    tick();
+  
+    // Assert
+    expect(mockAdd).toHaveBeenCalledWith({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Network error'
+    });
+  }));
+  
+  it('should preserve form values when reservation fails', fakeAsync(() => {
+    // Arrange
+    const startTime = new Date('2025-01-15T10:00:00');
+    const endTime = new Date('2025-01-15T11:00:00');
+    
+    component.reservationForm.patchValue({
+      selectedEvent: mockEvents[0],
+      startTime: startTime,
+      endTime: endTime
+    });
+  
+    serviceService.reserve.and.returnValue(throwError(() => new Error('Reservation failed')));
+  
+    // Act
+    component.submitReservation();
+    tick();
+  
+    // Assert
+    expect(component.reservationForm.value).toEqual({
+      selectedEvent: mockEvents[0],
+      startTime: startTime,
+      endTime: endTime
+    });
+  }));
+  
+  it('should handle server validation errors with detailed messages', fakeAsync(() => {
+    // Arrange
+    const startTime = new Date('2025-01-15T10:00:00');
+    const endTime = new Date('2025-01-15T11:00:00');
+
+    component.reservationForm.patchValue({
+      selectedEvent: mockEvents[0],
+      startTime: startTime,
+      endTime: endTime
+    });
+  
+    const validationError = {
+      error: {
+        message: 'Timeslot already reserved',
+        details: ['The selected time period is not available']
+      }
+    };
+  
+    serviceService.reserve.and.returnValue(throwError(() => validationError));
+  
+    // Act
+    component.submitReservation();
+    tick();
+  
+    // Assert
+    expect(mockAdd).toHaveBeenCalledWith({
+      severity: 'error',
+      summary: 'Reservation Error',
+      detail: 'Timeslot already reserved'
     });
   }));
 });
