@@ -9,20 +9,28 @@
         </div>
     </ng-template>
     <p-divider styleClass="m-0"/>
-    <div *ngFor="let event of displayedEvents">
-        <app-event-card [event]="event"></app-event-card>
-        <p-divider styleClass="m-0"/>
+    
+    <!-- Loading spinner with overlay -->
+    <div *ngIf="loading" class="flex align-items-center justify-content-center min-h-full" style="min-height: 200px;">
+        <p-progressSpinner strokeWidth="4" styleClass="w-4rem h-4rem"></p-progressSpinner>
     </div>
 
-    <div class="card flex justify-content-center">
-        <p-paginator
-            [first]="first"
-            [rows]="rows"
-            [totalRecords]="totalRecords"
-            [rowsPerPageOptions]="[3, 10, 20, 30]"
-            (onPageChange)="onPageChange($any($event))"
-            [showCurrentPageReport]="true"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} events"
-        ></p-paginator>
+    <!-- Content when not loading -->
+    <div [class.hidden]="loading" id="displayed-events">
+        <div *ngFor="let event of displayedEvents">
+            <app-event-card [event]="event"></app-event-card>
+            <p-divider styleClass="m-0"/>
+        </div>
+        <div class="card flex justify-content-center">
+            <p-paginator
+                [first]="first"
+                [rows]="rows"
+                [totalRecords]="totalRecords"
+                [rowsPerPageOptions]="[3, 10, 20, 30]"
+                (onPageChange)="onPageChange($any($event))"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} events"
+            ></p-paginator>
+        </div>
     </div>
 </p-panel>

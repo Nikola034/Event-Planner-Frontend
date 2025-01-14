@@ -22,6 +22,7 @@ import { EventFilters } from '../model/event-filters';
 import { SearchService } from '../../layout/search-page/search.service';
 import { combineLatest, debounceTime, distinctUntilChanged } from 'rxjs';
 import { MapService } from '../../shared/map/map.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 interface PageEvent {
   first: number;
@@ -47,7 +48,8 @@ interface PageEvent {
     FloatLabelModule,
     TableModule,
     SidebarModule,
-    PaginatorModule
+    PaginatorModule,
+    ProgressSpinnerModule
   ],
   templateUrl: './events.component.html',
   styleUrl: './events.component.scss'
@@ -66,6 +68,7 @@ export class EventsComponent implements OnInit {
   public totalRecords: number = 0;
   @Input() panelTitle: string = '';
   @Input() panelType: string = '';
+  public loading: boolean = false;
   constructor(private eventService: EventService, private searchService: SearchService,private mapService:MapService) { }
 
   async ngOnInit() {
@@ -73,12 +76,19 @@ export class EventsComponent implements OnInit {
       case 'Top':
       case 'top':
         {
+          this.loading = true;
           this.eventService.getTop().subscribe({
             next: (data: EventOverviewDTO[]) => {
               this.events = data;
               this.totalRecords = this.events.length;
               this.mapService.updateEventAddresses(data);
               this.updateDisplayedEvents();
+            },
+            error: (error) => {
+              console.error('Error loading events:', error);
+            },
+            complete: () => {
+              this.loading = false;
             }
           });
           break;
@@ -107,6 +117,7 @@ export class EventsComponent implements OnInit {
       case "followed":
       case "Followed":
         {
+          this.loading = true;
           if (typeof window !== 'undefined' && window.localStorage) {
             this.eventService.getFollowed().subscribe({
               next: (data: EventOverviewDTO[]) => {
@@ -114,6 +125,12 @@ export class EventsComponent implements OnInit {
                 this.totalRecords = this.events.length;
                 this.mapService.updateEventAddresses(data);
                 this.updateDisplayedEvents();
+              },
+              error: (error) => {
+                console.error('Error loading events:', error);
+              },
+              complete: () => {
+                this.loading = false;
               }
             });
           }
@@ -122,6 +139,7 @@ export class EventsComponent implements OnInit {
         case "favorite":
           case "Favorite":
             {
+              this.loading = true;
               if (typeof window !== 'undefined' && window.localStorage) {
                 this.eventService.getFavorites().subscribe({
                   next: (data: EventOverviewDTO[]) => {
@@ -129,6 +147,12 @@ export class EventsComponent implements OnInit {
                     this.totalRecords = this.events.length;
                     this.mapService.updateEventAddresses(data);
                     this.updateDisplayedEvents();
+                  },
+                  error: (error) => {
+                    console.error('Error loading events:', error);
+                  },
+                  complete: () => {
+                    this.loading = false;
                   }
                 });
               }
@@ -145,12 +169,19 @@ export class EventsComponent implements OnInit {
 
 
   triggerEventSearch() {
+    this.loading = true;
     this.eventService.search(this.filterValues, this.searchValue, this.eventSort).subscribe({
       next: (data: EventOverviewDTO[]) => {
         this.events = data;
         this.totalRecords = this.events.length;
         this.mapService.updateEventAddresses(data);
         this.updateDisplayedEvents();
+      },
+      error: (error) => {
+        console.error('Error searching events:', error);
+      },
+      complete: () => {
+        this.loading = false;
       }
     });
   }
