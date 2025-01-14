@@ -1,5 +1,6 @@
 <div class="flex justify-content-center w-full pt-4">
-    <div class="sm:w-10 md:w-27rem lg:w-27rem xl:w-27rem">
+    <p-toast position="top-right"></p-toast>
+    <div class="h-full w-9">
         <div class="flex w-full content surface-100 justify-content-center">
             <form [formGroup]="addServiceForm" class="flex pt-4 flex-column w-full px-4">
             <div class="field flex justify-content-center">
@@ -26,18 +27,37 @@
                     </div>
                 </div>
             </div>
+            <div class="field mb-8">
+                <span>Choose address</span>
+                <app-map [showSearch]="true" [showLegend]="false" (addressSelected)="onAddressSelected($event)">
+                </app-map>
+            </div>
             <div class="field flex justify-content-center">
-                <div class="col-4">
-                    <input type="text" placeholder="City*" name="city" formControlName="city"
-                    class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
+                <div class="grid">
+                    <div class="col-4">
+                        <input formControlName="city" type="text" placeholder="City*"
+                            class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50" />
+                    </div>
+                    <div class="col-4">
+                        <input formControlName="street" type="text" placeholder="Street*"
+                            class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50" />
+                    </div>
+                    <div class="col-4">
+                        <input formControlName="number" type="text" placeholder="Number*"
+                            class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50" />
+                    </div>
                 </div>
-                <div class="col-4">
-                    <input type="text" placeholder="Street*" name="street" formControlName="street"
-                    class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
-                </div>
-                <div class="col-4">
-                    <input type="number" placeholder="House Number*" name="houseNumber" formControlName="houseNumber"
-                    class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
+            </div>
+            <div class="field flex justify-content-center">
+                <div class="grid">
+                    <div class="col-6">
+                        <input formControlName="latitude" type="number" placeholder="Latitude*"
+                            class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50" />
+                    </div>
+                    <div class="col-6">
+                        <input formControlName="longitude" type="number" placeholder="Longitude*"
+                            class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50" />
+                    </div>
                 </div>
             </div>
             <div class="field flex justify-content-center">
@@ -48,7 +68,7 @@
                             (onChange)="onCategoryChange($event)"/>
                     </div>
                     <div class="col-6">
-                        <p-multiSelect [options]="allEventTypes"
+                        <p-multiSelect [options]="allEventTypes" styleClass="w-full"
                             placeholder="event types*" optionLabel="title" name="eventTypes"
                             (onChange)="onEventTypesChange($event)" filter="false"/>
                     </div>
@@ -121,8 +141,16 @@
                 (click)="uploader1.click()"
                 styleClass="w-full border-noround border-1 border-primary"
                 label="ADD SERVICE PHOTOS"
-              ></p-button>
-              <input hidden type="file" multiple accept="image/*" #uploader1 (change)="uploadFile($event)" />
+                ></p-button>
+                <input hidden type="file" multiple accept="image/*" #uploader1 (change)="uploadFile($event)" />
+                <div *ngIf="photosToShow.length > 0" class="mt-4">
+                    <div *ngFor="let photo of photosToShow; let i = index"
+                        class="border surface-50 p-2 rounded m-1">
+                        <img class="h-4rem w-rem" [src]="photo" alt="Loading...">
+                        <button type="button" class="p-button p-button-secondary"
+                            (click)="removePhoto(i)">Remove</button>
+                    </div>
+                </div>
             </div>
             <p-button class="field flex justify-content-center" (onClick)="submit()">Submit</p-button>
         </form>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Button, ButtonModule } from 'primeng/button';
-import { RouterLink, RouterModule } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { CurrencyPipe } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
@@ -18,14 +18,14 @@ import { JwtService } from '../../../infrastructure/auth/jwt.service';
 @Component({
   selector: 'app-service-crud',
   standalone: true,
-  imports: [ButtonModule, DropdownModule, RouterModule, TableModule, CurrencyPipe, DialogModule, EditServiceFormComponent, AddServiceFormComponent, CommonModule, ServicesCalendarComponent],
+  imports: [ButtonModule, DropdownModule, RouterModule, TableModule, CurrencyPipe, DialogModule, CommonModule, ServicesCalendarComponent],
   templateUrl: './service-crud.component.html',
   styleUrl: './service-crud.component.scss'
 })
 
 export class ServiceCrudComponent implements OnInit {
   allServices: CreateServiceResponse[] = [];
-  constructor(private serviceService: ServiceService, private jwtService: JwtService) {}
+  constructor(private serviceService: ServiceService, private jwtService: JwtService, private router: Router) {}
   ngOnInit(): void {
       this.serviceService.getAllBySpId(this.jwtService.getIdFromToken()).subscribe({
         next: (response) => {
@@ -41,6 +41,14 @@ export class ServiceCrudComponent implements OnInit {
     this.displayAddForm = true;
   }
 
+  createService(): void {
+    this.router.navigate(['home/create_service']);
+  }
+
+  editService(serviceId: number): void {
+    this.router.navigate(['home/edit_service', serviceId]);
+  }
+
   selectedService!: Service;
   displayEditForm: boolean = false;
   showEditServiceForm(service: Service) {
@@ -48,7 +56,7 @@ export class ServiceCrudComponent implements OnInit {
     this.displayEditForm = true;
   }
 
-  createService(createdService: CreateServiceResponse) {
+  addService(createdService: CreateServiceResponse) {
     this.serviceService.getAllBySpId(createdService.serviceProviderId).subscribe({
       next: (response) => {
         this.allServices = response;
