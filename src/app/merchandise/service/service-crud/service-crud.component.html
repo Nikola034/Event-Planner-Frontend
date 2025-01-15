@@ -11,7 +11,7 @@
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
             <h2>Services</h2>
-            <p-button icon="pi pi-plus" (onClick)="showAddServiceForm()"/>
+            <p-button icon="pi pi-plus" (onClick)="createService()"/>
         </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -63,14 +63,8 @@
             <td>
                 <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': service.available, 'text-red-500 pi-times-circle': !service.available }"></i>
             </td>
-            <td><p-button icon="pi pi-pencil" (onClick)="showEditServiceForm(service)"></p-button></td>
+            <td><p-button icon="pi pi-pencil" (onClick)="editService(service.id)"></p-button></td>
             <td><p-button icon="pi pi-trash" (onClick)="deleteService(service)"></p-button></td>
         </tr>
     </ng-template>
 </p-table>
-<p-dialog header="Edit Service" [(visible)]="displayEditForm" [modal]="true">
-    <app-edit-service-form [serviceData]="selectedService" (serviceUpdated)="updateService($event)"></app-edit-service-form>
-</p-dialog> 
-<p-dialog header="Add Service" [(visible)]="displayAddForm" [modal]="true">
-    <app-add-service-form (serviceCreated)="createService($event)"></app-add-service-form>
-</p-dialog>

@@ -38,6 +38,8 @@ import { SpGuard } from './infrastructure/auth/sp-guard';
 import { AdminGuard } from './infrastructure/auth/admin-guard';
 import { AuGuard } from './infrastructure/auth/au-guard';
 import { GuestGuard } from './infrastructure/auth/guest-guard';
+import { AddServiceFormComponent } from './merchandise/service/add-service-form/add-service-form.component';
+import { EditServiceFormComponent } from './merchandise/service/edit-service-form/edit-service-form.component';
 
 
 export const routes: Routes = [
@@ -67,6 +69,22 @@ export const routes: Routes = [
                     breadcrumb:'My services'
                 },
                 component: ServiceCrudComponent,
+                canActivate: [AuthGuard, SpGuard]
+            },
+            {
+                path: 'create_service',
+                data: {
+                    breadcrumb: null
+                },
+                component: AddServiceFormComponent,
+                canActivate: [AuthGuard, SpGuard]
+            },
+            {
+                path: 'edit_service/:id',
+                data: {
+                    breadcrumb: null
+                },
+                component: EditServiceFormComponent,
                 canActivate: [AuthGuard, SpGuard]
             },
             {

@@ -1,22 +1,20 @@
-import { Address } from "../../../shared/address/address";
+import { AddressDTO } from "../../../infrastructure/auth/model/register-dtos/address.dto";
 import { CreateCategory } from "../../category/model/create-request";
-import { CreateMerchandisePhotoDTO } from "../../merchandise/model/merchandise-photos-request-dto";
 
 export interface CreateRequest {
-    title: string,
-    description: string,
-    specificity: string,
-    price: number,
-    discount: number,
-    categoryId: number,
-    category: CreateCategory,
-    eventTypesIds: number[],
-    minDuration: number,
-    maxDuration: number,
-    reservationDeadline: number,
-    cancellationDeadline: number,
-    automaticReservation: boolean,
-    merchandisePhotos: CreateMerchandisePhotoDTO[],
-    address: Address,
-    serviceProviderId: number
+    title: string | null | undefined,
+    description: string | null | undefined,
+    specificity: string | null | undefined,
+    price: number | null | undefined,
+    discount: number | null | undefined,
+    categoryId: number | null | undefined,
+    eventTypesIds: number[] | null | undefined,
+    minDuration: number | null | undefined,
+    maxDuration: number | null | undefined,
+    reservationDeadline: number | null | undefined,
+    cancellationDeadline: number | null | undefined,
+    automaticReservation: boolean | null | undefined,
+    merchandisePhotos: number[] | null | undefined,
+    address: AddressDTO | null | undefined,
+    serviceProviderId: number | null | undefined
 }
