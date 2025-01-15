@@ -15,6 +15,7 @@ import { environment } from '../../../environments/environment';
 import { TimeslotDTO } from '../../event/my-events/dtos/CreateEventResponse.dto';
 import { JwtService } from '../../infrastructure/auth/jwt.service';
 import { CalendarTimeSlotDTO } from './model/calendar-timeslot.dto';
+import { ServiceOverviewDTO } from './model/service-overview.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,9 @@ export class ServiceService {
   getAllByCategories(dto: GetAllByCaterogiesDTO): Observable<MerchandiseOverviewDTO[]> {
     return this.http
       .post<MerchandiseOverviewDTO[]>(`${environment.apiUrl}services/get-by-categories`, dto)
+  }
+  getServiceById(id: number): Observable<ServiceOverviewDTO> {
+    return this.http.get<ServiceOverviewDTO>(`${environment.apiUrl}services/byId/${id}`);
   }
   getById(id: number): Observable<Service | undefined> {
     const event = this.services.find(e => e.id === id);
