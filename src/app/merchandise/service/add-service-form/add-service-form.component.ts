@@ -21,18 +21,21 @@ import { JwtService } from '../../../infrastructure/auth/jwt.service';
 import { CommonModule } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { DialogModule } from 'primeng/dialog';
+import { RecommendCategoryComponent } from "../../category/recommend-category/recommend-category.component";
 
 @Component({
   selector: 'app-add-service-form',
   standalone: true,
-  imports: [DropdownModule, FormsModule, MultiSelectModule, RadioButtonModule, ButtonModule, ReactiveFormsModule, MapComponent, CommonModule, ToastModule],
+  imports: [DropdownModule, FormsModule, MultiSelectModule, RadioButtonModule, ButtonModule,
+    ReactiveFormsModule, MapComponent, CommonModule, ToastModule, DialogModule, RecommendCategoryComponent],
   templateUrl: './add-service-form.component.html',
   styleUrl: './add-service-form.component.scss',
   providers: [MessageService]
 })
 export class AddServiceFormComponent implements OnInit {
-  // addServiceForm!: FormGroup;
   allCategories: CategoryDto[] = [];
+  displayAddCategoryForm = false;
   allEventTypes: EventType[] = [];
   loadingPhotos: { id: string; loading: boolean }[] = [];
   photosToShow: string[] = [];
@@ -50,8 +53,7 @@ export class AddServiceFormComponent implements OnInit {
       latitude: new FormControl<number|null|undefined>(null, [Validators.required]),
       price: new FormControl(null, [Validators.required, Validators.min(0)]),
       discount: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(100)]),
-      categoryId: new FormControl(-1),
-      category: new FormControl(null),
+      categoryId: new FormControl(-1, [Validators.required]),
       eventTypesIds: new FormControl([], [Validators.required]),
       minDuration: new FormControl(null, [Validators.required, Validators.min(0)]),
       maxDuration: new FormControl(null, [Validators.required, Validators.min(0)]),
@@ -73,6 +75,13 @@ export class AddServiceFormComponent implements OnInit {
   ngOnInit(): void {
     this.categoryService.getAll().pipe(tap(response => {
       this.allCategories = response.categories;
+      const newCategory: CategoryDto = {
+        id: -1,
+        title: 'other',
+        description: '',
+        pending: false
+      }
+      this.allCategories.push(newCategory);
     })).subscribe();
     this.eventTypeService.getAllActiveWp().pipe(tap(response => {
       this.allEventTypes = response;
@@ -82,6 +91,24 @@ export class AddServiceFormComponent implements OnInit {
   onCategoryChange(event: any) {
     const selectedCategoryId = event.value?.id;
     this.addServiceForm.patchValue({categoryId: selectedCategoryId});
+    if(selectedCategoryId == -1) {
+      this.displayAddCategoryForm = true;
+    }
+  }
+
+  createCategory(categoryCreated: boolean) {
+    if (categoryCreated) {
+      this.categoryService.getAll().pipe(tap(response => {
+        this.allCategories = response.categories
+      })).subscribe()
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Creating Service Error',
+        detail: 'Failed to create category!'
+      });
+    }
+    this.displayAddCategoryForm = false;
   }
 
   onEventTypesChange(event: any) {
@@ -205,29 +232,9 @@ export class AddServiceFormComponent implements OnInit {
       longitude: address.longitude
     });
   }
-  // isFormValid() {
-  //   if(this.addServiceForm.value.title == null || this.addServiceForm.value.title == '') return false;
-  //   if(this.addServiceForm.value.description == null || this.addServiceForm.value.description == '') return false;
-  //   if(this.addServiceForm.value.specificity == null || this.addServiceForm.value.specificity == '') return false;
-  //   if(this.addServiceForm.value.city == null || this.addServiceForm.value.city == '') return false;
-  //   if(this.addServiceForm.value.street == null || this.addServiceForm.value.street == '') return false;
-  //   if(this.addServiceForm.value.number == null || this.addServiceForm.value.number == '') return false;
-  //   if(this.addServiceForm.value.longitude == null) return false;
-  //   if(this.addServiceForm.value.latitude == null) return false;
-  //   if(this.addServiceForm.value.price == null || this.addServiceForm.value.price < 0) return false;
-  //   if(this.addServiceForm.value.discount == null || this.addServiceForm.value.discount < 0 || this.addServiceForm.value.discount > 100) return false;
-  //   if(this.addServiceForm.value.categoryId == -1 && this.addServiceForm.value.category == null) return false;
-  //   if(this.addServiceForm.value.minDuration == null || this.addServiceForm.value.minDuration < 0) return false;
-  //   if(this.addServiceForm.value.maxDuration == null || this.addServiceForm.value.maxDuration < 0) return false;
-  //   if(this.addServiceForm.value.minDuration > this.addServiceForm.value.maxDuration) return false;
-  //   if(this.addServiceForm.value.reservationDeadline == null || this.addServiceForm.value.reservationDeadline < 0) return false;
-  //   if(this.addServiceForm.value.cancellationDeadline == null || this.addServiceForm.value.cancellationDeadline < 0) return false;
-  //   if(this.addServiceForm.value.cancellationDeadline > this.addServiceForm.value.reservationDeadline) return false;
-  //   if(this.addServiceForm.value.automaticReservation == null) return false;
-  //   return true;
-  // }
+
   isFormValid() {
-    if(this.addServiceForm.value.categoryId == -1 && this.addServiceForm.value.category == null) {
+    if(this.addServiceForm.value.categoryId == -1) {
       this.messageService.add({ severity: 'error', summary: 'Fail', detail: "Category not selected!" });
       return false;
     }
@@ -249,7 +256,6 @@ export class AddServiceFormComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.jwtService.getIdFromToken());
     if(this.isFormValid()) {
       const newService: CreateRequest = {
         title: this.addServiceForm.controls.title.value,
@@ -258,7 +264,6 @@ export class AddServiceFormComponent implements OnInit {
         price: this.addServiceForm.controls.price.value,
         discount: this.addServiceForm.controls.discount.value,
         categoryId: this.addServiceForm.controls.categoryId.value,
-        category: this.addServiceForm.controls.category.value,
         eventTypesIds: this.addServiceForm.controls.eventTypesIds.value,
         minDuration: this.addServiceForm.controls.minDuration.value,
         maxDuration: this.addServiceForm.controls.maxDuration.value,
@@ -275,7 +280,7 @@ export class AddServiceFormComponent implements OnInit {
         },
         serviceProviderId: this.jwtService.getIdFromToken()
       };
-
+      
       this.serviceService.create(newService).subscribe({
         next: (response) => {
           this.addServiceForm.reset();

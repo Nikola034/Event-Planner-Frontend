@@ -157,3 +157,6 @@
         </div>
     </div>
 </div>
+<p-dialog header="Recommend Category" [(visible)]="displayAddCategoryForm" [modal]="true">
+    <app-recommend-category (categoryCreated)="createCategory($event)"></app-recommend-category>
+</p-dialog>

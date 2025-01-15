@@ -8,7 +8,6 @@ export interface CreateRequest {
     price: number | null | undefined,
     discount: number | null | undefined,
     categoryId: number | null | undefined,
-    category: CreateCategory | null | undefined,
     eventTypesIds: number[] | null | undefined,
     minDuration: number | null | undefined,
     maxDuration: number | null | undefined,
