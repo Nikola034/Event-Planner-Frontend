@@ -280,7 +280,7 @@ export class AddServiceFormComponent implements OnInit {
         },
         serviceProviderId: this.jwtService.getIdFromToken()
       };
-      
+
       this.serviceService.create(newService).subscribe({
         next: (response) => {
           this.addServiceForm.reset();
@@ -306,7 +306,8 @@ export class AddServiceFormComponent implements OnInit {
               detail: 'Failed to create service. Please try again.'
             });
           }
-        }});
+        }
+      });
     }
       
   }
