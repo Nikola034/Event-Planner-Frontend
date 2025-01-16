@@ -34,6 +34,8 @@ import { Router } from '@angular/router';
   styleUrl: './create-event-form.component.scss'
 })
 export class CreateEventFormComponent {
+  successMessage: string = "";
+
   addEventTypeForm = new FormGroup({
     title: new FormControl(''),
     description: new FormControl(''),
@@ -51,7 +53,9 @@ export class CreateEventFormComponent {
     private productService: ProductService, private eventTypeService: EventTypeService, private eventService: EventService, private router: Router) {}
 
   eventTypes: CreateEventTypeResponseDTO[] = []
-  selectedEventType: any = null
+  selectedEventType: any = null;
+
+  successMessageText: string = '';
 
   services: MerchandiseOverviewDTO[] = []
   products: MerchandiseOverviewDTO[] = []
@@ -94,6 +98,7 @@ export class CreateEventFormComponent {
   ngOnInit(){
       this.eventTypeService.getAllActiveWp().pipe(tap(response => {
         this.eventTypes = response
+        this.selectedEventType = response.find(x => x.title == 'all')?.id
       })).subscribe()
   }
 
@@ -120,6 +125,7 @@ export class CreateEventFormComponent {
     }
     this.eventService.create(dto).pipe(tap(response => {
       this.router.navigate(['home/my_events']);
+      this.successMessageText = "Success!";
     })).subscribe()
   }
 }
