@@ -7,7 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { JwtService } from '../../../infrastructure/auth/jwt.service';
-import { tap } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { RegisterEoDto } from '../../../infrastructure/auth/model/register-dtos/RegisterEo.dto';
 import { Role } from '../../../infrastructure/auth/model/register-dtos/role.dto';
 import { copyFileSync } from 'fs';
@@ -16,6 +16,7 @@ import { AddressDTO } from '../../../infrastructure/auth/model/register-dtos/add
 import { PhotoService } from '../../../shared/photos/photo.service';
 import { UserService } from '../../user.service';
 import { response } from 'express';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-register-eo-form',
@@ -23,6 +24,7 @@ import { response } from 'express';
   imports: [ButtonModule, ReactiveFormsModule, FileUploadModule,MapComponent, ToastModule, CommonModule],
   templateUrl: './register-eo-form.component.html',
   styleUrl: './register-eo-form.component.scss',
+  providers: [MessageService],
   encapsulation: ViewEncapsulation.None
 })
 export class RegisterEoFormComponent {
@@ -52,7 +54,7 @@ export class RegisterEoFormComponent {
     });
   }
 
-  constructor(private router: Router, private jwtService: JwtService, private photoService: PhotoService, private userService: UserService){}
+  constructor(private router: Router, private jwtService: JwtService, private photoService: PhotoService, private userService: UserService, private messageService: MessageService){}
 
   ngOnInit(){
     if(this.jwtService.getRoleFromToken() == 'AU'){
@@ -70,11 +72,19 @@ export class RegisterEoFormComponent {
   getPhotoUrl(photo: string): string{
     return this.photoService.getPhotoUrl(photo);
   }
-  createAccount(): void{
-    if(this.registerForm.controls.password1.value != this.registerForm.controls.password2.value){
-      //nisu iste sifre
+  createAccount(): void {
+    if (this.registerForm.controls.password1.value !== this.registerForm.controls.password2.value) {
+      // Passwords do not match
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: 'Password Mismatch', 
+        detail: 'Passwords do not match' 
+      });
       return;
     }
+
+  
+
     const dto: RegisterEoDto = {
       name: this.registerForm.controls.name.value,
       surname: this.registerForm.controls.surname.value,
@@ -90,17 +100,33 @@ export class RegisterEoFormComponent {
         latitude: this.registerForm.controls.latitude.value,
         longitude: this.registerForm.controls.longitude.value,
       }
-    }
+    };
+
     let promotion = false;
-    if(this.jwtService.getRoleFromToken() == 'AU'){
+    if (this.jwtService.getRoleFromToken() == 'AU') {
       promotion = true;
       this.jwtService.Logout();
     }
-    this.jwtService.registerEo(dto, promotion).pipe(
-      tap(response => {
-          this.router.navigate(['home'])
+
+    this.jwtService.registerEo(dto, false).pipe(
+      catchError((error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Registration Failed',
+          detail: 'An error occurred while creating your account. Please try again later.',
+        });
+        return of(null); // Return a fallback observable
       })
-    ).subscribe()
+    ).subscribe((response) => {
+      if (response) {
+        this.router.navigate(['home']);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Registration Successful',
+          detail: 'Your account has been created successfully!',
+        });
+      }
+    });
   }
 
   uploadFile($event: any) {

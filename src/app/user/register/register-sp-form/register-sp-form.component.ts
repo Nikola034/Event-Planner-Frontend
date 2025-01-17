@@ -7,19 +7,21 @@ import { ButtonModule } from 'primeng/button';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { RegisterSpDto } from '../../../infrastructure/auth/model/register-dtos/RegisterSp.dto';
-import { tap } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { JwtService } from '../../../infrastructure/auth/jwt.service';
 import { PhotoService } from '../../../shared/photos/photo.service';
 import { CreateBusinessPhotoDTO, CreateMerchandisePhotoDTO, PhotoToAdd } from '../../../merchandise/merchandise/model/merchandise-photos-request-dto';
 import { MapComponent } from '../../../shared/map/map.component';
 import { AddressDTO } from '../../../infrastructure/auth/model/register-dtos/address.dto';
 import { UserService } from '../../user.service';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-register-sp-form',
   standalone: true,
   imports: [ButtonModule, ReactiveFormsModule, FileUploadModule,MapComponent, ToastModule, CommonModule],
   templateUrl: './register-sp-form.component.html',
   styleUrl: './register-sp-form.component.scss',
+  providers: [MessageService],
   encapsulation: ViewEncapsulation.None
 })
 export class RegisterSpFormComponent {
@@ -51,7 +53,7 @@ export class RegisterSpFormComponent {
     companyPhotos: this.fbl.array([])
   })
 
-  constructor(private router: Router, private jwtService: JwtService, private photoService: PhotoService, private userService: UserService){}
+  constructor(private router: Router, private jwtService: JwtService, private photoService: PhotoService, private userService: UserService, private messageService: MessageService){}
 
   ngOnInit(){
     if(this.jwtService.getRoleFromToken() == 'AU'){
@@ -79,9 +81,16 @@ export class RegisterSpFormComponent {
 
   createAccount(): void{
     if(this.registerForm.controls.password1.value != this.registerForm.controls.password2.value){
-      //nisu iste sifre
+      // Passwords do not match
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: 'Password Mismatch', 
+        detail: 'Passwords do not match' 
+      });
       return;
     }
+
+    
     const dto: RegisterSpDto = {
       name: this.registerForm.controls.name.value,
       surname: this.registerForm.controls.surname.value,
@@ -106,11 +115,25 @@ export class RegisterSpFormComponent {
       promotion = true;
       this.jwtService.Logout();
     }
-    this.jwtService.registerSp(dto, promotion).pipe(
-      tap(response => {
-        this.router.navigate(['home'])
-      })
-    ).subscribe()
+    this.jwtService.registerSp(dto, false).pipe(
+          catchError((error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Registration Failed',
+              detail: 'An error occurred while creating your account. Please try again later.',
+            });
+            return of(null); // Return a fallback observable
+          })
+        ).subscribe((response) => {
+          if (response) {
+            this.router.navigate(['home']);
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Registration Successful',
+              detail: 'Your account has been created successfully!',
+            });
+          }
+        });
   }
 
   uploadFile($event: any): void {

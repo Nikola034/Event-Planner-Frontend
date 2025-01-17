@@ -32,6 +32,7 @@ export class CreateActivityFormComponent {
     latitude: new FormControl<number | null | undefined>(1),
     longitude: new FormControl<number | null | undefined>(1),
   });
+
   constructor(private router: Router, private fb: FormBuilder, private eventService: EventService, private route: ActivatedRoute) {
 
   }
