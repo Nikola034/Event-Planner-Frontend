@@ -1,10 +1,11 @@
 import { Address } from "../../../shared/address/address";
+import { MerchandisePhotoDTO } from "./merchandise-photo-response-dto";
 
 export interface MerchandiseOverviewDTO {
     id: number | null | undefined;
     category: string | null | undefined;
     type: string | null | undefined;
-    photo: Uint8Array | null | undefined; // Equivalent to byte[] in Java
+    photos: MerchandisePhotoDTO[]
     title: string | null | undefined;
     rating: number | null | undefined;
     address: Address | null | undefined;

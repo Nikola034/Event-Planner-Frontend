@@ -16,7 +16,7 @@ export class PhotoService {
   getPhotoAsBlob(filename: string): Observable<Blob> {
     return this.http.get(`${environment.apiUrl}photos/${filename}`, { responseType: 'blob' });
   }
-
+ 
   getPhotoUrl(filename: string): string {
     return `${environment.apiUrl}photos/${filename}`;
   }
