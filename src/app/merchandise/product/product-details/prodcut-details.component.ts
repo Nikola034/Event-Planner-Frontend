@@ -16,6 +16,7 @@ import { JwtService } from '../../../infrastructure/auth/jwt.service';
 import { MapComponent } from '../../../shared/map/map.component';
 import { MapService } from '../../../shared/map/map.service';
 import { LeaveReviewComponent } from "../../../review/leave-review/leave-review.component";
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-prodcut-details',
@@ -102,11 +103,17 @@ export class ProdcutDetailsComponent implements OnInit {
       this.popupMessage = productBought;
       this.displayPopupMessage = true;
     }
-
-    addToFavorite() {
-      //logic for adding service to favorite
-      this.isStarFilled = !this.isStarFilled;
-    }
+    isFavorited: boolean = false;
+    toggleFavorite(): void {
+        this.isFavorited = !this.isFavorited;
+        this.merchandiseService
+          .favorizeMerchandise(
+            this.product?.id,
+             this.jwtService.getIdFromToken()
+          )
+          .pipe(tap((response) => {}))
+          .subscribe();
+      }
 
     calculatePrice(): number {
       const discountedPrice = this.product!.price - (this.product!.price * this.product!.discount)/100;

@@ -11,6 +11,7 @@ import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { MerchandiseOverviewDTO } from '../model/merchandise-overview-dto';
 import { Router } from '@angular/router';
+import { PhotoService } from '../../../shared/photos/photo.service';
 @Component({
   selector: 'app-merchandise-card',
   standalone: true,
@@ -21,7 +22,7 @@ import { Router } from '@angular/router';
 export class MerchandiseCardComponent{
   @Input() merchandise!: MerchandiseOverviewDTO;
   @Input() eventId: number = -1;
-  constructor(private router:Router){}
+  constructor(private router:Router, private photoService: PhotoService){}
 
   seeDetails(){
     if(this.merchandise.type==='Service')
@@ -29,6 +30,13 @@ export class MerchandiseCardComponent{
     else {
       this.router.navigate(['home', 'product', this.merchandise.id, this.eventId]);
     }
+  }
+
+  getPhotoUrl(){
+    if(!this.merchandise.photos || this.merchandise.photos.length == 0){
+      return;
+    }
+    return this.photoService.getPhotoUrl(this.merchandise.photos[0].photo);
   }
 
 }

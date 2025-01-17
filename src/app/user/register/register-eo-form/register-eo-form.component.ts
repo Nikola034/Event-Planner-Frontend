@@ -104,6 +104,7 @@ export class RegisterEoFormComponent {
 
     let promotion = false;
     if (this.jwtService.getRoleFromToken() == 'AU') {
+      console.log("jeste")
       promotion = true;
       this.jwtService.Logout();
     }

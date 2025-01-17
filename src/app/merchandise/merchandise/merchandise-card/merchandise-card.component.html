@@ -11,7 +11,7 @@
 
             <div class="col-12 xl:col-3">
                 <div class="flex flex-column gap-3">
-                    <img src="{{merchandise.photo}}" alt="">
+                    <img [src]="getPhotoUrl()" alt="" style="height: 100px; width: 100px;">
                     <p class="text-xl font-semibold">{{ merchandise.title }}</p>
                     <div>
                         <i class="pi pi-map-marker mr-1"></i>
