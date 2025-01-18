@@ -19,6 +19,7 @@ import { LeaveReviewComponent } from "../../../review/leave-review/leave-review.
 import { tap } from 'rxjs';
 import { ReviewService } from '../../../review/review-service.service';
 import { ReviewType } from '../../../review/leave-review/review-request-dto';
+import { PhotoService } from '../../../shared/photos/photo.service';
 
 @Component({
   selector: 'app-prodcut-details',
@@ -58,9 +59,10 @@ export class ProdcutDetailsComponent implements OnInit {
                 private router: Router,
                 private merchandiseService: MerchandiseService,
                 private productService: ProductService,
+                private reviewService: ReviewService) {}
                 private mapService:MapService,
                 private jwtService: JwtService,
-                private reviewService: ReviewService) {}
+                private photoService: PhotoService) {}
 
     ngOnInit() {
       const productId = this.route.snapshot.paramMap.get('productId');
@@ -75,7 +77,7 @@ export class ProdcutDetailsComponent implements OnInit {
         this.merchandiseService.getMerchandiseDetails(this.productId).subscribe({
           next: (response) => {
             this.product = response;
-            this.images = this.product.merchandisePhotos;
+            this.images = this.product.merchandisePhotos.map(x => this.photoService.getPhotoUrl(x.photo));
             this.paginatedReviews = this.product.reviews.slice(0,5);
             this.mapService.updateMerchandiseAddresses(response);
           },

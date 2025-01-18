@@ -19,6 +19,8 @@ import { catchError, EMPTY, switchMap, tap } from 'rxjs';
 import { LeaveReviewComponent } from "../../../review/leave-review/leave-review.component";
 import { ReviewService } from '../../../review/review-service.service';
 import { ReviewType } from '../../../review/leave-review/review-request-dto';
+import { PhotoService } from '../../../shared/photos/photo.service';
+
 
 @Component({
   selector: 'app-service-details',
@@ -52,7 +54,8 @@ export class ServiceDetailsComponent implements OnInit {
     }
 ];
 
-  constructor(private route: ActivatedRoute, 
+  constructor(private photoService: PhotoService,
+              private route: ActivatedRoute, 
               private merchandiseService: MerchandiseService,
               private mapService:MapService, 
               public jwtService: JwtService, 
@@ -65,24 +68,18 @@ export class ServiceDetailsComponent implements OnInit {
 
     if(this.serviceId != -1) {
       this.merchandiseService
-      .getMerchandiseDetails(this.serviceId)
-      .pipe(
-        switchMap((response) => {
-          this.service = response;
-          this.images = this.service?.merchandisePhotos;
-          this.paginatedReviews = this.service?.reviews.slice(0, 5);
-          this.mapService.updateMerchandiseAddresses(response);
+  .getMerchandiseDetails(this.serviceId)
+  .pipe(
+    switchMap((response) => {
+      this.service = response;
+      this.images = this.service.merchandisePhotos.map(x => this.photoService.getPhotoUrl(x.photo));
+      this.paginatedReviews = this.service?.reviews.slice(0, 5);
+      this.mapService.updateMerchandiseAddresses(response);
 
-          // Call to check if the service is favorited
-          return this.merchandiseService.getFavorites().pipe(
-            tap((favorites) => {
-              this.isFavorited = favorites.some((x) => x.id === this.service?.id);
-            })
-          );
-        }),
-        catchError((err: HttpErrorResponse) => {
-          this.errorMessage = this.getErrorMessage(err);
-          return EMPTY; // Prevents unhandled error propagation
+      // Call to check if the service is favorited
+      return this.merchandiseService.getFavorites().pipe(
+        tap((favorites) => {
+          this.isFavorited = favorites.some((x) => x.id === this.service?.id);
         })
       )
       .subscribe();

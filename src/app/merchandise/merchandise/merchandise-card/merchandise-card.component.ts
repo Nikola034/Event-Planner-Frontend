@@ -34,7 +34,7 @@ export class MerchandiseCardComponent{
 
   getPhotoUrl(){
     if(!this.merchandise.photos || this.merchandise.photos.length == 0){
-      return;
+      return 'no-photo.jpg'
     }
     return this.photoService.getPhotoUrl(this.merchandise.photos[0].photo);
   }

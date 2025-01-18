@@ -54,33 +54,27 @@ export class EditEoFormComponent {
       });
     }
 
-
-    confirm2($event: Event) {
-      console.log('cao')
-      this.confirmationService.confirm({
-          target: $event.target as EventTarget,
-          message: 'Do you want to delete this record?',
-          header: 'Danger Zone',
-          icon: 'pi pi-info-circle',
-          rejectLabel: 'Cancel',
-
-          accept: () => {
-              this.deactivateAccount();
-          },
-          reject: () => {
-              this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
-          },
-      });
-  }
     ngOnInit(){
       this.loadData()
     }
     deactivateAccount(){
-      this.jwtService.deactivate(this.jwtService.getIdFromToken()).pipe(
-        tap(response => {
-
-        })
-      ).subscribe()
+      this.confirmationService.confirm({
+        message: 'Are you sure you want to deactivate account?',
+        header: 'Confirm Denial',
+        icon: 'pi pi-times-circle',
+        accept: () => {
+          this.jwtService.deactivate(this.jwtService.getIdFromToken()).pipe(
+            tap(response => {
+              if(!response){
+                this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You can not deactivate account because you have created events or booked reservations' });
+              }
+              else{
+                this.router.navigate([''])
+              }
+            })
+          ).subscribe()
+        }
+      });
     }
 
     loadData(): void{

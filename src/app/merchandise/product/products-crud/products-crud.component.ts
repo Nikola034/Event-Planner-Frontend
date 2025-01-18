@@ -16,6 +16,8 @@ import { response } from 'express';
 import { PhotoService } from '../../../shared/photos/photo.service';
 import { JwtService } from '../../../infrastructure/auth/jwt.service';
 import { ServicesCalendarComponent } from '../../service/services-calendar/services-calendar.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-products-crud',
@@ -31,7 +33,9 @@ import { ServicesCalendarComponent } from '../../service/services-calendar/servi
     AddServiceFormComponent,
     CommonModule,
     ServicesCalendarComponent,
+    ConfirmDialogModule
   ],
+  providers: [MessageService, ConfirmationService],
   templateUrl: './products-crud.component.html',
   styleUrl: './products-crud.component.scss',
 })
@@ -44,7 +48,8 @@ export class ProductsCrudComponent {
     private productService: ProductService,
     private router: Router,
     private photoService: PhotoService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit() {
@@ -88,12 +93,19 @@ export class ProductsCrudComponent {
   }
 
   deleteProduct(productId: number): void {
-    this.productService
-      .delete(productId)
-      .pipe(tap((response) => {
-        this.loadData()
-      }))
-      .subscribe();
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this product?',
+      header: 'Confirm Denial',
+      icon: 'pi pi-times-circle',
+      accept: () => {
+        this.productService
+        .delete(productId)
+        .pipe(tap((response) => {
+          this.loadData()
+        }))
+        .subscribe();
+      },
+    });
   }
 
   getPhotoUrl(photo: string): string {
