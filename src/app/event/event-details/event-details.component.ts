@@ -19,11 +19,15 @@ import { UserService } from '../../user/user.service';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { LeaveReviewComponent } from "../../review/leave-review/leave-review.component";
+import { FieldsetModule } from 'primeng/fieldset';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { ReviewService } from '../../review/review-service.service';
+import { ReviewType } from '../../review/leave-review/review-request-dto';
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [CommonModule, ButtonModule, ChartModule, MapComponent, ConfirmDialogModule, LeaveReviewComponent],
+  imports: [CommonModule, ButtonModule, ChartModule, MapComponent, ConfirmDialogModule, LeaveReviewComponent, FieldsetModule, PaginatorModule],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',
   providers:[ConfirmationService]
@@ -31,7 +35,7 @@ import { LeaveReviewComponent } from "../../review/leave-review/leave-review.com
 export class EventDetailsComponent {
   eventDetails!: EventDetailsDTO;
   isFavorited: boolean = false;
-  eventId!: number
+  eventId!: number;
 
   role: string = '';
 
@@ -41,6 +45,9 @@ export class EventDetailsComponent {
   reviewChartOptions: any;
   errorMessage:string='';
 
+  paginatedReviews: any | undefined = [];
+  isVisible: boolean = false;
+
   constructor(
     private eventService: EventService,
     private router: Router,
@@ -48,7 +55,8 @@ export class EventDetailsComponent {
     private route: ActivatedRoute,
     private mapService:MapService,
     private userService:UserService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private reviewService: ReviewService
   ) {}
 
   ngOnInit() {
@@ -68,6 +76,7 @@ export class EventDetailsComponent {
         switchMap((details) => {
           this.eventDetails = details;
           this.mapService.updateEventAddresses(details);
+          this.paginatedReviews = this.eventDetails?.reviews.slice(0, 5);
           return this.eventService.getFavorites().pipe(
             tap(response => {
               this.isFavorited = response.some(x => x.id == this.eventDetails.id);
@@ -82,7 +91,21 @@ export class EventDetailsComponent {
               })
       )
       .subscribe();
+    
+      this.reviewService.isEligibleForReview(this.jwtService.getIdFromToken(), this.eventId, ReviewType.EVENT_REVIEW).subscribe({
+        next: (response) => {
+          this.isVisible = response;
+        },
+        error: (err) => {
+          this.isVisible = false;
+        }
+      });
+  }
 
+  onPageChange(event: any) {
+    const startIndex = event.first;
+    const endIndex = startIndex + event.rows;
+    this.paginatedReviews = this.eventDetails?.reviews.slice(startIndex, endIndex);
   }
 
   seeChat() {

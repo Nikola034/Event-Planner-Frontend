@@ -28,8 +28,6 @@ export class PriceListComponent implements OnInit {
       this.priceListService.getPriceList(this.jwtService.getIdFromToken()).subscribe({
         next: (response) => {
           this.priceList = response;
-          console.log(response);
-          console.log(this.priceList);
         },
         error: (err) => {
           console.error(err);

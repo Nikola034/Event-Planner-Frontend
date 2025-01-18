@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ReviewOverviewDTO } from './model/review-overview-dto';
 import { API_URL } from '../../globals';
-import { ReviewRequestDTO } from './leave-review/review-request-dto';
+import { ReviewRequestDTO, ReviewType } from './leave-review/review-request-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +27,12 @@ export class ReviewService {
 
   leaveReview(id: number, request: ReviewRequestDTO): Observable<any> {
     return this.http.post(`${this.apiUrl}/${id}/add`, request);
+  }
+
+  isEligibleForReview(userId: number, id: number, reviewType: ReviewType): Observable<any> {
+    const params = {
+      reviewType: reviewType
+    }
+    return this.http.get(`${this.apiUrl}/display-review/${id}/${userId}`, {params});
   }
 }
