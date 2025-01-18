@@ -20,20 +20,21 @@ import { tap } from 'rxjs';
 import { ReviewService } from '../../../review/review-service.service';
 import { ReviewType } from '../../../review/leave-review/review-request-dto';
 import { PhotoService } from '../../../shared/photos/photo.service';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-prodcut-details',
   standalone: true,
-  imports: [PaginatorModule, ButtonModule, CurrencyPipe, CommonModule, GalleriaModule, FieldsetModule, MapComponent, DialogModule, BuyProductComponent, LeaveReviewComponent],
+  imports: [PaginatorModule, ButtonModule, CurrencyPipe, CommonModule, GalleriaModule, FieldsetModule, MapComponent, DialogModule, BuyProductComponent, LeaveReviewComponent, ToastModule],
   templateUrl: './prodcut-details.component.html',
-  styleUrl: './prodcut-details.component.scss'
+  styleUrl: './prodcut-details.component.scss',
+  providers: [MessageService]
 })
 export class ProdcutDetailsComponent implements OnInit {
   productId: number = -1;
   eventId: number = -1;
   displayEventSearch = false;
-  displayPopupMessage = false;
-  popupMessage = '';
   product: MerchandiseDetailDTO | null = null;
   isStarFilled: boolean = false;
   role: string = '';
@@ -62,7 +63,8 @@ export class ProdcutDetailsComponent implements OnInit {
                 private reviewService: ReviewService,
                 private mapService:MapService,
                 private jwtService: JwtService,
-                private photoService: PhotoService) {}
+                private photoService: PhotoService,
+                private messageService: MessageService) {}
 
     ngOnInit() {
       const productId = this.route.snapshot.paramMap.get('productId');
@@ -101,10 +103,18 @@ export class ProdcutDetailsComponent implements OnInit {
       if(this.eventId != -1) {
         this.productService.buyProduct(this.productId, this.eventId).subscribe({
           next: (response) => {
-            console.log('success');
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Purchased',
+              detail: response.message
+            });
           },
           error: (err) => {
-            console.error(err);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: err.error.message
+            });
           }
         });
       } else {
@@ -112,10 +122,21 @@ export class ProdcutDetailsComponent implements OnInit {
       }
     }
 
-    productBought(productBought: string) {
+    productBought(productBought: {success: boolean, message: string}) {
       this.displayEventSearch = false;
-      this.popupMessage = productBought;
-      this.displayPopupMessage = true;
+      if(productBought.success) {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Purchased',
+          detail: productBought.message
+        });
+      }else {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: productBought.message
+        });
+      }
     }
     isFavorited: boolean = false;
     toggleFavorite(): void {

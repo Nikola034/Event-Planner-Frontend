@@ -14,7 +14,7 @@ import { EventOverviewDTO } from '../../../../event/model/event-overview-dto';
 })
 export class BuyProductComponent implements OnInit {
   @Input() productId!: number;
-  @Output() productBought = new EventEmitter<string>();
+  @Output() productBought = new EventEmitter<{success: boolean, message: string}>();
   eventId: number = -1;
   events: EventOverviewDTO[] = [];
 
@@ -40,10 +40,10 @@ export class BuyProductComponent implements OnInit {
   onSubmit() {
     this.productService.buyProduct(this.productId, this.eventId).subscribe({
       next: (response) => {
-        this.productBought.emit(response.message);
+        this.productBought.emit({success: true , message: response.message});
       },
       error: (err) => {
-        this.productBought.emit(err.error.message);
+        this.productBought.emit({success: false, message: err.error.message});
       }
     });
   }
