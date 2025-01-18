@@ -115,7 +115,7 @@ export class RegisterSpFormComponent {
       promotion = true;
       this.jwtService.Logout();
     }
-    this.jwtService.registerSp(dto, false).pipe(
+    this.jwtService.registerSp(dto, promotion).pipe(
           catchError((error) => {
             this.messageService.add({
               severity: 'error',

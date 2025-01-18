@@ -17,6 +17,7 @@ import { MapComponent } from '../../../shared/map/map.component';
 import { MapService } from '../../../shared/map/map.service';
 import { LeaveReviewComponent } from "../../../review/leave-review/leave-review.component";
 import { tap } from 'rxjs';
+import { PhotoService } from '../../../shared/photos/photo.service';
 
 @Component({
   selector: 'app-prodcut-details',
@@ -57,7 +58,8 @@ export class ProdcutDetailsComponent implements OnInit {
                 private merchandiseService: MerchandiseService,
                 private productService: ProductService,
               private mapService:MapService,
-            private jwtService: JwtService) {}
+            private jwtService: JwtService,
+          private photoService: PhotoService) {}
 
     ngOnInit() {
       const productId = this.route.snapshot.paramMap.get('productId');
@@ -72,7 +74,7 @@ export class ProdcutDetailsComponent implements OnInit {
         this.merchandiseService.getMerchandiseDetails(this.productId).subscribe({
           next: (response) => {
             this.product = response;
-            this.images = this.product.merchandisePhotos;
+            this.images = this.product.merchandisePhotos.map(x => this.photoService.getPhotoUrl(x.photo));
             this.paginatedReviews = this.product.reviews.slice(0,5);
             this.mapService.updateMerchandiseAddresses(response);
           },

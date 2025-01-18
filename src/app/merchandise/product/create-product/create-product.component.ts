@@ -72,7 +72,6 @@ export class CreateProductComponent {
     eventTypes: new FormControl([]),
     minDuration: new FormControl(null, [Validators.required, Validators.min(0)]),
     maxDuration: new FormControl(null, [Validators.required, Validators.min(0)]),
-    duration: new FormControl(null),
     reservationDeadline: new FormControl(null, [Validators.required, Validators.min(0)]),
     cancellationDeadline: new FormControl(null, [Validators.required, Validators.min(0)]),
     automaticReservation: new FormControl(false),

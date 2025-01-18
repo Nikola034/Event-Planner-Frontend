@@ -17,6 +17,7 @@ import { MapService } from '../../../shared/map/map.service';
 import { JwtService } from '../../../infrastructure/auth/jwt.service';
 import { catchError, EMPTY, switchMap, tap } from 'rxjs';
 import { LeaveReviewComponent } from "../../../review/leave-review/leave-review.component";
+import { PhotoService } from '../../../shared/photos/photo.service';
 
 @Component({
   selector: 'app-service-details',
@@ -49,7 +50,7 @@ export class ServiceDetailsComponent implements OnInit {
     }
 ];
 
-  constructor(private route: ActivatedRoute, private merchandiseService: MerchandiseService,private mapService:MapService, public jwtService: JwtService, private router: Router) {}
+  constructor(private photoService: PhotoService, private route: ActivatedRoute, private merchandiseService: MerchandiseService,private mapService:MapService, public jwtService: JwtService, private router: Router) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -61,7 +62,7 @@ export class ServiceDetailsComponent implements OnInit {
   .pipe(
     switchMap((response) => {
       this.service = response;
-      this.images = this.service?.merchandisePhotos;
+      this.images = this.service.merchandisePhotos.map(x => this.photoService.getPhotoUrl(x.photo));
       this.paginatedReviews = this.service?.reviews.slice(0, 5);
       this.mapService.updateMerchandiseAddresses(response);
 
