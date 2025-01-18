@@ -104,12 +104,11 @@ export class RegisterEoFormComponent {
 
     let promotion = false;
     if (this.jwtService.getRoleFromToken() == 'AU') {
-      console.log("jeste")
       promotion = true;
       this.jwtService.Logout();
     }
 
-    this.jwtService.registerEo(dto, false).pipe(
+    this.jwtService.registerEo(dto, promotion).pipe(
       catchError((error) => {
         this.messageService.add({
           severity: 'error',

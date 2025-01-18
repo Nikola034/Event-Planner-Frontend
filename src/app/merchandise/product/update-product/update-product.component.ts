@@ -73,7 +73,6 @@ export class UpdateProductComponent {
     eventTypes: new FormControl([]),
     minDuration: new FormControl<number | undefined | null>(null, [Validators.required, Validators.min(0)]),
     maxDuration: new FormControl<number | undefined | null>(null, [Validators.required, Validators.min(0)]),
-    duration: new FormControl(null),
     reservationDeadline: new FormControl<number | undefined | null>(null, [Validators.required, Validators.min(0)]),
     cancellationDeadline: new FormControl<number | undefined | null>(null, [Validators.required, Validators.min(0)]),
     automaticReservation: new FormControl(false),

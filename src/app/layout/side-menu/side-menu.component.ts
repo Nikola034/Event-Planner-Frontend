@@ -52,6 +52,9 @@ export class SideMenuComponent {
                       this.username = response.name + ' ' + response.surname;
                       this.email = response.email;
                       this.photo = this.photoService.getPhotoUrl(response.photo);
+                      if(!response.photo){
+                        this.photo = 'guest.jpg'
+                      }
                     })
                   )
                   .subscribe();
@@ -63,6 +66,9 @@ export class SideMenuComponent {
                       this.username = response.name + ' ' + response.surname;
                       this.email = response.email;
                       this.photo = this.photoService.getPhotoUrl(response.photo);
+                      if(!response.photo){
+                        this.photo = 'guest.jpg'
+                      }
                     })
                   )
                   .subscribe();
@@ -74,6 +80,9 @@ export class SideMenuComponent {
                       this.username = response.name + ' ' + response.surname;
                       this.email = response.email;
                       this.photo = this.photoService.getPhotoUrl(response.photo);
+                      if(!response.photo){
+                        this.photo = 'guest.jpg'
+                      }
                     })
                   )
                   .subscribe();
