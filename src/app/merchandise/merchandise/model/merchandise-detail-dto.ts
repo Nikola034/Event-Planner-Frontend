@@ -2,7 +2,7 @@ import { AddressDTO } from "../../../infrastructure/auth/model/register-dtos/add
 import { CategoryDto } from "../../category/model/category.dto";
 import { EventType } from "../../../event-type/event-type";
 import { MerchandisePhotoDTO } from "./merchandise-photo-response-dto";
-import { MerchandiseReviewOverviewDTO } from "./merchandise-review-overview-dto";
+import { DetailsReviewOverviewDTO } from "./merchandise-review-overview-dto";
 
 export interface MerchandiseDetailDTO {
     id: number,
@@ -18,7 +18,7 @@ export interface MerchandiseDetailDTO {
     reservationDeadline: number,
     cancellationDeadline: number,
     merchandisePhotos: MerchandisePhotoDTO[],
-    reviews: MerchandiseReviewOverviewDTO[],
+    reviews: DetailsReviewOverviewDTO[],
     address: AddressDTO,
     category: CategoryDto,
     eventTypes: EventType,
