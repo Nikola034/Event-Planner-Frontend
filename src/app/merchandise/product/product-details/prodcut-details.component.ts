@@ -17,6 +17,8 @@ import { MapComponent } from '../../../shared/map/map.component';
 import { MapService } from '../../../shared/map/map.service';
 import { LeaveReviewComponent } from "../../../review/leave-review/leave-review.component";
 import { tap } from 'rxjs';
+import { ReviewService } from '../../../review/review-service.service';
+import { ReviewType } from '../../../review/leave-review/review-request-dto';
 
 @Component({
   selector: 'app-prodcut-details',
@@ -34,7 +36,7 @@ export class ProdcutDetailsComponent implements OnInit {
   product: MerchandiseDetailDTO | null = null;
   isStarFilled: boolean = false;
   role: string = '';
-
+  isVisible: boolean = false;
   images: any[] = [];
   paginatedReviews: any | undefined;
   responsiveOptions: any[] = [
@@ -56,8 +58,9 @@ export class ProdcutDetailsComponent implements OnInit {
                 private router: Router,
                 private merchandiseService: MerchandiseService,
                 private productService: ProductService,
-              private mapService:MapService,
-            private jwtService: JwtService) {}
+                private mapService:MapService,
+                private jwtService: JwtService,
+                private reviewService: ReviewService) {}
 
     ngOnInit() {
       const productId = this.route.snapshot.paramMap.get('productId');
@@ -78,6 +81,16 @@ export class ProdcutDetailsComponent implements OnInit {
           },
           error: (err) => {
             console.error(err);
+          }
+        });
+
+        this.reviewService.isEligibleForReview(this.jwtService.getIdFromToken(), this.productId, ReviewType.MERCHANIDSE_REVIEW).subscribe({
+          next: (response) => {
+            console.log(response);
+            this.isVisible = response;
+          },
+          error: (err) => {
+            this.isVisible = false;
           }
         });
       }

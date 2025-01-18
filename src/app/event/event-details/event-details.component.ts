@@ -21,6 +21,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { LeaveReviewComponent } from "../../review/leave-review/leave-review.component";
 import { FieldsetModule } from 'primeng/fieldset';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { ReviewService } from '../../review/review-service.service';
+import { ReviewType } from '../../review/leave-review/review-request-dto';
 
 @Component({
   selector: 'app-event-details',
@@ -44,6 +46,7 @@ export class EventDetailsComponent {
   errorMessage:string='';
 
   paginatedReviews: any | undefined = [];
+  isVisible: boolean = false;
 
   constructor(
     private eventService: EventService,
@@ -52,7 +55,8 @@ export class EventDetailsComponent {
     private route: ActivatedRoute,
     private mapService:MapService,
     private userService:UserService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private reviewService: ReviewService
   ) {}
 
   ngOnInit() {
@@ -87,7 +91,15 @@ export class EventDetailsComponent {
               })
       )
       .subscribe();
-
+    
+      this.reviewService.isEligibleForReview(this.jwtService.getIdFromToken(), this.eventId, ReviewType.EVENT_REVIEW).subscribe({
+        next: (response) => {
+          this.isVisible = response;
+        },
+        error: (err) => {
+          this.isVisible = false;
+        }
+      });
   }
 
   onPageChange(event: any) {

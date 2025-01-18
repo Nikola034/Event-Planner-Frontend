@@ -131,7 +131,7 @@
         (onPageChange)="onPageChange($event)" class="mt-3">
     </p-paginator>
   </div>
-  <app-leave-review [id]="eventDetails.id" [type]="'event'"></app-leave-review>
+  <app-leave-review *ngIf="isVisible" [id]="eventDetails.id" [type]="'event'"></app-leave-review>
 </div>
 <p-confirmDialog rejectVisible="false" acceptLabel="Ok"/>
 

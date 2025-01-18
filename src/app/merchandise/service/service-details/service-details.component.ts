@@ -17,6 +17,8 @@ import { MapService } from '../../../shared/map/map.service';
 import { JwtService } from '../../../infrastructure/auth/jwt.service';
 import { catchError, EMPTY, switchMap, tap } from 'rxjs';
 import { LeaveReviewComponent } from "../../../review/leave-review/leave-review.component";
+import { ReviewService } from '../../../review/review-service.service';
+import { ReviewType } from '../../../review/leave-review/review-request-dto';
 
 @Component({
   selector: 'app-service-details',
@@ -34,6 +36,7 @@ export class ServiceDetailsComponent implements OnInit {
   images: any[] | undefined = [];
   paginatedReviews: any | undefined;
   errorMessage: string = '';
+  isVisible: boolean = false;
   responsiveOptions: any[] = [
     {
         breakpoint: '991px',
@@ -49,7 +52,12 @@ export class ServiceDetailsComponent implements OnInit {
     }
 ];
 
-  constructor(private route: ActivatedRoute, private merchandiseService: MerchandiseService,private mapService:MapService, public jwtService: JwtService, private router: Router) {}
+  constructor(private route: ActivatedRoute, 
+              private merchandiseService: MerchandiseService,
+              private mapService:MapService, 
+              public jwtService: JwtService, 
+              private router: Router,
+              private reviewService: ReviewService) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -57,27 +65,36 @@ export class ServiceDetailsComponent implements OnInit {
 
     if(this.serviceId != -1) {
       this.merchandiseService
-  .getMerchandiseDetails(this.serviceId)
-  .pipe(
-    switchMap((response) => {
-      this.service = response;
-      this.images = this.service?.merchandisePhotos;
-      this.paginatedReviews = this.service?.reviews.slice(0, 5);
-      this.mapService.updateMerchandiseAddresses(response);
+      .getMerchandiseDetails(this.serviceId)
+      .pipe(
+        switchMap((response) => {
+          this.service = response;
+          this.images = this.service?.merchandisePhotos;
+          this.paginatedReviews = this.service?.reviews.slice(0, 5);
+          this.mapService.updateMerchandiseAddresses(response);
 
-      // Call to check if the service is favorited
-      return this.merchandiseService.getFavorites().pipe(
-        tap((favorites) => {
-          this.isFavorited = favorites.some((x) => x.id === this.service?.id);
+          // Call to check if the service is favorited
+          return this.merchandiseService.getFavorites().pipe(
+            tap((favorites) => {
+              this.isFavorited = favorites.some((x) => x.id === this.service?.id);
+            })
+          );
+        }),
+        catchError((err: HttpErrorResponse) => {
+          this.errorMessage = this.getErrorMessage(err);
+          return EMPTY; // Prevents unhandled error propagation
         })
-      );
-    }),
-    catchError((err: HttpErrorResponse) => {
-      this.errorMessage = this.getErrorMessage(err);
-      return EMPTY; // Prevents unhandled error propagation
-    })
-  )
-  .subscribe();
+      )
+      .subscribe();
+
+      this.reviewService.isEligibleForReview(this.jwtService.getIdFromToken(), this.serviceId, ReviewType.MERCHANIDSE_REVIEW).subscribe({
+        next: (response) => {
+          this.isVisible = response;
+        },
+        error: (err) => {
+          this.isVisible = false;
+        }
+      });
     }
   }
   private getErrorMessage(error: HttpErrorResponse): string {

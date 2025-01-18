@@ -54,6 +54,6 @@
             (onPageChange)="onPageChange($event)" class="mt-3">
         </p-paginator>
     </div>
-    <app-leave-review [id]="service.id" [type]="'merchandise'"></app-leave-review>
+    <app-leave-review *ngIf="isVisible" [id]="service.id" [type]="'merchandise'"></app-leave-review>
 </div>
 <app-reservation-dialog [serviceId]="serviceId" class="w-full"></app-reservation-dialog>
