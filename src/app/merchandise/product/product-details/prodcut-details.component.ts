@@ -59,7 +59,7 @@ export class ProdcutDetailsComponent implements OnInit {
                 private router: Router,
                 private merchandiseService: MerchandiseService,
                 private productService: ProductService,
-                private reviewService: ReviewService) {}
+                private reviewService: ReviewService,
                 private mapService:MapService,
                 private jwtService: JwtService,
                 private photoService: PhotoService) {}
@@ -88,7 +88,6 @@ export class ProdcutDetailsComponent implements OnInit {
 
         this.reviewService.isEligibleForReview(this.jwtService.getIdFromToken(), this.productId, ReviewType.MERCHANIDSE_REVIEW).subscribe({
           next: (response) => {
-            console.log(response);
             this.isVisible = response;
           },
           error: (err) => {
