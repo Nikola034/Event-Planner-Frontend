@@ -1,4 +1,5 @@
 <div class="flex justify-content-center w-full pt-4">
+    <p-toast position="top-right"></p-toast>
     <div class="h-full w-9">
         <div class="flex w-full content surface-100 justify-content-center">
             <form [formGroup]="editServiceForm" class="flex pt-4 flex-column w-full px-4">
@@ -63,16 +64,12 @@
             </div>
             <div class="field flex justify-content-center">
                 <div class="grid">
-                    <div class="col-4">
+                    <div class="col-6">
                         <input type="number" placeholder="min Duration" formControlName="minDuration"
                         class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
                     </div>
-                    <div class="col-4">
+                    <div class="col-6">
                         <input type="number" placeholder="max Duration" formControlName="maxDuration"
-                        class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
-                    </div>
-                    <div class="col-4">
-                        <input type="number" placeholder="Duration" formControlName="minDuration"
                         class="text-base p-2 w-full border-round-top-sm border-none border-bottom-1 h-3rem surface-50">
                     </div>
                 </div>
@@ -99,7 +96,7 @@
                             <div class="flex align-items-center">
                                 <p-radioButton 
                                     name="automaticReservation" 
-                                    value="true"
+                                    [value]="true"
                                     formControlName="automaticReservation"
                                     inputId="ingredient1" />
                                 <label for="ingredient1" class="ml-2">
@@ -111,7 +108,7 @@
                                 <p-radioButton 
                                     name="automaticReservation" 
                                     formControlName="automaticReservation"
-                                    value="false"
+                                    [value]="false"
                                     inputId="ingredient2" />
                                 <label for="ingredient2" class="ml-2">
                                     Manual

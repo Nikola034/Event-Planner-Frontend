@@ -19,12 +19,13 @@ import { JwtService } from '../../../infrastructure/auth/jwt.service';
 import { CreateEventTypeResponseDTO } from '../../../event-type/create-event-type-form/dtos/create-event-type-response.dto';
 import { tap } from 'rxjs';
 import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-edit-service-form',
   standalone: true,
   imports: [DropdownModule, FormsModule, MultiSelectModule, RadioButtonModule, ButtonModule, 
-            ReactiveFormsModule, CheckboxModule, MapComponent, CommonModule],
+            ReactiveFormsModule, CheckboxModule, MapComponent, CommonModule, ToastModule],
   templateUrl: './edit-service-form.component.html',
   styleUrl: './edit-service-form.component.scss',
   providers: [MessageService]
@@ -51,11 +52,11 @@ export class EditServiceFormComponent implements OnInit {
     latitude: new FormControl<number|null|undefined>(null, [Validators.required]),
     eventTypesIds: new FormControl([], [Validators.required]),
     minDuration: new FormControl<number|null|undefined>(null, [Validators.required, Validators.min(0)]),
-    maxDuration: new FormControl<number|null|undefined>(null, [Validators.required, Validators.min(0)]),
+    maxDuration: new FormControl<number|null|undefined>(null, [Validators.min(0)]),
     reservationDeadline: new FormControl<number|null|undefined>(null, [Validators.required, Validators.min(0)]),
     cancellationDeadline: new FormControl<number|null|undefined>(null, [Validators.required, Validators.min(0)]),
     automaticReservation: new FormControl<boolean>(false, [Validators.required]),
-    photos: this.fbl.array([]),
+    merchandisePhotos: this.fbl.array([]),
     visible: new FormControl(false, [Validators.required]),
     available: new FormControl(false, [Validators.required])
   });
@@ -95,20 +96,17 @@ export class EditServiceFormComponent implements OnInit {
         });
 
         this.selectedEventTypes = response.eventTypes.map(x => x.id);
-
-        const photosArray = this.editServiceForm.get('photos') as FormArray;
-        if(response.merchandisePhotos != null && response.merchandisePhotos != undefined) {
-          response.merchandisePhotos.forEach(photo => {
-            photosArray.push(this.fbl.group({ photo: new FormControl(photo.photo) }));
+        const photosArray = this.editServiceForm.get('merchandisePhotos') as FormArray;
+        response.merchandisePhotos.forEach(photo => {
+          photosArray.push(this.fbl.group({ photo: new FormControl(photo.photo) }));
   
-            this.photosToAdd.push({
-              id: photo.id,
-              photo: photo.photo
-            });
+          this.photosToAdd.push({
+            id: photo.id,
+            photo: photo.photo
           });
-  
-          this.updatePhotosToShow();
-        }
+        });
+        console.log('photosToAdd',this.photosToAdd);
+        this.updatePhotosToShow();
       }
     });
   }
@@ -127,7 +125,7 @@ export class EditServiceFormComponent implements OnInit {
     const files = $event.target.files as File[];
     if (files && files.length > 0) {
       const file = files[0];
-      const photosArray = this.editServiceForm.get('photos') as FormArray;
+      const photosArray = this.editServiceForm.get('merchandisePhotos') as FormArray;
   
       // Generate a temporary ID for the loading state
       const tempId = `${file.name}-${Date.now()}`;
@@ -158,7 +156,7 @@ export class EditServiceFormComponent implements OnInit {
           this.loadingPhotos = this.loadingPhotos.filter(x => x.id !== tempId);
   
           // Update the form array
-          const photosArray = this.editServiceForm.get('photos') as FormArray;
+          const photosArray = this.editServiceForm.get('merchandisePhotos') as FormArray;
           const photoControlIndex = photosArray.value.findIndex(
             (photo: { photo: string }) => photo.photo === tempId
           );
@@ -183,7 +181,7 @@ export class EditServiceFormComponent implements OnInit {
   }
 
   addPhoto(photoName: string): void {
-    const photosArray = this.editServiceForm.get('photos') as FormArray;
+    const photosArray = this.editServiceForm.get('merchandisePhotos') as FormArray;
     photosArray.push(this.fbl.group({
       photo: new FormControl(photoName)
     }));
@@ -191,7 +189,7 @@ export class EditServiceFormComponent implements OnInit {
   }
 
   updatePhotosToShow(): void {
-    const photosArray = this.editServiceForm.get('photos') as FormArray;
+    const photosArray = this.editServiceForm.get('merchandisePhotos') as FormArray;
     this.photosToShow = photosArray.value.map((photo: { photo: string }) => {
         const isLoading = this.loadingPhotos.some(x => x.id === photo.photo);
         return isLoading ? 'loading-indicator.png' : this.getPhotoUrl(photo.photo)
@@ -199,7 +197,7 @@ export class EditServiceFormComponent implements OnInit {
   }
 
   removePhoto(index: number): void {
-    const photosArray = this.editServiceForm.get('photos') as FormArray;
+    const photosArray = this.editServiceForm.get('merchandisePhotos') as FormArray;
 
     // Get the photo name from the form array
     const photoUrl = photosArray.at(index).value.photo;
@@ -241,17 +239,19 @@ export class EditServiceFormComponent implements OnInit {
   }
 
   getPhotos(): CreateMerchandisePhotoDTO[] {
-    const photosArray = this.editServiceForm.get('photos') as FormArray;
+    const photosArray = this.editServiceForm.get('merchandisePhotos') as FormArray;
     return photosArray.value as CreateMerchandisePhotoDTO[];
   }
 
   isFormValid() {
-    if(this.editServiceForm.value.minDuration == null || this.editServiceForm.value.maxDuration == null) {
+    if(this.editServiceForm.value.minDuration == null) {
       return false;
     }
-    if(this.editServiceForm.value.minDuration > this.editServiceForm.value.maxDuration) {
-      this.messageService.add({ severity: 'error', summary: 'Fail', detail: "Minimum Duration cannot be greater than Maximum!" });
-      return false;
+    if(this.editServiceForm.value.maxDuration !== undefined && this.editServiceForm.value.maxDuration !== null)  {
+      if(this.editServiceForm.value.minDuration > this.editServiceForm.value.maxDuration && this.editServiceForm.value.maxDuration !== 0) {
+        this.messageService.add({ severity: 'error', summary: 'Fail', detail: "Minimum Duration cannot be greater than Maximum!" });
+        return false;
+      }
     }
     if(this.editServiceForm.value.reservationDeadline == null || this.editServiceForm.value.cancellationDeadline == null) {
       return false;
@@ -279,7 +279,7 @@ export class EditServiceFormComponent implements OnInit {
         automaticReservation: this.editServiceForm.controls.automaticReservation.value,
         visible: this.editServiceForm.controls.visible.value,
         available: this.editServiceForm.controls.available.value,
-        photos: this.photosToAdd.map(x => x.id),
+        merchandisePhotos: this.photosToAdd.map(x => x.id),
         address: {
           city: this.editServiceForm.controls.city.value,
           street: this.editServiceForm.controls.street.value,
