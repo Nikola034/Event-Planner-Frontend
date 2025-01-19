@@ -15,7 +15,7 @@ export interface UpdateRequest {
     automaticReservation: boolean|null|undefined,
     visible: boolean|null|undefined,
     available: boolean|null|undefined,
-    photos: number[]|null|undefined,
+    merchandisePhotos: number[]|null|undefined,
     serviceProviderId: number|null|undefined,
     address: AddressDTO|null|undefined
 }

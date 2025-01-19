@@ -17,10 +17,14 @@
             <p-button class="mt-2" (click)="openReservationDialog()" [disabled]="(!service!.available)" *ngIf="isEoLogged()" severity="primary">Book Reservation</p-button>
         </div>
     </div>
-    
+    <div class="flex justify-content-between mt-0 pl-8 pr-8">
+        <p class="mt-0 mb-3">{{service!.category.title}}</p>
+    </div>
     <div class="flex justify-content-between mt-3 pl-8 pr-8 pt-3">
         <div>
-            <h4>About service</h4>
+            <h2>About service</h2>
+            <h4 class="m-0">Reservation Deadline: {{service!.reservationDeadline}} days</h4>
+            <h4 class="m-0 mb-3">Cancellation Deadline: {{service!.cancellationDeadline}} days</h4>
             <p class="m-0">{{service!.description}}</p>
             <p class="m-0">{{service!.specificity}}</p>
         </div>

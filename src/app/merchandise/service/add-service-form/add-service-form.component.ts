@@ -56,7 +56,7 @@ export class AddServiceFormComponent implements OnInit {
       categoryId: new FormControl(-1, [Validators.required]),
       eventTypesIds: new FormControl([], [Validators.required]),
       minDuration: new FormControl(null, [Validators.required, Validators.min(0)]),
-      maxDuration: new FormControl(null, [Validators.required, Validators.min(0)]),
+      maxDuration: new FormControl(null, [Validators.min(0)]),
       reservationDeadline: new FormControl(null, [Validators.required, Validators.min(0)]),
       cancellationDeadline: new FormControl(null, [Validators.required, Validators.min(0)]),
       automaticReservation: new FormControl(null, [Validators.required]),
@@ -238,12 +238,14 @@ export class AddServiceFormComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Fail', detail: "Category not selected!" });
       return false;
     }
-    if(this.addServiceForm.value.minDuration == null || this.addServiceForm.value.maxDuration == null) {
+    if(this.addServiceForm.value.minDuration == null) {
       return false;
     }
-    if(this.addServiceForm.value.minDuration > this.addServiceForm.value.maxDuration) {
-      this.messageService.add({ severity: 'error', summary: 'Fail', detail: "Minimum Duration cannot be greater than Maximum!" });
-      return false;
+    if(this.addServiceForm.value.maxDuration !== undefined && this.addServiceForm.value.maxDuration !== null) {
+      if(this.addServiceForm.value.minDuration > this.addServiceForm.value.maxDuration) {
+        this.messageService.add({ severity: 'error', summary: 'Fail', detail: "Minimum Duration cannot be greater than Maximum!" });
+        return false;
+      }
     }
     if(this.addServiceForm.value.reservationDeadline == null || this.addServiceForm.value.cancellationDeadline == null) {
       return false;
