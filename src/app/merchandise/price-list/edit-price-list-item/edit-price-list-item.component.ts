@@ -5,20 +5,22 @@ import { PriceListItemDTO } from '../model/price-list-item-dto';
 import { PriceListService } from '../price-list.service';
 import { JwtService } from '../../../infrastructure/auth/jwt.service';
 import { UpdatePriceListItemDTO } from '../model/update-price-list-item-dto';
-import { response } from 'express';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-edit-price-list-item',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, ButtonModule],
+  imports: [FormsModule, ReactiveFormsModule, ButtonModule, ToastModule],
   templateUrl: './edit-price-list-item.component.html',
-  styleUrl: './edit-price-list-item.component.scss'
+  styleUrl: './edit-price-list-item.component.scss',
+  providers: [MessageService]
 })
 export class EditPriceListItemComponent {
   editPriceListItem!: FormGroup;
   @Input() priceListItem!: PriceListItemDTO;
   @Output() priceListItemUpdated = new EventEmitter<PriceListItemDTO[]>;
-  constructor(private fb: FormBuilder, private priceListService: PriceListService, private jwtService: JwtService) {
+  constructor(private fb: FormBuilder, private priceListService: PriceListService, private jwtService: JwtService, private messageService: MessageService) {
     this.editPriceListItem = this.fb.group({
       price: [null],
       discount: [null]
@@ -38,11 +40,21 @@ export class EditPriceListItemComponent {
   isFormValid() {
     if(this.editPriceListItem.value.price === null ||
        this.editPriceListItem.value.price < 0) {
-      return false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Form field invalid',
+          detail: 'Price cannot bbe less than 0'
+        });  
+        return false;
     }
     else if(this.editPriceListItem.value.discount === null ||
             this.editPriceListItem.value.discount < 0 ||
             this.editPriceListItem.value.discount > 100) {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Form field invalid',
+                detail: 'Discount can only be number in range 0-100'
+              });
               return false;
             }
     return true;
@@ -58,12 +70,27 @@ export class EditPriceListItemComponent {
           this.priceListItemUpdated.emit(response);
         },
         error: (err) => {
-          console.error(err);
+          if (err.error && err.error.message) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error updating Price List',
+              detail: err.error.message
+            });
+          } else if (err.message) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error updating Price List',
+              detail: err.message
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error updating Price List',
+              detail: 'Failed to update Price List. Please try again.'
+            });
+          }
         }
       });
-    }
-    else {
-      console.log("Form not valid");
     }
   }
 }

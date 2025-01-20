@@ -5,34 +5,52 @@ import { TableModule } from 'primeng/table';
 import { CurrencyPipe } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { Service } from '../model/service';
-import { EditServiceFormComponent } from '../edit-service-form/edit-service-form.component';
-import { AddServiceFormComponent } from '../add-service-form/add-service-form.component';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { CreateServiceResponse } from '../model/create-response';
 import { ServiceService } from '../service.service';
-import { response } from 'express';
 import { ServicesCalendarComponent } from '../services-calendar/services-calendar.component';
 import { JwtService } from '../../../infrastructure/auth/jwt.service';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-service-crud',
   standalone: true,
-  imports: [ButtonModule, DropdownModule, RouterModule, TableModule, CurrencyPipe, DialogModule, CommonModule, ServicesCalendarComponent],
+  imports: [ButtonModule, DropdownModule, RouterModule, TableModule, CurrencyPipe, DialogModule, CommonModule, ServicesCalendarComponent, ToastModule],
   templateUrl: './service-crud.component.html',
-  styleUrl: './service-crud.component.scss'
+  styleUrl: './service-crud.component.scss',
+  providers: [MessageService]
 })
 
 export class ServiceCrudComponent implements OnInit {
   allServices: CreateServiceResponse[] = [];
-  constructor(private serviceService: ServiceService, private jwtService: JwtService, private router: Router) {}
+  constructor(private serviceService: ServiceService, private jwtService: JwtService, private router: Router, private messageService: MessageService) {}
   ngOnInit(): void {
       this.serviceService.getAllBySpId(this.jwtService.getIdFromToken()).subscribe({
         next: (response) => {
           this.allServices = response;
         },
         error: (err) => {
-          console.error(err);
+          if (err.error && err.error.message) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error loading Services',
+              detail: err.error.message
+            });
+          } else if (err.message) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error loading Services',
+              detail: err.message
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error loading Services',
+              detail: 'Failed to loading service. Please try again.'
+            });
+          }
         }
       });
   }
@@ -62,7 +80,25 @@ export class ServiceCrudComponent implements OnInit {
         this.allServices = response;
       },
       error: (err) => {
-        console.error(err);
+        if (err.error && err.error.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error loading Services',
+            detail: err.error.message
+          });
+        } else if (err.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error loading Services',
+            detail: err.message
+          });
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error loading Services',
+            detail: 'Failed to loading service. Please try again.'
+          });
+        }
       }
     });
     this.displayAddForm = false;
@@ -72,10 +108,27 @@ export class ServiceCrudComponent implements OnInit {
     this.serviceService.getAllBySpId(updatedService.serviceProviderId).subscribe({
       next: (response) => {
         this.allServices = response;
-        console.log(this.allServices);
       },
       error: (err) => {
-        console.error(err);
+        if (err.error && err.error.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error loading Services',
+            detail: err.error.message
+          });
+        } else if (err.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error loading Services',
+            detail: err.message
+          });
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error loading Services',
+            detail: 'Failed to loading service. Please try again.'
+          });
+        }
       }
     });
 
@@ -90,14 +143,49 @@ export class ServiceCrudComponent implements OnInit {
             this.allServices = response;
           },
           error: (err) => {
-            console.error(err);
+            if (err.error && err.error.message) {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error loading Services',
+                detail: err.error.message
+              });
+            } else if (err.message) {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error loading Services',
+                detail: err.message
+              });
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error loading Services',
+                detail: 'Failed to loading service. Please try again.'
+              });
+            }
           }
         });
       }, error: (err) => {
-        console.error(err);
+        if (err.error && err.error.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error deliting service',
+            detail: err.error.message
+          });
+        } else if (err.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error deliting service',
+            detail: err.message
+          });
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error deliting service',
+            detail: 'Failed to delete service. Please try again.'
+          });
+        }
       }
     });
   }
-
 
 }

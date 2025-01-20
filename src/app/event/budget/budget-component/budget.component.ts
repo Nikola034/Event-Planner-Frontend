@@ -13,13 +13,16 @@ import { DialogModule } from 'primeng/dialog';
 import { EditBudgetFormComponent } from "../edit-budget-form/edit-budget-form.component";
 import { AddBudgetFormComponent } from "../add-budget-form/add-budget-form.component";
 import { MerchandiseComponent } from "../../../merchandise/merchandise/merchandise-component/merchandise.component";
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-budget',
   standalone: true,
-  imports: [ButtonModule, TableModule, CurrencyPipe, CommonModule, DialogModule, EditBudgetFormComponent, AddBudgetFormComponent, MerchandiseComponent],
+  imports: [ButtonModule, TableModule, CurrencyPipe, CommonModule, DialogModule, EditBudgetFormComponent, AddBudgetFormComponent, MerchandiseComponent, ToastModule],
   templateUrl: './budget.component.html',
-  styleUrl: './budget.component.scss'
+  styleUrl: './budget.component.scss',
+  providers: [MessageService]
 })
 export class BudgetComponent implements OnInit {
   budget: BudgetDTO | null = null;
@@ -29,7 +32,7 @@ export class BudgetComponent implements OnInit {
   displayEditForm: boolean = false;
   displayAddForm: boolean = false;
   @ViewChild(MerchandiseComponent) merchandiseComponent!: MerchandiseComponent;
-  constructor(private budgetService: BudgetService, private route: ActivatedRoute, private eventService: EventService, private router: Router) {}
+  constructor(private budgetService: BudgetService, private route: ActivatedRoute, private eventService: EventService, private router: Router, private messageService: MessageService) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('eventId');
@@ -45,7 +48,25 @@ export class BudgetComponent implements OnInit {
         this.budget = budget;
       },
       error: (err) => {
-        console.error(err);
+        if (err.error && err.error.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error loading Budget',
+            detail: err.error.message
+          });
+        } else if (err.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error loading Budget',
+            detail: err.message
+          });
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error loading Budget',
+            detail: 'Failed to load Budget. Try reloading page.'
+          });
+        }
       }
     });
    }
@@ -95,7 +116,11 @@ export class BudgetComponent implements OnInit {
           this.budget = response;
         },
         error: (err) => {
-          console.error(err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error deleting Budget Item',
+            detail: 'Failed to delete Budget Item. Please try again.'
+          });
         }
       });
     }

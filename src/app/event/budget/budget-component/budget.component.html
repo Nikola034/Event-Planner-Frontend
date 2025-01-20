@@ -1,4 +1,5 @@
 <div *ngIf="(event && budget)">
+    <p-toast position="top-right" [baseZIndex]="20000" [autoZIndex]="true"></p-toast>
     <div class="card">
         <p-table [value]="budget.budgetItems" [tableStyle]="{ 'min-width': '60rem' }">
             <ng-template pTemplate="caption">

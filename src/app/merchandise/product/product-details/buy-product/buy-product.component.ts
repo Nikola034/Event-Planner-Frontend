@@ -4,13 +4,16 @@ import { DropdownModule } from 'primeng/dropdown';
 import { Button, ButtonModule } from 'primeng/button';
 import { EventService } from '../../../../event/event.service';
 import { EventOverviewDTO } from '../../../../event/model/event-overview-dto';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-buy-product',
   standalone: true,
-  imports: [DropdownModule, ButtonModule],
+  imports: [DropdownModule, ButtonModule, ToastModule],
   templateUrl: './buy-product.component.html',
-  styleUrl: './buy-product.component.scss'
+  styleUrl: './buy-product.component.scss',
+  providers: [MessageService]
 })
 export class BuyProductComponent implements OnInit {
   @Input() productId!: number;
@@ -18,7 +21,7 @@ export class BuyProductComponent implements OnInit {
   eventId: number = -1;
   events: EventOverviewDTO[] = [];
 
-  constructor(private productService: ProductService, private eventService: EventService) {}
+  constructor(private productService: ProductService, private eventService: EventService, private messageService: MessageService) {}
 
   ngOnInit() {
       this.eventService.getByEo(1).subscribe({
@@ -26,7 +29,25 @@ export class BuyProductComponent implements OnInit {
           this.events = response;
         },
         error: (err) => {
-          console.error(err);
+          if (err.error && err.error.message) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Failed to load events',
+              detail: err.error.message
+            });
+          } else if (err.message) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Failed to load events',
+              detail: err.message
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error loading Events',
+              detail: 'Failed to load events. Please try again.'
+            });
+          }
         }
       });
   }

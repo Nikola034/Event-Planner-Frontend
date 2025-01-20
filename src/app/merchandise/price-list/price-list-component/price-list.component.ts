@@ -9,20 +9,23 @@ import { JwtService } from '../../../infrastructure/auth/jwt.service';
 import { DialogModule } from 'primeng/dialog';
 import { EditPriceListItemComponent } from "../edit-price-list-item/edit-price-list-item.component";
 import jsPDF from 'jspdf';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-price-list',
   standalone: true,
-  imports: [TableModule, CommonModule, CurrencyPipe, ButtonModule, DialogModule, EditPriceListItemComponent],
+  imports: [TableModule, CommonModule, CurrencyPipe, ButtonModule, DialogModule, EditPriceListItemComponent, ToastModule],
   templateUrl: './price-list.component.html',
-  styleUrl: './price-list.component.scss'
+  styleUrl: './price-list.component.scss',
+  providers: [MessageService]
 })
 export class PriceListComponent implements OnInit {
   priceList: PriceListItemDTO[] = [];
   displayEditForm: boolean = false;
   selectedPriceListItem!: PriceListItemDTO;
 
-  constructor(private priceListService: PriceListService, private jwtService: JwtService) {}
+  constructor(private priceListService: PriceListService, private jwtService: JwtService, private messageService: MessageService) {}
 
   ngOnInit(): void {
       this.priceListService.getPriceList(this.jwtService.getIdFromToken()).subscribe({
@@ -30,7 +33,25 @@ export class PriceListComponent implements OnInit {
           this.priceList = response;
         },
         error: (err) => {
-          console.error(err);
+          if (err.error && err.error.message) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error loading Price List',
+              detail: err.error.message
+            });
+          } else if (err.message) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error loading Price List',
+              detail: err.message
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error loading Price List',
+              detail: 'Failed to load Price List. Try refreshing page!.'
+            });
+          }
         }
       });
   }
@@ -47,7 +68,11 @@ export class PriceListComponent implements OnInit {
 
   getPDF() {
     if(!this.priceList || this.priceList.length === 0) {
-      console.error("Price List is empty");
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error creating PDF File',
+        detail: 'Price List is empty'
+      });
       return;
     }
 
