@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Category } from '../model/category';
 import { Table, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { EditCategoryComponent } from "../edit-category/edit-category.component";
@@ -7,14 +6,16 @@ import { AddCategoryComponent } from "../add-category/add-category.component";
 import { DialogModule } from 'primeng/dialog';
 import { CategoryService } from '../category.service';
 import { CategoryDto } from '../model/category.dto';
-import { response } from 'express';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-category-crud',
   standalone: true,
-  imports: [TableModule, ButtonModule, EditCategoryComponent, AddCategoryComponent, DialogModule],
+  imports: [TableModule, ButtonModule, EditCategoryComponent, AddCategoryComponent, DialogModule, ToastModule],
   templateUrl: './category-crud.component.html',
-  styleUrl: './category-crud.component.scss'
+  styleUrl: './category-crud.component.scss',
+  providers: [MessageService]
 })
 export class CategoryCrudComponent implements OnInit {
   addedCategories: CategoryDto[] = [];
@@ -25,25 +26,9 @@ export class CategoryCrudComponent implements OnInit {
   displayError: boolean = false;
   errorMessage: String = "";
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(private categoryService: CategoryService, private messageService: MessageService) {}
   ngOnInit() {
-    this.categoryService.getAllApproved().subscribe({
-      next: (response) => {
-        this.addedCategories = response;
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    });
-
-    this.categoryService.getAllPending().subscribe({
-      next: (response) => {
-        this.pendingCategories = response;
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    });
+    this.getAllCategories();
   }
 
   getAllCategories() {
@@ -52,7 +37,25 @@ export class CategoryCrudComponent implements OnInit {
         this.addedCategories = response;
       },
       error: (err) => {
-        console.error(err);
+        if (err.error && err.error.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error loading Categories',
+            detail: err.error.message
+          });
+        } else if (err.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error loading Categories',
+            detail: err.message
+          });
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error loading Categories',
+            detail: 'Failed to load Categories. Try reloading page.'
+          });
+        }
       }
     });
 
@@ -61,7 +64,25 @@ export class CategoryCrudComponent implements OnInit {
         this.pendingCategories = response;
       },
       error: (err) => {
-        console.error(err);
+        if (err.error && err.error.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error loading Categories',
+            detail: err.error.message
+          });
+        } else if (err.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error loading Categories',
+            detail: err.message
+          });
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error loading Categories',
+            detail: 'Failed to load Categories. Try reloading page.'
+          });
+        }
       }
     });
   }
@@ -81,7 +102,25 @@ export class CategoryCrudComponent implements OnInit {
         this.getAllCategories();
       },
       error: (err) => {
-        console.error(err);
+        if (err.error && err.error.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error approving Category',
+            detail: err.error.message
+          });
+        } else if (err.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error approving Category',
+            detail: err.message
+          });
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error approving Category',
+            detail: 'Failed to approve Category. Please try again.'
+          });
+        }
       }
     });
   }
@@ -93,8 +132,25 @@ export class CategoryCrudComponent implements OnInit {
       },
       error: (err) => {
         this.displayError = true;
-        this.errorMessage = err.error.message;
-        console.error(err.error.message);
+        if (err.error && err.error.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error deleting Category',
+            detail: err.error.message
+          });
+        } else if (err.message) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error deleting Category',
+            detail: err.message
+          });
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error deleting Category',
+            detail: 'Failed to delete Category. Try reloading page.'
+          });
+        }
       }
     });
   }
@@ -105,7 +161,11 @@ export class CategoryCrudComponent implements OnInit {
     }
     else {
       this.displayError = true;
-      this.errorMessage = "Failed to update category!";
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to update category. Please try again.'
+      });
     }
 
     this.displayEditForm = false;
@@ -117,7 +177,11 @@ export class CategoryCrudComponent implements OnInit {
     }
     else {
       this.displayError = true;
-      this.errorMessage = "Failed to create category!";
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to create category. Please try again.'
+      });
     }
 
     this.displayAddForm = false;

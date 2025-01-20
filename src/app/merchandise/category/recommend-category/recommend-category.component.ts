@@ -1,8 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { Category } from '../model/category';
-import { CategoryDto, CreateCategoryDto } from '../model/category.dto';
 import { CreateCategory } from '../model/create-request';
 import { CategoryService } from '../category.service';
 

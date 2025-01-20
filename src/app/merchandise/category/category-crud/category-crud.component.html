@@ -1,3 +1,4 @@
+<p-toast position="top-right" [baseZIndex]="20000" [autoZIndex]="true"></p-toast>
 <div class="grid">
     <div class="col-6">
         <div class="card">
@@ -62,7 +63,4 @@
 </p-dialog> 
 <p-dialog header="Add Category" [(visible)]="displayAddForm" [modal]="true">
     <app-add-category (categoryCreated)="createCategory($event)"></app-add-category>
-</p-dialog>
-<p-dialog header="Error" [(visible)]="displayError" [modal]="true">
-    <p>{{errorMessage}}</p>
 </p-dialog>

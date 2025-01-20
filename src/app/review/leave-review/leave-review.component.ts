@@ -42,7 +42,25 @@ export class LeaveReviewComponent {
           });
         },
         error: (err) => {
-          console.error(err);
+          if (err.error && err.error.message) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Failed to leave review',
+              detail: err.error.message
+            });
+          } else if (err.message) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Failed to leave review',
+              detail: err.message
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Failed to leave review. Please try again.'
+            });
+          }
         }
       });
     }

@@ -11,7 +11,6 @@ import { CommonModule } from '@angular/common';
 import { GalleriaModule } from 'primeng/galleria';
 import { FieldsetModule } from 'primeng/fieldset';
 import { PaginatorModule } from 'primeng/paginator';
-import { HttpErrorResponse } from '@angular/common/http';
 import { MapComponent } from '../../../shared/map/map.component';
 import { MapService } from '../../../shared/map/map.service';
 import { JwtService } from '../../../infrastructure/auth/jwt.service';
@@ -48,7 +47,6 @@ export class ServiceDetailsComponent implements OnInit {
   isFavorited: boolean = false;
   images: any[] | undefined = [];
   paginatedReviews: any | undefined;
-  errorMessage: string = '';
   isVisible: boolean = false;
   responsiveOptions: any[] = [
     {
@@ -117,33 +115,6 @@ export class ServiceDetailsComponent implements OnInit {
             this.isVisible = false;
           },
         });
-    }
-  }
-  private getErrorMessage(error: HttpErrorResponse): string {
-    // Check if error response has a body with a message
-    if (error.error instanceof ErrorEvent) {
-      // Client-side error
-      return error.error.message || 'Client-side error occurred';
-    } else {
-      // Server-side error
-      // Try multiple ways to extract the error message
-      if (error.error && error.error.message) {
-        // Directly from error object
-        return error.error.message;
-      }
-
-      if (error.error && typeof error.error === 'string') {
-        // If error is a string message
-        return error.error;
-      }
-
-      if (error.error && error.error.errorMessage) {
-        // Alternative error message property
-        return error.error.errorMessage;
-      }
-
-      // Fallback to status text or a generic message
-      return error.statusText || 'An unexpected error occurred';
     }
   }
 

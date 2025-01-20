@@ -105,7 +105,7 @@ export class EditServiceFormComponent implements OnInit {
             photo: photo.photo
           });
         });
-        console.log('photosToAdd',this.photosToAdd);
+
         this.updatePhotosToShow();
       }
     });
