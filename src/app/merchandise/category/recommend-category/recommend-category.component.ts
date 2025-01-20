@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { ButtonModule } from 'primeng/button';
 import { CreateCategory } from '../model/create-request';
 import { CategoryService } from '../category.service';
+import { CategoryDto } from '../model/category.dto';
 
 @Component({
   selector: 'app-recommend-category',
@@ -13,7 +14,7 @@ import { CategoryService } from '../category.service';
 })
 export class RecommendCategoryComponent implements OnInit {
   addCategoryForm!: FormGroup;
-  @Output() categoryCreated = new EventEmitter<boolean>();
+  @Output() categoryCreated = new EventEmitter<CategoryDto|null>();
 
   constructor(private fb: FormBuilder, private categoryService: CategoryService) {}
   ngOnInit(): void {
@@ -33,10 +34,10 @@ export class RecommendCategoryComponent implements OnInit {
 
     this.categoryService.create(createCategory).subscribe({
       next: (response) => {
-        this.categoryCreated.emit(true);
+        this.categoryCreated.emit(response);
       },
       error: (err) => {
-        this.categoryCreated.emit(false);
+        this.categoryCreated.emit(null);
       }
     });
 

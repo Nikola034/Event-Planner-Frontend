@@ -101,8 +101,8 @@ export class UpdateProductComponent {
     const id = this.route.snapshot.paramMap.get('id');
     this.productId = id ? Number(id) : -1;
 
-    this.categoryService.getAll().pipe(tap(response => {
-      this.categories = response.categories;
+    this.categoryService.getAllApproved().pipe(tap(response => {
+      this.categories = response;
     })).subscribe();
 
     this.eventTypeService.getAllActiveWp().pipe(tap(response => {
@@ -309,9 +309,10 @@ export class UpdateProductComponent {
   showAddCategoryForm() {
     this.displayAddCategoryForm = true;
   }
-  createCategory(categoryCreated: boolean) {
-    if(categoryCreated) {
-      this.categoryService.getAll();
+  createCategory(categoryCreated: CategoryDto|null) {
+    if (categoryCreated != null) {
+      this.categories.push(categoryCreated);
+      this.selectedCategory = categoryCreated;
     }
     else {
       console.log("fail")

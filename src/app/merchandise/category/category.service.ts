@@ -28,19 +28,19 @@ export class CategoryService {
     return this.httpClient.get<CategoryDto[]>(`${API_URL}/api/v1/categories/get/pending`);
   }
 
-  create(createRequest: CreateCategory): Observable<CategoryDto[]> {
-    return this.httpClient.post<CategoryDto[]>(`${API_URL}/api/v1/categories/create`, createRequest);
+  create(createRequest: CreateCategory): Observable<CategoryDto> {
+    return this.httpClient.post<CategoryDto>(`${API_URL}/api/v1/categories/create`, createRequest);
   }
 
-  approve(categoryId: number): Observable<CategoryDto[]> {
-    return this.httpClient.put<CategoryDto[]>(`${API_URL}/api/v1/categories/approve/${categoryId}`, categoryId);
+  approve(categoryId: number): Observable<CategoryDto> {
+    return this.httpClient.put<CategoryDto>(`${API_URL}/api/v1/categories/approve/${categoryId}`, categoryId);
   }
 
-  update(categoryId: number, updateRequest: UpdateCategory): Observable<CategoryDto[]> {
-    return this.httpClient.put<CategoryDto[]>(`${API_URL}/api/v1/categories/update/${categoryId}`, updateRequest);
+  update(categoryId: number, updateRequest: UpdateCategory): Observable<CategoryDto> {
+    return this.httpClient.put<CategoryDto>(`${API_URL}/api/v1/categories/update/${categoryId}`, updateRequest);
   }
 
-  delete(categoryId: number): Observable<CategoryDto[]> {
-    return this.httpClient.delete<CategoryDto[]>(`${API_URL}/api/v1/categories/delete/${categoryId}`);
+  delete(categoryId: number): Observable<any> {
+    return this.httpClient.delete<any>(`${API_URL}/api/v1/categories/delete/${categoryId}`);
   }
 }

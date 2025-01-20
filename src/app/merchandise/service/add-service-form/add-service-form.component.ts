@@ -73,8 +73,8 @@ export class AddServiceFormComponent implements OnInit {
               private messageService: MessageService) {}
 
   ngOnInit(): void {
-    this.categoryService.getAll().pipe(tap(response => {
-      this.allCategories = response.categories;
+    this.categoryService.getAllApproved().pipe(tap(response => {
+      this.allCategories = response;
       const newCategory: CategoryDto = {
         id: -1,
         title: 'other',
@@ -96,11 +96,10 @@ export class AddServiceFormComponent implements OnInit {
     }
   }
 
-  createCategory(categoryCreated: boolean) {
-    if (categoryCreated) {
-      this.categoryService.getAll().pipe(tap(response => {
-        this.allCategories = response.categories
-      })).subscribe()
+  createCategory(categoryCreated: CategoryDto|null) {
+    if (categoryCreated != null) {
+      this.addServiceForm.patchValue({categoryId: categoryCreated.id});
+      this.allCategories.push(categoryCreated);
     } else {
       this.messageService.add({
         severity: 'error',
