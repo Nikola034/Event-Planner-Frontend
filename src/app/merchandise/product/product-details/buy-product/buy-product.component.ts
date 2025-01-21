@@ -55,7 +55,6 @@ export class BuyProductComponent implements OnInit {
   onEventChange(event: any) {
     const selectedEventId = event.value?.id;
     this.eventId = selectedEventId;
-    console.log(this.eventId);
   }
 
   onSubmit() {

@@ -43,4 +43,8 @@ export class CategoryService {
   delete(categoryId: number): Observable<any> {
     return this.httpClient.delete<any>(`${API_URL}/api/v1/categories/delete/${categoryId}`);
   }
+
+  replace(categoryId: number, replacedCategoryId: number): Observable<any> {
+    return this.httpClient.put<any>(`${API_URL}/api/v1/categories/replace/${categoryId}/${replacedCategoryId}`, null);
+  }
 }

@@ -1,0 +1,17 @@
+<div class="flex justify-content-center pt-4">
+    <div class="sm:w-10 md:w-27rem lg:w-27rem xl:w-27rem">
+        <div class="surface-100 justify-content-center pt-5 pb-1">
+            <div class="flex field justify-content-center align-content-center">
+                <h3>Category that will be replaced: {{categoryData.title}}</h3>
+            </div>
+            <div class="field flex justify-content-center mb-8">
+                    <p-dropdown [options]="allCategories"
+                    placeholder="Choose category" optionLabel="title" [editable]="true" name="category"
+                    (onChange)="onCategoryChange($event)"/>
+            </div>
+            <div class="field flex justify-content-center mt-8">
+                <p-button class="field flex justify-content-center" (onClick)="onSubmit()">Submit</p-button>
+            </div>
+        </div>
+    </div>
+</div>
