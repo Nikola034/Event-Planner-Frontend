@@ -8,11 +8,12 @@ import { CategoryService } from '../category.service';
 import { CategoryDto } from '../model/category.dto';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { ReplaceCategoryComponent } from "../replace-category/replace-category.component";
 
 @Component({
   selector: 'app-category-crud',
   standalone: true,
-  imports: [TableModule, ButtonModule, EditCategoryComponent, AddCategoryComponent, DialogModule, ToastModule],
+  imports: [TableModule, ButtonModule, EditCategoryComponent, AddCategoryComponent, DialogModule, ToastModule, ReplaceCategoryComponent],
   templateUrl: './category-crud.component.html',
   styleUrl: './category-crud.component.scss',
   providers: [MessageService]
@@ -23,7 +24,7 @@ export class CategoryCrudComponent implements OnInit {
   displayAddForm: boolean = false;
   selectedCategory!: CategoryDto;
   displayEditForm: boolean = false;
-  displayError: boolean = false;
+  displayReplaceForm: boolean = false;
   errorMessage: String = "";
 
   constructor(private categoryService: CategoryService, private messageService: MessageService) {}
@@ -96,6 +97,11 @@ export class CategoryCrudComponent implements OnInit {
     this.displayEditForm = true;
   }
 
+  showReplaceForm(category: CategoryDto) {
+    this.selectedCategory = category;
+    this.displayReplaceForm = true;
+  }
+
   approveCategorySuggestion(category: CategoryDto) {
     this.categoryService.approve(category.id).subscribe({
       next: (response) => {
@@ -131,7 +137,6 @@ export class CategoryCrudComponent implements OnInit {
         this.getAllCategories();
       },
       error: (err) => {
-        this.displayError = true;
         if (err.error && err.error.message) {
           this.messageService.add({
             severity: 'error',
@@ -160,7 +165,6 @@ export class CategoryCrudComponent implements OnInit {
       this.getAllCategories();
     }
     else {
-      this.displayError = true;
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -171,12 +175,25 @@ export class CategoryCrudComponent implements OnInit {
     this.displayEditForm = false;
   }
 
+  replaceCategory(categoryReplaced: boolean) {
+    if(categoryReplaced) {
+      this.getAllCategories();
+    }else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to replace category. Please try again.'
+      });
+    }
+
+    this.displayReplaceForm = false;
+  }
+
   createCategory(categoryCreated: boolean) {
     if(categoryCreated) {
       this.getAllCategories();
     }
     else {
-      this.displayError = true;
       this.messageService.add({
         severity: 'error',
         summary: 'Error',

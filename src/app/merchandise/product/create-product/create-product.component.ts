@@ -87,8 +87,8 @@ export class CreateProductComponent {
   }
 
   loadData(): void {
-    this.categoryService.getAll().pipe(tap(response => {
-      this.categories = response.categories;
+    this.categoryService.getAllApproved().pipe(tap(response => {
+      this.categories = response;
     })).subscribe();
     this.eventTypeService.getAllActiveWp().pipe(tap(response => {
       this.eventTypes = response;
@@ -252,11 +252,10 @@ export class CreateProductComponent {
     this.displayAddCategoryForm = true;
   }
 
-  createCategory(categoryCreated: boolean) {
-    if (categoryCreated) {
-      this.categoryService.getAll().pipe(tap(response => {
-        this.categories = response.categories
-      })).subscribe()
+  createCategory(categoryCreated: CategoryDto|null) {
+    if (categoryCreated != null) {
+      this.selectedCategory = categoryCreated;
+      this.categories.push(categoryCreated);
     } else {
       console.log("fail");
     }

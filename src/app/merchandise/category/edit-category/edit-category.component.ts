@@ -41,8 +41,7 @@ export class EditCategoryComponent implements OnChanges {
       description: this.editCategoryForm.value.description,
       pending: this.categoryData.pending
     };
-    console.log("uslo u funkciju");
-    console.log(this.categoryData.id);
+
     this.categoryService.update(this.categoryData.id, updatedCategory).subscribe({
       next: (response) => {
         this.categoryUpdated.emit(true);
