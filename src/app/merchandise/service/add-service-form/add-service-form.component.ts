@@ -51,15 +51,15 @@ export class AddServiceFormComponent implements OnInit {
       number: new FormControl<string|null|undefined>(null, [Validators.required]),
       longitude: new FormControl<number|null|undefined>(null, [Validators.required]),
       latitude: new FormControl<number|null|undefined>(null, [Validators.required]),
-      price: new FormControl(null, [Validators.required, Validators.min(0)]),
-      discount: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(100)]),
+      price: new FormControl<number|null|undefined>(null, [Validators.required, Validators.min(0)]),
+      discount: new FormControl<number|null|undefined>(null, [Validators.required, Validators.min(0), Validators.max(100)]),
       categoryId: new FormControl(-1, [Validators.required]),
-      eventTypesIds: new FormControl([], [Validators.required]),
-      minDuration: new FormControl(null, [Validators.required, Validators.min(0)]),
-      maxDuration: new FormControl(null, [Validators.min(0)]),
-      reservationDeadline: new FormControl(null, [Validators.required, Validators.min(0)]),
-      cancellationDeadline: new FormControl(null, [Validators.required, Validators.min(0)]),
-      automaticReservation: new FormControl(null, [Validators.required]),
+      eventTypesIds: new FormControl<number[]|null|undefined>([], [Validators.required]),
+      minDuration: new FormControl<number|null|undefined>(null, [Validators.required, Validators.min(0)]),
+      maxDuration: new FormControl<number|null|undefined>(null, [Validators.min(0)]),
+      reservationDeadline: new FormControl<number|null|undefined>(null, [Validators.required, Validators.min(0)]),
+      cancellationDeadline: new FormControl<number|null|undefined>(null, [Validators.required, Validators.min(0)]),
+      automaticReservation: new FormControl<boolean|null|undefined>(null, [Validators.required]),
       merchandisePhotos: this.fbl.array([])
   });
 
