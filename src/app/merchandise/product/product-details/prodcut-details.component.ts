@@ -108,6 +108,9 @@ export class ProdcutDetailsComponent implements OnInit {
               summary: 'Purchased',
               detail: response.message
             });
+            setTimeout(() => {
+              this.router.navigate(['home','budget', this.eventId]);
+            }, 2000);
           },
           error: (err) => {
             this.messageService.add({
