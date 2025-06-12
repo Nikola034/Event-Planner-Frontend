@@ -17,6 +17,7 @@ A responsive and interactive web client for the **EventPlanner** platform — bu
 ## 📖 About the Project
 
 The **Frontend** repository contains the Angular-based client application for the **EventPlanner** platform. It provides a rich UI/UX for:
+- 👤 **Guests** - browse events, products and services
 - 🎫 **Authenticated Users** – browse, register for events, manage profiles  
 - 🎤 **Event Organizers** – create, edit, and manage events and participants  
 - 🛠️ **Service/Product Providers** – manage their offerings and orders  
