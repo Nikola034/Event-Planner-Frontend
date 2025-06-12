@@ -69,7 +69,7 @@ The frontend communicates with the backend via REST APIs and uses reactive progr
 ## 🧪 Testing & Code Quality
 
 - ✅ **Unit & Integration Testing** – Jasmine
-- 🚀 **End-to-End Testing** – Selenium (if applicable)  
+- 🚀 **End-to-End Testing** – Selenium 
 - 📏 **Clean Code Practices** – modular components, reusable services  
 - 🔄 **Code Reviews & Pull Requests** – ensured high-quality merges  
 - 🗂️ **Agile Development** – sprint planning and retrospectives via Trello
@@ -80,9 +80,9 @@ The frontend communicates with the backend via REST APIs and uses reactive progr
 ## 👨‍💻 My Contributions
 
 - 🎨 Developed event creation/editing components and workflows  
-- 🔐 Implemented user authentication and role-based route auth guards  
+- 🔐 Implemented user authentication and role-based route auth guards as well as registration and login features
 - 🗺️ Integrated OpenStreetMap for event location selection  
-- 🛍️ Supported CRUD operations for products and services  
+- 🛍️ Supported CRUD operations for events, event types and products
 - 🧪 Wrote unit and integration tests for key UI components  
 - 💬 Participated in UI/UX design iterations and code reviews
 
