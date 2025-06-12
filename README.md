@@ -25,6 +25,11 @@ The **Frontend** repository contains the Angular-based client application for th
 
 The frontend communicates with the backend via REST APIs and uses reactive programming patterns for efficient state and event management.
 
+See also:  
+- [Backend Repository](https://github.com/Nikola034/Event-Planner-Backend)  
+- [Android Repository](https://github.com/Nikola034/Event-Planner-Android) 
+- [Selenium Tests Repository](https://github.com/Nikola034/Event-Planner-Selenium-Tests)
+
 ---
 
 <a name="architecture--features"></a>
