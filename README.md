@@ -9,6 +9,7 @@ A responsive and interactive web client for the **EventPlanner** platform — bu
 - [Architecture & Features](#architecture--features)
 - [Tech Stack](#tech-stack)
 - [Testing & Code Quality](#testing--code-quality)
+- [Team Collaboration](#team--collaboration)
 - [My Contributions](#my-contributions)
 
 ---
@@ -79,6 +80,17 @@ See also:
 - 📏 **Clean Code Practices** – modular components, reusable services  
 - 🔄 **Code Reviews & Pull Requests** – ensured high-quality merges  
 - 🗂️ **Agile Development** – sprint planning and retrospectives via Trello
+
+---
+
+<a name="team--collaboration"></a>
+## 🤝 Team & Collaboration
+
+- Developed collaboratively by a team of **3 members**
+- Worked in agile sprints with clearly defined roles and responsibilities
+- Used **Trello** for task management, sprint planning, and retrospectives
+- Maintained high code quality through **pull requests**, **code reviews**, and team discussions
+- Initial designs and workflows were created and shared in **Figma**
 
 ---
 
